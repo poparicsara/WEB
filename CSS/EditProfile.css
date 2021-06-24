@@ -1,0 +1,58 @@
+body{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#editProfileForm{
+    border-style: solid;
+    border-color: lightblue;
+    padding: 30px;
+    margin-left: 580px;
+    margin-right: 500px;
+    font-size: 20px;
+    border-radius: 5px; 
+}
+
+h1{
+    margin-left: 10px;
+    color: lightblue;
+    font-size: 40px;
+}
+
+tr{
+    height: 60px;
+}
+
+.input{
+    margin-left: 20px;
+    border-radius: 5px;
+    height: 30px;
+    width: 200px;
+    font-size: 16px;
+}
+
+select{
+    border-width: 2px;
+    margin-left: 20px;
+    border-radius: 5px;
+    height: 30px;
+    width: 200px;
+}
+
+.button{
+    margin-left: 55px;
+    border-radius: 5px;
+    height: 30px;
+    width: 100px;
+    background-color: lightblue;
+    color: white;
+    font-size: 16px;
+}
+
+table{
+    margin-top: 50px;
+    font-size: 16px;
+}
+
+.button:hover{
+    background-color: deepskyblue;
+}
