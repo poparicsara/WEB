@@ -2,19 +2,18 @@ body{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-#logInForm{
+#registrationForm{
     border-style: solid;
     border-color: lightblue;
     padding: 30px;
-    margin-top: 150px;
     margin-left: 580px;
-    margin-right: 550px;
+    margin-right: 530px;
     font-size: larger;
     border-radius: 5px; 
 }
 
 h1{
-    margin-left: 80px;
+    margin-left: 30px;
     color: lightblue;
     font-size: 40px;
 }
@@ -27,7 +26,16 @@ h1{
     border-radius: 5px; 
 }
 
-#submitLogIn{
+select{
+    width: 300px;
+    height: 35px;
+    margin-top: 10px;
+    border-radius: 5px; 
+    font-size: 16px;
+    border-width: 2px;
+}
+
+#submitRegistration{
     margin-left: 53px;
     background-color: lightblue;
     color: white;
@@ -37,12 +45,6 @@ h1{
     border-radius: 5px; 
 }
 
-#submitLogIn:hover{
+#submitRegistration:hover{
     background-color: deepskyblue;
-}
-
-#registrationLink{
-    margin-left: 100px;
-    font-size: small;
-    color: lightblue;
 }
