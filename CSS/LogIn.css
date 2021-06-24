@@ -1,0 +1,48 @@
+body{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#logInForm{
+    border-style: solid;
+    border-color: lightblue;
+    padding: 30px;
+    margin-top: 150px;
+    margin-left: 580px;
+    margin-right: 550px;
+    font-size: larger;
+    border-radius: 5px; 
+}
+
+h1{
+    margin-left: 80px;
+    color: lightblue;
+    font-size: 40px;
+}
+
+.input{
+    font-size: 16px;
+    margin-top: 10px;
+    width: 300px;
+    height: 35px;
+    border-radius: 5px; 
+}
+
+#logInButton{
+    margin-left: 53px;
+    background-color: lightblue;
+    color: white;
+    font-size: larger;
+    width: 200px;
+    height: 40px;
+    border-radius: 5px; 
+}
+
+#logInButton:hover{
+    background-color: deepskyblue;
+}
+
+#registrationLink{
+    margin-left: 100px;
+    font-size: small;
+    color: lightblue;
+}
