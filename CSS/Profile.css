@@ -1,0 +1,46 @@
+body{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#profileForm{
+    border-style: solid;
+    border-color: lightblue;
+    padding: 30px;
+    margin-left: 580px;
+    margin-right: 530px;
+    font-size: larger;
+    border-radius: 5px; 
+}
+
+h1{
+    margin-left: 100px;
+    color: lightblue;
+    font-size: 40px;
+}
+
+.field{
+    margin-top: 50px;
+}
+
+.name{
+    font-weight: bold;
+}
+
+.value{
+    margin-left: 10px;
+}
+
+#editButton{
+    margin-top: 50px;
+    margin-left: 140px;
+    height: 40px;
+    width: 200px;
+    background-color: lightblue;
+    color: white;
+    border-radius: 5px;
+    font-size: larger; 
+}
+
+#editButton:hover{
+    background-color: deepskyblue;
+}
