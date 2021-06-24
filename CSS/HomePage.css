@@ -1,0 +1,67 @@
+    body{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+    
+   .b:hover {
+    background-color: deepskyblue;
+    }
+
+   #header{
+        color: lightblue;
+        position: relative;
+        left: 70px;
+        top: -40px;
+    }
+    #input{
+        position: relative;
+        font-size: 16px;
+        left: 270px;
+        width: 300px;
+        height: 30px;
+        border-radius: 5px;
+    }
+    button.b{
+        position: relative;
+        background-color: lightblue;
+        color:white;
+        left: 540px;
+        height: 30px;
+        width: 120px;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+    hr{
+        border-top: 2px solid lightskyblue;
+        position: relative;
+    } 
+    #logo{
+        height: 140px;
+        position: relative;
+        top: 30px;
+    }
+    label.r{
+        font-size: 30px;
+        position: relative;
+        left: 130px;
+    }
+    img.restaurants{
+        height: 220px;
+        width: 400px;
+        left: 130px;
+    }
+    table{
+        position: relative;
+        left: 130px;
+    }
+    label.title{
+        font-size: 23;
+        left: 10;
+        font-weight: 100;
+    }
+ 
+    td.restaurants{
+        border-style: solid;
+        border-width: 3;
+        border-color: lightblue;
+        padding: 5;
+    }
