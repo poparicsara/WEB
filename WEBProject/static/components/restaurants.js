@@ -8,7 +8,7 @@ Vue.component("restaurants", {
         <div id="header">
                 <img id="logo" src="images/logo.jpg">
                 <input id="input" type="text" placeholder="Pretraži..." ari> 
-                <button class="b"> Prijava </button>
+                <button class="b" v-on:click = "logIn"> Prijava </button>
                 <button class = "b"> Registracija</button>
             <hr>
            <h2>
@@ -20,11 +20,15 @@ Vue.component("restaurants", {
            	<label>{{r.type}}</label> 
            </div>           
          </div>
-           
     	`,
     mounted () {
         axios
           .get('rest/restaurants/')
           .then(response => (this.restaurants = response.data))
-    }
+    },
+    methods: {
+    	logIn : function() {
+    		router.push(`/restaurants/-1`)
+    	}
+    },
 });
