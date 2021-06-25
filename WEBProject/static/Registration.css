@@ -1,0 +1,50 @@
+body{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#registrationForm{
+    border-style: solid;
+    border-color: lightblue;
+    padding: 30px;
+    margin-left: 580px;
+    margin-right: 530px;
+    font-size: larger;
+    border-radius: 5px; 
+}
+
+h1{
+    margin-left: 30px;
+    color: lightblue;
+    font-size: 40px;
+}
+
+.input{
+    font-size: 16px;
+    margin-top: 10px;
+    width: 300px;
+    height: 35px;
+    border-radius: 5px; 
+}
+
+select{
+    width: 300px;
+    height: 35px;
+    margin-top: 10px;
+    border-radius: 5px; 
+    font-size: 16px;
+    border-width: 2px;
+}
+
+#submitRegistration{
+    margin-left: 53px;
+    background-color: lightblue;
+    color: white;
+    font-size: larger;
+    width: 200px;
+    height: 40px;
+    border-radius: 5px; 
+}
+
+#submitRegistration:hover{
+    background-color: deepskyblue;
+}

@@ -1,7 +1,7 @@
 Vue.component("logIn", { 
 	data: function () {
 	    return {
-	      id : -1
+	      logInId : logIn
 	    }
 	},
 	    template: ` 

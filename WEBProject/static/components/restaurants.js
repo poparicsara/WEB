@@ -9,7 +9,7 @@ Vue.component("restaurants", {
                 <img id="logo" src="images/logo.jpg">
                 <input id="input" type="text" placeholder="Pretraži..." ari> 
                 <button class="b" v-on:click = "logIn"> Prijava </button>
-                <button class = "b"> Registracija</button>
+                <button class = "b" v-on:click = "registration"> Registracija</button>
             <hr>
            <h2>
                <label class="r"> <b> Restorani </b></label>
@@ -28,7 +28,10 @@ Vue.component("restaurants", {
     },
     methods: {
     	logIn : function() {
-    		router.push(`/restaurants/-1`)
+    		router.push(`/logIn/logIn`)
+    	},
+    	registration : function() {
+    		router.push(`/registration`)
     	}
     },
 });

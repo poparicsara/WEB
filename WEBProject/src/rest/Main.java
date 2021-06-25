@@ -24,11 +24,7 @@ public class Main {
 			res.type("application/json");
 			return g.toJson(restaurantsService.getRestaurants());
 		});
-		
-		/*get("rest/restaurants/logIn/", (req, res) -> {
-			res.type("application/json");
-			return "uspeli";
-		});*/
+
 	}
 
 }
