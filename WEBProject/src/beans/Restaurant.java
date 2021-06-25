@@ -9,19 +9,20 @@ public class Restaurant {
 	private ArrayList<Item> items;
 	private boolean status;
 	private Location location;
-	
+	private String image;
 	
 	public Restaurant() {
 		super();
 	}
 
-	public Restaurant(String name, String type, ArrayList<Item> items, boolean status, Location location) {
+	public Restaurant(String name, String type, ArrayList<Item> items, boolean status, Location location, String image) {
 		super();
 		this.name = name;
 		this.type = type;
 		this.items = items;
 		this.status = status;
 		this.location = location;
+		this.image = image;
 	}
 
 	public String getName() {
@@ -62,6 +63,14 @@ public class Restaurant {
 	
 	public void setLocation(Location location) {
 		this.location = location;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 	
 	
