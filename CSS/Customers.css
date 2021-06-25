@@ -1,0 +1,26 @@
+body{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+h1{
+    color: lightblue;
+}
+
+table{
+    margin-top: 50px;
+    border-width: 2px;
+    border-collapse: collapse;
+    width: 80%;
+    margin-left: 100px;
+}
+
+tr{
+    height: 35px;
+    font-size: 16px;
+}
+
+th{
+    background-color: lightblue;
+    height: 50px;
+    font-size: 20px;
+}
