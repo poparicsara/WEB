@@ -16,13 +16,16 @@ public class Main {
 	private static RestaurantsService restaurantsService = new RestaurantsService();
 
 	public static void main(String[] args) throws Exception{
-		port(80);
+		port(81);
 
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
 		
 		get("rest/restaurants/", (req, res) -> {
 			res.type("application/json");
+			
 			return g.toJson(restaurantsService.getRestaurants());
+			
+			//return restaurantsService.getRestaurants();
 		});
 	}
 

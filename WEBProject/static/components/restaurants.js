@@ -15,7 +15,7 @@ Vue.component("restaurants", {
                <label class="r"> <b> Restorani </b></label>
            </h2>
            <div class="restaurants" v-for="(r, index) in restaurants">
-            <img class="restaurants" src =" "images/" + "{{r.image}}"" > <br>
+            <img class="restaurants" :src = r.image > <br>
            	<label class="title">{{r.name}} </label> <br>
            	<label>{{r.type}}</label> 
            </div>           

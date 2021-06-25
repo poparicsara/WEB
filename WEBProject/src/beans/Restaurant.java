@@ -1,9 +1,14 @@
 package beans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Restaurant {
+public class Restaurant implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6988085224503300665L;
 	private String name;
 	private String type;
 	private ArrayList<Item> items;

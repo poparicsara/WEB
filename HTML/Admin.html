@@ -1,0 +1,81 @@
+<html>
+    <head>
+        
+    </head>
+    <style>
+        h1.header{
+            color: lightblue;
+            position: relative;
+            left: 100px;
+            top: -40px;
+        }
+
+        #logo{
+            height: 140px;
+            position: relative;
+            top: 30px;
+        }
+
+        #admin{
+            height: 60px;
+            position: relative;
+            left: 770px;
+        }
+        .dropbtn {
+            background-color:lightblue;
+            color: white;
+            font-size: 13px;
+        }
+
+        .dropdown {
+            position: relative;
+            left: 764px;
+            top: -7px;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 100px;
+            font-size: 22px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            text-decoration: none;
+            display: block;
+        }
+
+.dropdown-content a:hover {background-color: #ddd;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.dropdown:hover .dropbtn {background-color: deepskyblue;}
+
+        hr{
+            border-top: 2px solid lightskyblue;
+            position: relative;
+            width: 1500px;
+        } 
+     
+    </style>
+    <body>
+        <h1 class="header"> 
+            <img id="logo" src="../Images/logo.jpg">
+            <img id="admin" src="../Images/admin.png">
+            <div class="dropdown">
+                <button class="dropbtn">🠗</button>
+                <div class="dropdown-content">
+                  <a href="#">Profil</a>
+                  <a href="#">Odjava</a>
+                </div>
+              </div>
+        </h1>
+        <hr>
+        
+    </body>
+</html>
