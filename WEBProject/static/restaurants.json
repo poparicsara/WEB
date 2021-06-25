@@ -1,0 +1,14 @@
+[
+{
+  "name" : "KFC",
+  "status" : true,
+  "type" : "Brza hrana",
+  "image" : "images/KFC.jpg"
+},
+{
+  "name" : "Tortilla Casa",
+  "status" : true,
+  "type" : "Meksicka hrana",
+  "image" : "images/tortillaCasa.jpg"	
+}
+]
