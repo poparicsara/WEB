@@ -1,14 +1,14 @@
-Vue.component("registration", { 
+Vue.component("managerRegistration", { 
 	data: function () {
 	    return {
-	      registrationId : registration,
+	      managerRegistrationId : managerRegistration,
 	      users : null,
-	      user: {username: null, password: null, name: null, lastname: null, gender: '', date: ''},
+	      user: {username: null, password: null, name: null, lastname: null, gender: '', date: ''}
 	    }
 	},
 	    template: ` 
         <div id="registrationForm">
-            <h1>Registracija</h1>
+            <h1>Novi menadžer</h1>
             <form>
                 <br/>
                 <label>Korisničko ime:</label><br/>
@@ -27,7 +27,7 @@ Vue.component("registration", {
                 <br/><br/>
                 <label>Datum rođenja:</label><br/>
                 <input class="input" type="date" name="dateOfBirth" value=" " v-model = "user.date"><br/><br/><br/>
-                <input id="submitRegistration" type="submit" value="Registruj se" v-on:click = "addCustomer">
+                <input id="submitRegistration" type="submit" value="Dodaj" v-on:click = "addManager">
             </form>
         </div> 
     	`
@@ -38,7 +38,7 @@ Vue.component("registration", {
           .then(response => (this.users = response.data))
      	},
     	methods: {
-    	addCustomer : function() {
+    	addManager : function() {
     		var exists = false
     		for(oldUser of this.users){
     			if(this.user.username == oldUser.username){
@@ -51,8 +51,8 @@ Vue.component("registration", {
     		}
     		else{
     			event.preventDefault();
-    			axios.post('/rest/restaurants/addCustomer', this.user).
-    			then(response => (router.push(`/`)));
+    			axios.post('/rest/restaurants/addManager', this.user).
+    			then(response => (router.push(`/managerRegistration/managerRegistration`)));
     		}
     	}
     },

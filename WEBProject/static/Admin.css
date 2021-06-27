@@ -5,6 +5,11 @@
             top: -20px;
         }
 
+		#object{
+			position:relative;
+			left:190px;
+		}
+
         #adminLogo{
             height: 140px;
             position: relative;
@@ -17,7 +22,7 @@
             left: 820px;
         }
         .dropbtn {
-            background-color:lightblue;
+            background-color: deepskyblue;
             color: white;
             font-size: 13px;
         }
@@ -32,19 +37,22 @@
         .dropdown-content {
             display: none;
             position: absolute;
-            background-color: #f1f1f1;
+            background-color: lightblue;
             min-width: 100px;
             font-size: 22px;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
             z-index: 1;
+            color:white;
         }
 
         .dropdown-content button {
-            color: black;
+          background-color: lightblue;
+            color: white;
             text-decoration: none;
             display: block;
             width: 100px;
             font-size: 22px;
+            
         }
 
 .dropdown-content button:hover {background-color: #ddd;}

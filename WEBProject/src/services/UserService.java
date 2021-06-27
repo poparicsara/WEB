@@ -38,6 +38,7 @@ public class UserService {
 	public void addUser(UserDTO user) throws Exception {
 		users = getUsers();
 		setNewUser(user);
+		newUser.setUserType(UserType.CUSTOMER);
 		users.add(newUser);
 		Writer writer = new FileWriter(filePath);
 		gson.toJson(users, writer);
@@ -49,9 +50,18 @@ public class UserService {
 		newUser.setPassword(user.getPassword());
 		newUser.setName(user.getName());
 		newUser.setLastname(user.getLastname());
-		newUser.setUserType(UserType.CUSTOMER);
 		setDate(user.getDate());
 		setGender(user.getGender());
+	}
+	
+	public void addManager(UserDTO user) throws Exception {
+		users = getUsers();
+		setNewUser(user);
+		newUser.setUserType(UserType.MANAGER);
+		users.add(newUser);
+		Writer writer = new FileWriter(filePath);
+		gson.toJson(users, writer);
+		writer.close();
 	}
 	
 	private void setDate(String date) throws ParseException {
@@ -65,15 +75,6 @@ public class UserService {
 		} else {
 			newUser.setGender(Gender.MALE);
 		}
-	}
-	
-	private boolean isUsernameUnique(String username) {
-		for (User user : users) {
-			if(user.getUsername().equals(username)) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 }

@@ -6,15 +6,11 @@ import static spark.Spark.port;
 import static spark.Spark.staticFiles;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import com.google.gson.Gson;
 
 import beans.Customer;
-import beans.User;
 import dto.UserDTO;
-import enums.Gender;
-import enums.UserType;
 import services.CustomerService;
 import services.RestaurantsService;
 import services.UserService;
@@ -22,7 +18,6 @@ import services.UserService;
 public class Main {
 	
 	private static Gson g = new Gson();
-	private static ArrayList<User> users = new ArrayList<User>();
 	private static RestaurantsService restaurantsService = new RestaurantsService();
 	private static UserService userService = new UserService();
 	private static CustomerService customerService = new CustomerService();
@@ -48,6 +43,13 @@ public class Main {
 			res.type("application/json");
 			UserDTO user = g.fromJson(req.body(), UserDTO.class);
 			userService.addUser(user);
+			return "SUCCESS";
+		});
+		
+		post("rest/restaurants/addManager", (req, res) -> {
+			res.type("application/json");
+			UserDTO user = g.fromJson(req.body(), UserDTO.class);
+			userService.addManager(user);
 			return "SUCCESS";
 		});
 		

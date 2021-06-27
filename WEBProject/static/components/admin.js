@@ -2,7 +2,8 @@ Vue.component("admin", {
 	data: function () {
 	    return {
 	      restaurants: null,
-	      adminID: admin
+	      adminID: admin,
+	      object: null
 	    }
 	},
 	    template: ` 
@@ -20,7 +21,12 @@ Vue.component("admin", {
         </h1>
         <hr class="admin">
         <h2 >
-            <label id = "new"> <a href="#">+</a> </label>
+            <label id = "new"> <a href="#" v-on:click = "addUser">+</a> </label>
+             <select name="object" id="object" v-model = "object">
+                    <option value="MENADZER">Menadžer</option>
+                    <option value="DOSTAVLJAC">Dostavljač</option>
+                     <option value="RESTORAN">Restoran</option>
+                </select>
             <button class="buttons"> Restorani </button>
             <button class="buttons"> Korisnici </button>
             <button class="buttons"> Komentari </button>
@@ -41,7 +47,13 @@ Vue.component("admin", {
     	logOut: function() {
     		if(confirm('Da li ste sigurni?')){
     			router.push(`/`);
+    		}	
+    	},
+    	addUser: function(){
+    		if(this.object == 'MENADZER'){
+				router.push(`/managerRegistration/managerRegistration`)
     		}
+    		
     		
     	}
     },
