@@ -19,7 +19,7 @@
         #admin{
             height: 60px;
             position: relative;
-            left: 770px;
+            left: 820px;
         }
         .dropbtn {
             background-color:lightblue;
@@ -29,7 +29,7 @@
 
         .dropdown {
             position: relative;
-            left: 764px;
+            left: 814px;
             top: -7px;
             display: inline-block;
         }
@@ -60,8 +60,32 @@
             border-top: 2px solid lightskyblue;
             position: relative;
             width: 1500px;
+            top: -20px;
         } 
      
+        button.buttons{
+            position:relative;
+            left: 520px;
+            background-color: lightblue;
+            color:white;
+            height: 30px;
+            width: 120px;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .buttons:hover {
+            background-color: deepskyblue;
+        }
+        .buttons:focus{
+            background-color: deepskyblue;
+        }
+
+        #new{
+            position: relative;
+            left:190px;
+            font-size: 30px;
+        }
     </style>
     <body>
         <h1 class="header"> 
@@ -76,6 +100,12 @@
               </div>
         </h1>
         <hr>
+        <h2 >
+            <label id = "new"> <a href="#">+</a> </label>
+            <button class="buttons"> Restorani </button>
+            <button class="buttons"> Korisnici </button>
+            <button class="buttons"> Komentari </button>
+        </h2>
         
     </body>
 </html>

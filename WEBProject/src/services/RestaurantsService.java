@@ -16,15 +16,15 @@ import beans.Restaurant;
 public class RestaurantsService {
 
 	private List<Restaurant> restaurants = new ArrayList<Restaurant>();
-	
 	Gson gson = new Gson();
-	public List<Restaurant> getRestaurants() throws Exception{
 	
+	public List<Restaurant> getRestaurants() throws Exception{
 	    Type listType = new TypeToken<ArrayList<Restaurant>>() {}.getType();
 	    String json = readFileAsString("./static/restaurants.json");
 		restaurants = gson.fromJson(json, listType);
 		return restaurants;
 	}
+	
 	private static String readFileAsString(String file)throws Exception
     {
         return new String(Files.readAllBytes(Paths.get(file)));
