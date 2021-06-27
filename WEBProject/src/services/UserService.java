@@ -1,67 +1,79 @@
 package services;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.Writer;
+import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.StringTokenizer;
+import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import beans.User;
+import dto.UserDTO;
 import enums.Gender;
 import enums.UserType;
 
 public class UserService {
 
-	private ArrayList<User> users = new ArrayList<User>();
+	private List<User> users = new ArrayList<User>();
+	private User newUser = new User();
+	private String filePath = "./static/users.json";
+	private Gson gson = new Gson();
 	
-	public UserService() {
-		BufferedReader in = null;
-		String path = "./static/users.txt";
-		try {
-			File file = new File(path);
-			//System.out.println(file.getCanonicalPath());
-			in = new BufferedReader(new FileReader(file));
-			readUsers(in);
-		} catch (Exception e) {
-			e.printStackTrace();
+	public List<User> getUsers() throws Exception {
+	    Type listType = new TypeToken<ArrayList<User>>() {}.getType();
+	    String json = readFileAsString(filePath);
+		users = gson.fromJson(json, listType);
+		return users;
+	}
+	
+	private static String readFileAsString(String file)throws Exception{
+        return new String(Files.readAllBytes(Paths.get(file)));
+    }
+	
+	public void addUser(UserDTO user) throws Exception {
+		users = getUsers();
+		setNewUser(user);
+		users.add(newUser);
+		Writer writer = new FileWriter(filePath);
+		gson.toJson(users, writer);
+		writer.close();
+	}
+	
+	private void setNewUser(UserDTO user) throws ParseException {
+		newUser.setUsername(user.getUsername());
+		newUser.setPassword(user.getPassword());
+		newUser.setName(user.getName());
+		newUser.setLastname(user.getLastname());
+		newUser.setUserType(UserType.CUSTOMER);
+		setDate(user.getDate());
+		setGender(user.getGender());
+	}
+	
+	private void setDate(String date) throws ParseException {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		newUser.setDateOfBirth(format.parse(date));
+	}
+	
+	private void setGender(String gender) {
+		if(gender.equals("FEMALE")) {
+			newUser.setGender(Gender.FEMALE);
+		} else {
+			newUser.setGender(Gender.MALE);
 		}
-		finally {
-			if ( in != null ) {
-				try {
-					in.close();
-				}
-				catch (Exception e) { }
+	}
+	
+	private boolean isUsernameUnique(String username) {
+		for (User user : users) {
+			if(user.getUsername().equals(username)) {
+				return false;
 			}
 		}
+		return true;
 	}
-	
-	private void readUsers(BufferedReader in) {
-		String line, username = "", password = "", name = "", lastname = "";
-		StringTokenizer st;
-		try {
-			while ((line = in.readLine()) != null) {
-				line = line.trim();
-				if (line.equals("") || line.indexOf('#') == 0)
-					continue;
-				st = new StringTokenizer(line, ";");
-				while (st.hasMoreTokens()) {
-					username = st.nextToken().trim();
-					name = st.nextToken().trim();
-					lastname = st.nextToken().trim();
-				}
-				Date date = new Date();
-				User user = new User(username, password, name, lastname, Gender.FEMALE, date, UserType.CUSTOMER);
-				users.add(user);
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-	
-	public void addUser(User user) {
-		this.users.add(user);
-		System.out.println(user.getUsername() + " " + user.getName() + " " + user.getLastname());
-	}
-	
+
 }

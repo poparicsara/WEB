@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 
 import beans.Customer;
 import beans.User;
+import dto.UserDTO;
 import services.CustomerService;
 import services.RestaurantsService;
 import services.UserService;
@@ -37,8 +38,8 @@ public class Main {
 		
 		post("rest/restaurants/addCustomer", (req, res) -> {
 			res.type("application/json");
-			Customer customer = g.fromJson(req.body(), Customer.class);
-			customerService.addCustomer(customer);
+			UserDTO user = g.fromJson(req.body(), UserDTO.class);
+			userService.addUser(user);
 			return "SUCCESS";
 		});
 

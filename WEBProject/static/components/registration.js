@@ -2,7 +2,7 @@ Vue.component("registration", {
 	data: function () {
 	    return {
 	      registrationId : registration,
-	      customer: {username: null, password: null, name: null, lastname: null, gender: null}
+	      user: {username: null, password: null, name: null, lastname: null, gender: '', date: ''},
 	    }
 	},
 	    template: ` 
@@ -11,20 +11,21 @@ Vue.component("registration", {
             <form>
                 <br/>
                 <label>Korisničko ime:</label><br/>
-                <input class="input" type="text" name="username" v-model = "customer.username"><br/><br/>
+                <input class="input" type="text" name="username" v-model = "user.username"><br/><br/>
                 <label>Lozinka:</label><br/>
-                <input class="input" type="text" name="password" v-model = "customer.password"><br/><br/>
+                <input class="input" type="text" name="password" v-model = "user.password"><br/><br/>
                 <label>Ime:</label><br/>
-                <input class="input" type="text" name="name" v-model = "customer.name"><br/><br/>
+                <input class="input" type="text" name="name" v-model = "user.name"><br/><br/>
                 <label>Prezime:</label><br/>
-                <input class="input" type="text" name="lastname" v-model = "customer.lastname"><br/><br/>
+                <input class="input" type="text" name="lastname" v-model = "user.lastname"><br/><br/>
                 <label>Pol:</label><br/>
-                <select name="gender" id="gender"  v-model = "customer.gender">
-                    <option value="male">muški</option>
-                    <option value="female">ženski</option>
-                </select><br/><br/>
+                <select name="gender" id="gender"  v-model = "user.gender">
+                    <option value="MALE">muški</option>
+                    <option value="FEMALE">ženski</option>
+                </select>
+                <br/><br/>
                 <label>Datum rođenja:</label><br/>
-                
+                <input class="input" type="date" name="dateOfBirth" value=" " v-model = "user.date"><br/><br/><br/>
                 <input id="submitRegistration" type="submit" value="Registruj se" v-on:click = "addCustomer">
             </form>
         </div> 
@@ -33,7 +34,7 @@ Vue.component("registration", {
     	methods: {
     	addCustomer : function() {
     		event.preventDefault();
-    		axios.post('/rest/restaurants/addCustomer', this.customer).
+    		axios.post('/rest/restaurants/addCustomer', this.user).
     		then(response => (router.push(`/`)));
     	}
     },
