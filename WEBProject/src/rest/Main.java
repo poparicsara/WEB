@@ -13,6 +13,8 @@ import com.google.gson.Gson;
 import beans.Customer;
 import beans.User;
 import dto.UserDTO;
+import enums.Gender;
+import enums.UserType;
 import services.CustomerService;
 import services.RestaurantsService;
 import services.UserService;
@@ -46,6 +48,7 @@ public class Main {
 			admin.setUserType(UserType.ADMIN);
 			users.add(admin);
 			return g.toJson(users);
+		
 		});
 		
 		post("rest/restaurants/addCustomer", (req, res) -> {
