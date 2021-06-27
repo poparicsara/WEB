@@ -32,6 +32,8 @@ public class Main {
 
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
 		
+		
+		//bio je GET OVDE
 		get("rest/restaurants/", (req, res) -> {
 			res.type("application/json");
 			return g.toJson(restaurantsService.getRestaurants());
@@ -39,16 +41,7 @@ public class Main {
 		
 		get("rest/users/", (req, res) ->{
 			res.type("application/json");
-			User admin = new User();
-			admin.setName("Ognjen");
-			admin.setLastname("Bogdanovic");
-			admin.setPassword("bbogi1219");
-			admin.setUsername("ogijah");
-			admin.setGender(Gender.MALE);
-			admin.setUserType(UserType.ADMIN);
-			users.add(admin);
-			return g.toJson(users);
-		
+			return g.toJson(userService.getUsers());	
 		});
 		
 		post("rest/restaurants/addCustomer", (req, res) -> {
@@ -57,7 +50,12 @@ public class Main {
 			userService.addUser(user);
 			return "SUCCESS";
 		});
-
+		
+		post("rest/users/admin", (req, res) -> {
+			res.type("application/json");
+			return "SUCCESS";
+		});
+		
 	}
 
 }

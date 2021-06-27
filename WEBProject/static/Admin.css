@@ -1,0 +1,85 @@
+        h1.admin{
+            color: lightblue;
+            position: relative;
+            left: 100px;
+            top: -20px;
+        }
+
+        #adminLogo{
+            height: 140px;
+            position: relative;
+            top: 30px;
+        }
+
+        #admin{
+            height: 60px;
+            position: relative;
+            left: 820px;
+        }
+        .dropbtn {
+            background-color:lightblue;
+            color: white;
+            font-size: 13px;
+        }
+
+        .dropdown {
+            position: relative;
+            left: 814px;
+            top: -7px;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 100px;
+            font-size: 22px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content button {
+            color: black;
+            text-decoration: none;
+            display: block;
+            width: 100px;
+            font-size: 22px;
+        }
+
+.dropdown-content button:hover {background-color: #ddd;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.dropdown:hover .dropbtn {background-color: deepskyblue;}
+
+        hr.admin{
+            border-top: 2px solid lightskyblue;
+            position: relative;
+            width: 1500px;
+            top: -20px;
+        } 
+     
+        button.buttons{
+            position:relative;
+            left: 520px;
+            background-color: lightblue;
+            color:white;
+            height: 30px;
+            width: 120px;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .buttons:hover {
+            background-color: deepskyblue;
+        }
+        .buttons:focus{
+            background-color: deepskyblue;
+        }
+
+        #new{
+            position: relative;
+            left:190px;
+            font-size: 30px;
+        }
