@@ -91,3 +91,20 @@
             left:190px;
             font-size: 30px;
         }
+        
+        #managerRegistration{
+        	position:relative;
+        	bottom:350px;
+            border-style: solid;
+		    border-color: darkblue;
+		    color: darkblue;
+		    padding: 10px;
+		    margin-left: 580px;
+		    margin-right: 530px;
+		    font-size: larger;
+		    border-radius: 5px; 
+		}
+		
+		h1.manager{
+			color: darkblue;
+		}
