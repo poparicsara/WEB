@@ -7,7 +7,7 @@ body{
     border-color: lightblue;
     padding: 30px;
     margin-top: 150px;
-    margin-left: 580px;
+    margin-left: 500px;
     margin-right: 550px;
     font-size: larger;
     border-radius: 5px; 
@@ -25,6 +25,7 @@ h1{
     width: 300px;
     height: 35px;
     border-radius: 5px; 
+    margin-left: -10px;
 }
 
 #submitLogIn{

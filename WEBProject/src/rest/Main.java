@@ -23,7 +23,7 @@ public class Main {
 	private static CustomerService customerService = new CustomerService();
 
 	public static void main(String[] args) throws Exception{
-		port(9000);
+		port(80);
 
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
 		

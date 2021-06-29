@@ -5,7 +5,7 @@ Vue.component("restaurants", {
 	    }
 	},
 	    template: ` 
-        <div>
+        <div id="page">
         	<div class="header">
                 <img id="logo" src="images/logo.jpg">
                 <input id="input" type="text" placeholder="Pretraži..."> 

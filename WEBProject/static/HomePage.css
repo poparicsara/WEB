@@ -75,6 +75,7 @@
     	background-color: white;
     	position: fixed;
     	margin-top: -200px;
+    	margin-left: -200px;
     }
     
     .content{
@@ -84,3 +85,4 @@
     hr{
     	color: lightblue;
     }
+
