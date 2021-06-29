@@ -4,7 +4,10 @@ Vue.component("admin", {
 	      restaurants: null,
 	      adminID: admin,
 	      object: null,
-	      show: false,
+	      showManager: false,
+	      showDeliverer: false,
+	      showRestaurants: true,
+	      showUsers: false,
 	      users : null,
 	      user: {username: null, password: null, name: null, lastname: null, gender: '', date: ''}
 	    }
@@ -29,18 +32,33 @@ Vue.component("admin", {
                     <option value="MENADZER">Menadžer</option>
                     <option value="DOSTAVLJAC">Dostavljač</option>
                      <option value="RESTORAN">Restoran</option>
+                     
                 </select>
-            <button class="buttons"> Restorani </button>
-            <button class="buttons"> Korisnici </button>
+            <button class="buttons" v-on:click = "showRestaurantList" > Restorani </button>
+            <button class="buttons" v-on:click = "showUserList"> Korisnici </button>
             <button class="buttons"> Komentari </button>
         </h2>
-         <div class="restaurants" v-for="(r, index) in restaurants">
-            <img class="restaurants" :src = r.image > <br>
-           	<label class="title">{{r.name}} </label> <br>
-           	<label>{{r.type}}</label> 
-           </div>    
+        <div v-if="this.showRestaurants"> 
+	         <div class="restaurants" v-for="(r, index) in restaurants">
+	            <img class="restaurants" :src = r.image > <br>
+	           	<label class="title">{{r.name}} </label> <br>
+	           	<label>{{r.type}}</label> 
+	         </div>
+         </div> 
+         <div v-if="this.showUsers" >
+	          <div  class="restaurants" v-for="(u, index) in users">
+	            <img class="restaurants" v-if="u.userType == 'MANAGER' " src = "images/manager.png" >
+	            <img class="restaurants" v-else-if="u.userType == 'DELIVERER' " src = "images/deliverer.png" >
+	            <img class="restaurants" v-else-if="u.userType == 'ADMIN' " src = "images/admin.png" >
+	            <img class="restaurants" v-else="u.userType == 'CUSTOMER' " src = "images/customer.jpg" > 
+	            <br>
+	           	<label class="title">{{u.name}} {{u.lastname}} </label> <br>
+	           	<label>Username: {{u.username}}</label> 
+	         </div> 
+         </div>   
+              
            
-         <div v-if="this.show" id="managerRegistration">
+         <div v-if="this.showManager" id="managerRegistration">
             <h1 class="manager">Novi menadžer</h1>
             <form>
                 <br/>
@@ -62,7 +80,30 @@ Vue.component("admin", {
                 <input class="input" type="date" name="dateOfBirth" value=" " v-model = "user.date"><br/><br/><br/>
                 <input id="submitRegistration" type="submit" value="Dodaj" v-on:click = "addManager">
             </form>
-        </div>        
+        </div>       
+         <div v-if="this.showDeliverer" id="managerRegistration">
+            <h1 class="manager">Novi dostavljač</h1>
+            <form>
+                <br/>
+                <label>Korisničko ime:</label><br/>
+                <input class="input" type="text" name="username" v-model = "user.username"><br/><br/>
+                <label>Lozinka:</label><br/>
+                <input class="input" type="text" name="password" v-model = "user.password"><br/><br/>
+                <label>Ime:</label><br/>
+                <input class="input" type="text" name="name" v-model = "user.name"><br/><br/>
+                <label>Prezime:</label><br/>
+                <input class="input" type="text" name="lastname" v-model = "user.lastname"><br/><br/>
+                <label>Pol:</label><br/>
+                <select name="gender" id="gender"  v-model = "user.gender">
+                    <option value="MALE">muški</option>
+                    <option value="FEMALE">ženski</option>
+                </select>
+                <br/><br/>
+                <label>Datum rođenja:</label><br/>
+                <input class="input" type="date" name="dateOfBirth" value=" " v-model = "user.date"><br/><br/><br/>
+                <input id="submitRegistration" type="submit" value="Dodaj" v-on:click = "addDeliverer">
+            </form>
+        </div>   
          </div>
     	`,
     mounted () {
@@ -79,14 +120,24 @@ Vue.component("admin", {
     			router.push(`/`);
     		}	
     	},
-    	
+    	showRestaurantList: function(){
+    		this.showRestaurants = true
+    		this.showUsers = false    		
+    	},
+    	showUserList: function(){
+    		this.showUsers = true
+    		this.showRestaurants = false	
+    	},
     	addUser: function(){
     		if(this.object == 'MENADZER'){
-				this.show = true
+				this.showManager = true
+				document.getElementById("managerRegistration").focus()		
+			}
+			else if(this.object == 'DOSTAVLJAC'){
+				this.showDeliverer = true
 			}	
 		},
     	addManager: function(){
-    	    document.getElementById("managerRegistration").focus();
     		var exists = false
     		for(oldUser of this.users){
     			if(this.user.username == oldUser.username){
@@ -96,14 +147,34 @@ Vue.component("admin", {
     		}
     		if(exists){
     		    event.preventDefault()
-    			alert('Korisnicko ime je zauzeto!')
-    			this.show = false
+    			alert('Korisničko ime je zauzeto!')
+    			this.showManager = false
     		}
     		else{
     			event.preventDefault()
     			axios.post('/rest/restaurants/addManager', this.user).
     			then(response => alert('Menadžer uspešno registrovan!'));
-    			this.show = false
+    			this.showManager = false
+    		}
+    	},
+    	addDeliverer: function(){
+    		var exists = false
+    		for(oldUser of this.users){
+    			if(this.user.username == oldUser.username){
+    				exists = true
+    				break
+    			}
+    		}
+    		if(exists){
+    		    event.preventDefault()
+    			alert('Korisničko ime je zauzeto!')
+    			this.showDeliverer = false
+    		}
+    		else{
+    			event.preventDefault()
+    			axios.post('/rest/restaurants/addDeliverer', this.user).
+    			then(response => alert('Dostavljač uspešno registrovan!'));
+    			this.showDeliverer = false
     		}
     	}
     },

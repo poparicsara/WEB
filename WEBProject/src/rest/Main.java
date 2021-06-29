@@ -53,6 +53,13 @@ public class Main {
 			return "SUCCESS";
 		});
 		
+		post("rest/restaurants/addDeliverer", (req, res) -> {
+			res.type("application/json");
+			UserDTO user = g.fromJson(req.body(), UserDTO.class);
+			userService.addDeliverer(user);
+			return "SUCCESS";
+		});
+		
 		post("rest/users/admin", (req, res) -> {
 			res.type("application/json");
 			return "SUCCESS";

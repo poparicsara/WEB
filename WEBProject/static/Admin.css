@@ -82,9 +82,7 @@
         .buttons:hover {
             background-color: deepskyblue;
         }
-        .buttons:focus{
-            background-color: deepskyblue;
-        }
+       
 
         #new{
             position: relative;
