@@ -23,7 +23,7 @@ public class Main {
 	private static CustomerService customerService = new CustomerService();
 
 	public static void main(String[] args) throws Exception{
-		port(8080);
+		port(9000);
 
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
 		
@@ -54,6 +54,11 @@ public class Main {
 		});
 		
 		post("rest/users/admin", (req, res) -> {
+			res.type("application/json");
+			return "SUCCESS";
+		});
+		
+		post("rest/logingIn", (req, res) -> {
 			res.type("application/json");
 			return "SUCCESS";
 		});

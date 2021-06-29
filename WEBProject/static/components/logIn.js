@@ -38,11 +38,17 @@ Vue.component("logIn", {
     		}    		
     		if(exists){
 				if(user.userType.toString() == 'ADMIN'){
-					alert('Welcome!')
-					router.push(`/admin/admin`)
+					event.preventDefault();
+					axios.post('/rest/logingIn', this.username, this.password)
+					.then(response => (router.push(`/admin/admin`)));
+				}
+				else if(user.userType.toString() == 'MANAGER'){
+					event.preventDefault();
+					axios.post('/rest/logingIn', this.username, this.password)
+					.then(response => (router.push(`/restaurant/restaurant`)));
 				}
 				else{
-					alert('Vas deo je jos uvek u doradi, pricekajte..')
+					alert('Vas deo je jos uvek u doradi, pricekajte...')
 				}
     		}
     		else{
