@@ -18,7 +18,7 @@ Vue.component("logIn", {
                 <input class="input" type="password"  v-model = "password" name="password"><br/><br/><br/>
                 <input id="submitLogIn" type="submit" v-on:click = "logIn" value="Prijavi se">
             </form>
-            <a id="registrationLink" href="">Nemate nalog?</a>
+            <a id="registrationLink" href="" v-on:click = "registration">Nemate nalog?</a>
         </div>	  
     	`
     	,
@@ -54,6 +54,11 @@ Vue.component("logIn", {
     		else{
     			alert('Uneseni su pogrešni kredencijali!')
     		}
+    	},
+    	registration : function() {
+    		event.preventDefault();
+			axios.post('/rest/logingIn', this.username, this.password)
+			.then(response => (router.push(`/registration`)));
     	}
     },
 });
