@@ -1,14 +1,20 @@
-[
-{
-  "name" : "KFC",
-  "status" : true,
-  "type" : "Brza hrana",
-  "image" : "images/KFC.jpg"
-},
-{
-  "name" : "Burger king",
-  "status" : true,
-  "type" : "Meksicka hrana",
-  "image" : "images/tortillaCasa.jpg"
-}
-]
+[{"name":"KFC",
+"type":"Brza hrana",
+"items":
+[{
+	"name":"artikal1",
+	"price":500.0,
+	"type":"FOOD",
+	"restaurant":
+	{
+		"name":"KFC",
+		"type":"Brza hrana",
+		"status":true,
+		"image":"images/KFC.jpg"
+	},
+	"amount":500,
+	"description":"novi artikal"
+}],
+"status":true,
+"image":"images/KFC.jpg"},
+{"name":"Burger king","type":"Meksicka hrana","status":true,"image":"images/tortillaCasa.jpg"}]

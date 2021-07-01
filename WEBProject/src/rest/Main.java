@@ -10,6 +10,7 @@ import java.io.File;
 import com.google.gson.Gson;
 
 import beans.Customer;
+import dto.ItemDTO;
 import dto.UserDTO;
 import services.CustomerService;
 import services.ItemsService;
@@ -94,6 +95,18 @@ public class Main {
 			return g.toJson(userService.getUserFullName(username));
 		});
 		
+		
+		post("/rest/restaurant/addItem/", (req, res) -> {
+			res.type("application/json");
+			ItemDTO item = g.fromJson(req.body(), ItemDTO.class);
+			restaurantsService.addItemToRestaurant(item);
+			return "SUCCESS";
+		});
+		
+		post("/rest/restaurant/cancelAdding/", (req, res) -> {
+			res.type("application/json");
+			return "SUCCESS";
+		});
 	}
 
 }

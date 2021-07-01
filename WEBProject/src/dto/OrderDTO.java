@@ -1,8 +1,10 @@
-package beans;
+package dto;
 
 import java.util.ArrayList;
 import java.util.Date;
 
+import beans.Item;
+import beans.Restaurant;
 import enums.OrderStatus;
 
 public class OrderDTO {

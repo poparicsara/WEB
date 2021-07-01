@@ -1,6 +1,9 @@
 package services;
 
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -11,9 +14,12 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import beans.Item;
 import beans.Order;
-import beans.OrderDTO;
 import beans.Restaurant;
+import dto.ItemDTO;
+import dto.OrderDTO;
+import enums.ItemType;
 import enums.OrderStatus;
 
 
@@ -25,6 +31,7 @@ public class RestaurantsService {
 	private List<OrderDTO> restaurantOrders = new ArrayList<OrderDTO>();
 	private UserService userService = new UserService();
 	private String ordersPath = "./static/orders.json";
+	private String restaurantsPath = "./static/restaurants.json";
 	
 	public List<Restaurant> getRestaurants() throws Exception{
 	    Type listType = new TypeToken<ArrayList<Restaurant>>() {}.getType();
@@ -41,6 +48,55 @@ public class RestaurantsService {
 			}
 		}
 		return restaurantOrders;
+	}
+	
+	public void addItemToRestaurant(ItemDTO newItem) throws Exception {
+		Item item = setItem(newItem);
+		restaurants = getRestaurants();
+		for (Restaurant r : restaurants) {
+			if(r.getName().equals("KFC")){
+				if(r.getItems() == null) {
+					r.setItems(new ArrayList<Item>());
+				}
+				r.getItems().add(item);
+			}
+		}
+		saveChange(restaurants);
+	}
+	
+	@SuppressWarnings("deprecation")
+	private Item setItem(ItemDTO newItem) throws Exception {
+		Item item = new Item();
+		item.setName(newItem.getName());
+		item.setAmount(Integer.parseInt(newItem.getAmount()));
+		item.setDescription(newItem.getDescription());
+		item.setPrice(new Double(newItem.getPrice()));
+		item.setType(setItemType(newItem.getType()));
+		item.setRestaurant(getRestaurantByName("KFC"));
+		return item;
+	}
+	
+	private void saveChange(List<Restaurant> restaurants) throws IOException {
+		Writer writer = new FileWriter(restaurantsPath);
+		gson.toJson(restaurants, writer);
+		writer.close();
+	}
+	
+	private ItemType setItemType(String type) {
+		if(type.equals("FOOD")) {
+			return ItemType.FOOD;
+		} else {
+			return ItemType.DRINK;
+		}
+	}
+	
+	private Restaurant getRestaurantByName(String name) throws Exception {
+		for (Restaurant r : getRestaurants()) {
+			if(r.getName().equals(name)) {
+				return r;
+			}
+		}
+		return null;
 	}
 	
 	private OrderDTO setOrder(Order o) throws Exception {
