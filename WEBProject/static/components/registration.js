@@ -1,7 +1,6 @@
 Vue.component("registration", { 
 	data: function () {
 	    return {
-	      registrationId : registration,
 	      users : null,
 	      user: {username: null, password: null, name: null, lastname: null, gender: '', date: ''},
 	    }
@@ -14,7 +13,7 @@ Vue.component("registration", {
                 <label>Korisničko ime:</label><br/>
                 <input class="input" type="text" name="username" v-model = "user.username"><br/><br/>
                 <label>Lozinka:</label><br/>
-                <input class="input" type="text" name="password" v-model = "user.password"><br/><br/>
+                <input class="input" type="password" name="password" v-model = "user.password"><br/><br/>
                 <label>Ime:</label><br/>
                 <input class="input" type="text" name="name" v-model = "user.name"><br/><br/>
                 <label>Prezime:</label><br/>

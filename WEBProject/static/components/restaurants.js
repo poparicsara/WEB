@@ -5,20 +5,24 @@ Vue.component("restaurants", {
 	    }
 	},
 	    template: ` 
-        <div id="header">
+        <div id="page">
+        	<div class="header">
                 <img id="logo" src="images/logo.jpg">
-                <input id="input" type="text" placeholder="Pretraži..." ari> 
+                <input id="input" type="text" placeholder="Pretraži..."> 
                 <button class="b" v-on:click = "logIn"> Prijava </button>
                 <button class = "b" v-on:click = "registration"> Registracija</button>
-            <hr>
-           <h2>
-               <label class="r"> <b> Restorani </b></label>
-           </h2>
-           <div class="restaurants" v-for="(r, index) in restaurants">
-            <img class="restaurants" :src = r.image > <br>
-           	<label class="title">{{r.name}} </label> <br>
-           	<label>{{r.type}}</label> 
-           </div>           
+            	<hr>
+            </div>
+            <div class="content">
+	           <h2>
+	               <label class="r"> <b> Restorani </b></label>
+	           </h2>
+	           <div class="restaurants" v-for="(r, index) in restaurants">
+		            <img class="restaurants" :src = r.image > <br>
+		           	<label class="title">{{r.name}} </label> <br>
+		           	<label>{{r.type}}</label> 
+	           </div>  
+           </div>         
          </div>
     	`,
     mounted () {
@@ -28,10 +32,10 @@ Vue.component("restaurants", {
     },
     methods: {
     	logIn : function() {
-    		router.push(`/logIn/logIn`)
+    		router.push(`/logIn`);
     	},
     	registration : function() {
-    		router.push(`/registration`)
+    		router.push(`/registration`);
     	}
     },
 });
