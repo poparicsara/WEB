@@ -13,5 +13,14 @@
 	    "type" : "Brza hrana",
 	    "image" : "images/KFC.jpg"
 	}
+},
+{"username":"nikola",
+"password":"ftn",
+"name":"Nikola",
+"lastname":"Rokvic",
+"gender":"MALE",
+"dateOfBirth":"Jan 29, 1987, 12:00:00 AM",
+"userType":"MANAGER",
+"restaurant": null
 }
 ]

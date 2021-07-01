@@ -10,7 +10,7 @@ Vue.component("restaurants", {
 	    }
 	},
 	    template: ` 
-        <div id="header">
+        <div id="restaurantHeader">
                 <img id="logo" src="images/logo.jpg">                 
                 <input id="input" type="text" placeholder="Pretraži..." v-model="searchText" v-on:change = "searchRestaurants"> 
                 <button class="b" v-on:click = "logIn"> Prijava </button>

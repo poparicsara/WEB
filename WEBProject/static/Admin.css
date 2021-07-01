@@ -14,12 +14,14 @@
             height: 140px;
             position: relative;
             top: 30px;
+            left: -100px;
         }
 
-        #admin{
+        #adminImage{
             height: 60px;
             position: relative;
-            left: 820px;
+            width:80px;
+            left: 720px;
         }
         .dropbtn {
             background-color: deepskyblue;
@@ -29,7 +31,7 @@
 
         .dropdown {
             position: relative;
-            left: 814px;
+            left: 720px;
             top: -7px;
             display: inline-block;
         }

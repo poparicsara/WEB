@@ -1,6 +1,8 @@
 package services;
 
 
+import java.io.FileWriter;
+import java.io.Writer;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -12,6 +14,8 @@ import com.google.gson.reflect.TypeToken;
 
 import beans.Order;
 import beans.Restaurant;
+import dto.UserDTO;
+import enums.UserType;
 
 
 public class RestaurantsService {
@@ -50,4 +54,17 @@ public class RestaurantsService {
     {
         return new String(Files.readAllBytes(Paths.get(file)));
     }
+	
+	public void addRestaurant(Restaurant restaurant) throws Exception {
+		restaurants = getRestaurants();
+		restaurants.add(restaurant);
+		Writer writer = new FileWriter("./static/restaurants.json");
+		gson.toJson(restaurants, writer);
+		writer.close();
+	}
+	
+	
+	
+	
+	
 }

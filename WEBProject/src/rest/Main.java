@@ -10,6 +10,7 @@ import java.io.File;
 import com.google.gson.Gson;
 
 import beans.Customer;
+import beans.Restaurant;
 import dto.UserDTO;
 import services.CustomerService;
 import services.ItemsService;
@@ -26,7 +27,7 @@ public class Main {
 	private static ManagerService managerService = new ManagerService();
 
 	public static void main(String[] args) throws Exception{
-		port(80);
+		port(8080);
 
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
 		
@@ -62,6 +63,15 @@ public class Main {
 			return "SUCCESS";
 		});
 		
+		post("rest/restaurants/addRestaurant", (req, res) -> {
+			res.type("application/json");
+			Restaurant restaurant = g.fromJson(req.body(), Restaurant.class);
+			restaurantsService.addRestaurant(restaurant);
+			return "SUCCESS";
+		});
+		
+		
+		
 		post("rest/users/admin", (req, res) -> {
 			res.type("application/json");
 			return "SUCCESS";
@@ -86,6 +96,11 @@ public class Main {
 		get("rest/restaurantOrders/", (req, res) -> {
 			res.type("application/json");
 			return g.toJson(restaurantsService.getRestaurantOrders("KFC"));
+		});
+		
+		get("rest/managers/",(req, res) ->{
+			res.type("application/json");
+			return g.toJson(managerService.getManagers());
 		});
 		
 	}

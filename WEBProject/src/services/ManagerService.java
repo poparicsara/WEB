@@ -26,7 +26,7 @@ public class ManagerService {
 		return null;
 	}
 	
-	private List<Manager> getManagers() throws Exception{
+	public List<Manager> getManagers() throws Exception{
 		Type listType = new TypeToken<ArrayList<Manager>>() {}.getType();
 	    String json = readFileAsString(filePath);
 		managers = gson.fromJson(json, listType);

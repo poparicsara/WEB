@@ -5,17 +5,20 @@ Vue.component("admin", {
 	      object: null,
 	      showManager: false,
 	      showDeliverer: false,
+	      showRestaurant: false,
 	      showRestaurants: true,
 	      showUsers: false,
 	      users : null,
-	      user: {username: null, password: null, name: null, lastname: null, gender: '', date: ''}
+	      managers : null,
+	      user: {username: null, password: null, name: null, lastname: null, gender: '', date: ''},
+	      restaurant: {name: null, type: null, status:true, items:null, location: { address: {} }, image: ''}
 	    }
 	},
 	    template: ` 
         <div>
           <h1 class="admin"> 
             <img id="adminLogo" src="images/logo.jpg">
-            <img id="admin" src="images/admin.png">
+            <img id="adminImage" src="images/admin.png">
             <div class="dropdown">
                 <button class="dropbtn">🠗</button>
                 <div class="dropdown-content">
@@ -103,6 +106,44 @@ Vue.component("admin", {
                 <input id="submitRegistration" type="submit" value="Dodaj" v-on:click = "addDeliverer">
             </form>
         </div>   
+         <div v-if="this.showRestaurant" id="managerRegistration">
+            <h1 class="manager">Novi restoran</h1>
+            <form>
+                <br/>
+                <label>Naziv restorana:</label><br/>
+                <input class="input" type="text" name="name" v-model = "restaurant.name"><br/><br/>
+                <label>Tip:</label><br/>
+                <select name="type" id="gender" v-model = "restaurant.type">
+                    <option value="BURGERI">Burgeri</option>
+                    <option value="GYROS">Giros</option>
+                    <option value="ITALIJANSKA">Italijanska</option>
+                    <option value="KINESKA">Kineska</option>
+                    <option value="KOBASICE">Kobasice</option>
+                    <option value="KUVANA_JELA">Kuvana jela</option>
+                    <option value="MEKSIČKA">Meksička</option>
+                    <option value="PALAČINKE">Palačinke</option>
+                    <option value="MORSKI_PLODOVI">Morski plodovi</option>
+                    <option value="ROŠTILJ">Roštilj</option>
+                    <option value="SENDVIČI">Sendviči</option>
+                    <option value="VEGE">Vege</option>
+                    <option value="TORTE_KOLAČI">Torte i kolači</option>
+                    <option value="FASTFOOD">Brza hrana</option>
+                </select>
+                <br/><br/> 
+                <label>Logo restorana:</label><br/>
+                <form action="/action_page.php" >
+				  <input v-model = "restaurant.image" type="file" id="image" name="image" accept="image/*">
+				</form>
+				<br/><br/>
+				  <label>Tip:</label><br/>
+                <select name="type" id="gender" v-model = "restaurant.type">
+                    <option value="BURGERI">Burgeri</option>	
+                </select>
+                <br/><br/> 	
+                <input id="submitRegistration" type="submit" value="Dodaj" v-on:click = "addRestaurant">
+            </form>
+        </div>   
+        </div>   
          </div>
     	`,
     mounted () {
@@ -111,7 +152,11 @@ Vue.component("admin", {
           .then(response => (this.restaurants = response.data)), 
        axios
           .get('rest/users/')
-          .then(response => (this.users = response.data))
+          .then(response => (this.users = response.data)),
+       axios
+          .get('rest/managers/')
+          .then(response => (this.managers = response.data))
+       
     },
     methods: {
     	logOut: function() {
@@ -130,11 +175,19 @@ Vue.component("admin", {
     	addUser: function(){
     		if(this.object == 'MENADZER'){
 				this.showManager = true
-				document.getElementById("managerRegistration").focus()		
+				this.showDeliverer = false
+				this.showRestaurant = false	
 			}
 			else if(this.object == 'DOSTAVLJAC'){
 				this.showDeliverer = true
+				this.showManager = false
+				this.showRestaurant = false
 			}	
+			else if(this.object == 'RESTORAN'){
+				this.showRestaurant = true
+				this.showManager = false
+				this.showDeliverer = false
+			}
 		},
     	addManager: function(){
     		var exists = false
@@ -174,6 +227,23 @@ Vue.component("admin", {
     			axios.post('/rest/restaurants/addDeliverer', this.user).
     			then(response => alert('Dostavljač uspešno registrovan!'));
     			this.showDeliverer = false
+    		}
+    	},
+    	addRestaurant: function(){
+    		let array = this.restaurant.image.split("\\")
+    		this.restaurant.image = "images/" + array[2]
+    		var exists = false
+    		if(exists){
+    			event.preventDefault()
+    			alert('Korisničko ime je zauzeto!')
+    			this.showRestaurant = false
+    		}
+    		else{
+    			event.preventDefault()
+    			axios.post('/rest/restaurants/addRestaurant', this.restaurant).
+    			then(response => alert('Restoran uspešno kreiran!'));
+    			
+    			this.showRestaurant = false
     		}
     	}
     },

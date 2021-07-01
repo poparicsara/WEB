@@ -1,14 +1,1 @@
-[
-{
-  "name" : "KFC",
-  "status" : true,
-  "type" : "Brza hrana",
-  "image" : "images/KFC.jpg"
-},
-{
-  "name" : "Burger king",
-  "status" : true,
-  "type" : "Meksicka hrana",
-  "image" : "images/tortillaCasa.jpg"
-}
-]
+[{"name":"KFC","type":"FASTFOOD","status":true,"location":{"longitude":0.0,"latitude":0.0,"address":{"street":"Bulevar oslobođenja","number":"119","city":"Novi Sad","postNumber":21000}},"image":"images/KFC.jpg"},{"name":"Tortilla casa","type":"MEKSICKA","status":true,"location":{"longitude":0.0,"latitude":0.0,"address":{"street":"Bulevar oslobođenja","number":"89","city":"Novi Sad","postNumber":21000}},"image":"images/tortillaCasa.jpg"},{"name":"Burger King","type":"BURGERI","status":true,"location":{"longitude":0.0,"latitude":0.0,"address":{"postNumber":0}},"image":"images/tosterBar.jpg"}]

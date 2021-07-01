@@ -9,7 +9,7 @@ Vue.component("logIn", {
 	},
 	    template: ` 
         <div id="logInForm">
-            <h1>Prijava</h1>
+            <h1 class="login">Prijava</h1>
             <form>
                 <br/>
                 <label>Korisničko ime:</label><br/>
