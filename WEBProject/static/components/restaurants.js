@@ -32,10 +32,10 @@ Vue.component("restaurants", {
     },
     methods: {
     	logIn : function() {
-    		router.push(`/logIn/logIn`)
+    		router.push(`/logIn`);
     	},
     	registration : function() {
-    		router.push(`/registration`)
+    		router.push(`/registration`);
     	}
     },
 });

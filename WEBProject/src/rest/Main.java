@@ -12,6 +12,8 @@ import com.google.gson.Gson;
 import beans.Customer;
 import dto.UserDTO;
 import services.CustomerService;
+import services.ItemsService;
+import services.ManagerService;
 import services.RestaurantsService;
 import services.UserService;
 
@@ -20,13 +22,13 @@ public class Main {
 	private static Gson g = new Gson();
 	private static RestaurantsService restaurantsService = new RestaurantsService();
 	private static UserService userService = new UserService();
-	private static CustomerService customerService = new CustomerService();
+	private static ItemsService itemsService = new ItemsService();
+	private static ManagerService managerService = new ManagerService();
 
 	public static void main(String[] args) throws Exception{
 		port(80);
 
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
-		
 		
 		//bio je GET OVDE
 		get("rest/restaurants/", (req, res) -> {
@@ -61,6 +63,22 @@ public class Main {
 		post("rest/logingIn", (req, res) -> {
 			res.type("application/json");
 			return "SUCCESS";
+		});
+		
+		get("rest/restorauntItems/", (req, res) -> {
+			res.type("application/json");
+			return g.toJson(itemsService.getRestaurantItems("KFC"));
+		});
+		
+		get("rest/managerRestaurant/", (req, res) -> {
+			res.type("application/json");
+			String username = g.fromJson(req.body(), String.class);
+			return g.toJson(managerService.getManegerRestaurant(username));
+		});
+		
+		get("rest/restaurantOrders/", (req, res) -> {
+			res.type("application/json");
+			return g.toJson(restaurantsService.getRestaurantOrders("KFC"));
 		});
 		
 	}

@@ -1,7 +1,6 @@
 Vue.component("registration", { 
 	data: function () {
 	    return {
-	      registrationId : registration,
 	      users : null,
 	      user: {username: null, password: null, name: null, lastname: null, gender: '', date: ''},
 	    }

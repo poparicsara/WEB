@@ -1,10 +1,10 @@
 Vue.component("logIn", { 
 	data: function () {
 	    return {
-	      logInId : logIn,
 	      users: null,
 	      username: null,
-	      password: null
+	      password: null,
+	      restaurant: ''
 	    }
 	},
 	    template: ` 
@@ -26,6 +26,10 @@ Vue.component("logIn", {
         axios
           .get('rest/users/')
           .then(response => (this.users = response.data))
+         ,
+         axios
+         	.get('rest/managerRestaurant/', this.username)
+         	.then(response => (this.restaurant = response.data))
      },
      methods: {
     	logIn : function() {
@@ -39,13 +43,13 @@ Vue.component("logIn", {
     		if(exists){
 				if(user.userType.toString() == 'ADMIN'){
 					event.preventDefault();
-					axios.post('/rest/logingIn', this.username, this.password)
-					.then(response => (router.push(`/admin/admin`)));
+					axios.post('/rest/logingIn')
+					.then(response => (router.push(`/admin`)));
 				}
 				else if(user.userType.toString() == 'MANAGER'){
 					event.preventDefault();
-					axios.post('/rest/logingIn', this.username, this.password)
-					.then(response => (router.push(`/restaurant/restaurant`)));
+					axios.post('/rest/logingIn')
+					.then(response => (router.push(`/restaurant`), this.restaurant));
 				}
 				else{
 					alert('Vas deo je jos uvek u doradi, pricekajte...')

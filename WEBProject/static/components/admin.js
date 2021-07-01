@@ -2,7 +2,6 @@ Vue.component("admin", {
 	data: function () {
 	    return {
 	      restaurants: null,
-	      adminID: admin,
 	      object: null,
 	      show: false,
 	      users : null,
