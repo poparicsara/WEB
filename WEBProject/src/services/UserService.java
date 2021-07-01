@@ -66,6 +66,16 @@ public class UserService {
 		writer.close();
 	}
 	
+	public void addDeliverer(UserDTO user) throws Exception {
+		users = getUsers();
+		setNewUser(user);
+		newUser.setUserType(UserType.DELIVERER);
+		users.add(newUser);
+		Writer writer = new FileWriter(filePath);
+		gson.toJson(users, writer);
+		writer.close();
+	}
+	
 	private void setDate(String date) throws ParseException {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		newUser.setDateOfBirth(format.parse(date));
