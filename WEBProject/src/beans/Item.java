@@ -7,7 +7,7 @@ public class Item {
 	private String name;
 	private double price;
 	private ItemType type;
-	private Restaurant rastaurant;
+	private Restaurant restaurant;
 	private int amount;
 	private String description;
 	
@@ -21,7 +21,7 @@ public class Item {
 		this.name = name;
 		this.price = price;
 		this.type = type;
-		this.rastaurant = rastaurant;
+		this.restaurant = rastaurant;
 		this.amount = amount;
 		this.description = description;
 	}
@@ -49,12 +49,12 @@ public class Item {
 		this.type = type;
 	}
 	
-	public Restaurant getRastaurant() {
-		return rastaurant;
+	public Restaurant getRestaurant() {
+		return restaurant;
 	}
 	
-	public void setRastaurant(Restaurant rastaurant) {
-		this.rastaurant = rastaurant;
+	public void setRestaurant(Restaurant restaurant) {
+		this.restaurant = restaurant;
 	}
 	
 	public int getAmount() {

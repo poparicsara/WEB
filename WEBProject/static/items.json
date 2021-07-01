@@ -1,0 +1,47 @@
+[
+{
+	"name" : "Strips 8 komada",
+	"price" : 690.0,
+	"type" : "FOOD",
+	"restaurant" : 
+		{
+			"name" : "KFC",
+			"status" : true,
+			"type" : "Brza hrana",
+			"image" : "images/KFC.jpg"
+		}
+	,
+	"amount" : 500,
+	"description" : "8 stripsa"
+},
+{
+	"name" : "Strips 5 komada",
+	"price" : 490.0,
+	"type" : "FOOD",
+	"restaurant" : 
+		{
+			"name" : "KFC",
+			"status" : true,
+			"type" : "Brza hrana",
+			"image" : "images/KFC.jpg"
+		}
+	,
+	"amount" : 300,
+	"description" : "5 stripsa"
+},
+{
+	"name" : "Hot wings - osam komada",
+	"price" : 490.0,
+	"type" : "FOOD",
+	"restaurant" : 
+		{
+			"name" : "KFC",
+			"status" : true,
+			"type" : "Brza hrana",
+			"image" : "images/KFC.jpg"
+		}
+	,
+	"amount" : 300,
+	"description" : "Osam hot wingsa"
+}
+]
