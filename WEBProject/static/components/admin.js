@@ -134,11 +134,7 @@ Vue.component("admin", {
                 <form action="/action_page.php" >
 				  <input v-model = "restaurant.image" type="file" id="image" name="image" accept="image/*">
 				</form>
-				<br/><br/>
-				  <label>Tip:</label><br/>
-                <select name="type" id="gender" v-model = "restaurant.type">
-                    <option value="BURGERI">Burgeri</option>	
-                </select>
+				
                 <br/><br/> 	
                 <input id="submitRegistration" type="submit" value="Dodaj" v-on:click = "addRestaurant">
             </form>
