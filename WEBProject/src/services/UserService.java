@@ -76,6 +76,16 @@ public class UserService {
 		writer.close();
 	}
 	
+	public String getUserFullName(String username) throws Exception {
+		String fullName = "";
+		for (User user : getUsers()) {
+			if(user.getUsername().equals(username)) {
+				fullName = user.getName() + " " + user.getLastname();
+			}
+		}
+		return fullName;
+	}
+	
 	private void setDate(String date) throws ParseException {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		newUser.setDateOfBirth(format.parse(date));

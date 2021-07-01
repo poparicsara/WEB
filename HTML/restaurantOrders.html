@@ -27,33 +27,77 @@
                 height: 50px;
                 font-size: 20px;
             }
+
+            .restorauntOrderModal{
+                display: none; /* Hidden by default */
+                position: fixed; /* Stay in place */
+                z-index: 1; /* Sit on top */
+                left: 0;
+                top: 0;
+                width: 100%; /* Full width */
+                height: 100%; /* Full height */
+                overflow: auto; /* Enable scroll if needed */
+                background-color: rgb(0,0,0); /* Fallback color */
+                background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            }
+
+            .restaurantOrderClose{
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+
         </style>
     </head>
 
     <body>
-        <h1 >Naše porudžbine</h1>
-        <table border="1">
-            <tr>
-                <th>Status</th>
-                <th>Broj porudžbine</th>
-                <th>Datum</th>
-                <th>Kupac</th>
-                <th>Ukupan iznos</th>
-            </tr>
-            <tr>
-                <td>PROCESSING</td>
-                <td>111</td>
-                <td>23.06.2021.</td>
-                <td>Sara Poparic</td>
-                <td>1000.00</td>
-            </tr>
-            <tr>
-                <td>PROCESSING</td>
-                <td>111</td>
-                <td>23.06.2021.</td>
-                <td>Ognjen Bogdanovic</td>
-                <td>1000.00</td>
-            </tr>
-        </table>
+        <div class="modal">
+            <h1 >Naše porudžbine</h1>
+            <table border="1">
+                <tr>
+                    <th>Status</th>
+                    <th>Broj porudžbine</th>
+                    <th>Datum</th>
+                    <th>Kupac</th>
+                    <th>Ukupan iznos</th>
+                </tr>
+                <tr>
+                    <td>PROCESSING</td>
+                    <td>111</td>
+                    <td>23.06.2021.</td>
+                    <td>Sara Poparic</td>
+                    <td>1000.00</td>
+                </tr>
+                <tr>
+                    <td>PROCESSING</td>
+                    <td>111</td>
+                    <td>23.06.2021.</td>
+                    <td>Ognjen Bogdanovic</td>
+                    <td>1000.00</td>
+                </tr>
+            </table><br/>
+            <button>
+                PopUp
+            </button>
+
+            <div class="restorauntOrderModal">
+
+                <span class="restaurantOrderClose">&times;</span>  <!--Close button-->
+
+                <label>Broj porudžbine</label>
+                101<br/>
+                <label>Status porudžbine</label>
+                U pripremi<br/>
+                <label>Kupac</label>
+                Sara Poparic<br/>
+                <label>Datum</label>
+                01.07.2021.<br/>
+                <label>Ukupan iznos</label>
+                500.00 RSD<br/>
+
+            </div>
+
+        </div>  
     </body>
 </html>

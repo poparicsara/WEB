@@ -1,0 +1,53 @@
+body{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+h1{
+    color: lightblue;
+}
+
+.table{
+    margin-top: 50px;
+    border-width: 2px;
+    border-collapse: collapse;
+    width: 80%;
+    margin-left: 100px;
+}
+
+tr{
+    height: 35px;
+    font-size: 16px;
+}
+
+th{
+    background-color: lightblue;
+    height: 50px;
+    font-size: 20px;
+}
+
+.restorauntOrderModal{
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: black; /* Black w/ opacity */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.restaurantOrderClose{
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.restaurantOrderClose,
+.restaurantOrderClose:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}

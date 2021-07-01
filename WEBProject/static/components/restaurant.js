@@ -11,6 +11,8 @@ Vue.component("restaurant", {
 	        <br/><br/>
 	        <button v-on:click = "orders">Porudzbine</button>
 	        <br/><br/>
+	        <button v-on:click = "customers">Kupci</button>
+	        <br/><br/>
 	        <div id="restaurantFood" v-for="(i, index) in items">
 	            <a href="">
                 <div class="food">
@@ -29,8 +31,11 @@ Vue.component("restaurant", {
      	}
     	,
     	methods: {
-    	orders : function() {
-    		router.push(`/orders`);
-    	}
+	    	orders : function() {
+	    		router.push(`/restaurantOrders`);
+	    	},
+	    	customers : function() {
+	    		router.push(`/restaurantCustomers`)
+	    	}
     },
 });

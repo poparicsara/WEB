@@ -88,6 +88,12 @@ public class Main {
 			return g.toJson(restaurantsService.getRestaurantOrders("KFC"));
 		});
 		
+		get("rest/userFullName/", (req, res) -> {
+			res.type("application/json");
+			String username = g.fromJson(req.body(), String.class);
+			return g.toJson(userService.getUserFullName(username));
+		});
+		
 	}
 
 }
