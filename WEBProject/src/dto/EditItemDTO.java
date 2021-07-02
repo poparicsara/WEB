@@ -1,8 +1,8 @@
 package dto;
 
+public class EditItemDTO {
 
-public class ItemDTO {
-
+	private String oldName;
 	private String name;
 	private String price;
 	private String type;
@@ -11,13 +11,13 @@ public class ItemDTO {
 	private String description;
 	private String image;
 	
-	
-	public ItemDTO() {
+	public EditItemDTO() {
 		super();
 	}
 
-	public ItemDTO(String name, String price, String type, int restaurant, String amount, String description, String image) {
+	public EditItemDTO(String oldName, String name, String price, String type, int restaurant, String amount, String description, String image) {
 		super();
+		this.oldName = oldName;
 		this.name = name;
 		this.price = price;
 		this.type = type;
@@ -33,6 +33,14 @@ public class ItemDTO {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	public String getOldName() {
+		return oldName;
+	}
+
+	public void setOldName(String oldName) {
+		this.oldName = oldName;
 	}
 
 	public String getName() {
@@ -82,8 +90,5 @@ public class ItemDTO {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	
-	
 	
 }

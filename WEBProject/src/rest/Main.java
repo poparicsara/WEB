@@ -2,6 +2,7 @@ package rest;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
+import static spark.Spark.put;
 import static spark.Spark.port;
 import static spark.Spark.staticFiles;
 
@@ -9,10 +10,9 @@ import java.io.File;
 
 import com.google.gson.Gson;
 
-import beans.Customer;
+import dto.EditItemDTO;
 import dto.ItemDTO;
 import dto.UserDTO;
-import services.CustomerService;
 import services.ItemsService;
 import services.ManagerService;
 import services.RestaurantsService;
@@ -75,7 +75,7 @@ public class Main {
 		
 		get("rest/restorauntItems/", (req, res) -> {
 			res.type("application/json");
-			return g.toJson(itemsService.getRestaurantItems("KFC"));
+			return g.toJson(restaurantsService.getRestaurantItems(101));
 		});
 		
 		get("rest/managerRestaurant/", (req, res) -> {
@@ -96,7 +96,7 @@ public class Main {
 		});
 		
 		
-		post("/rest/restaurant/addItem/", (req, res) -> {
+		post("/rest/addItemToRestaurant/", (req, res) -> {
 			res.type("application/json");
 			ItemDTO item = g.fromJson(req.body(), ItemDTO.class);
 			restaurantsService.addItemToRestaurant(item);
@@ -107,6 +107,14 @@ public class Main {
 			res.type("application/json");
 			return "SUCCESS";
 		});
+		
+		post("/rest/editRestaurantItem/", (req, res) -> {
+			res.type("application/json");
+			EditItemDTO item = g.fromJson(req.body(), EditItemDTO.class);
+			restaurantsService.editRestaurantItem(item);
+			return "SUCCESS";
+		});
+
 	}
 
 }

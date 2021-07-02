@@ -7,23 +7,32 @@ public class Item {
 	private String name;
 	private double price;
 	private ItemType type;
-	private Restaurant restaurant;
+	private int restaurantID;
 	private int amount;
 	private String description;
-	
+	private String image;
 	
 	public Item() {
 		super();
 	}
 
-	public Item(String name, double price, ItemType type, Restaurant rastaurant, int amount, String description) {
+	public Item(String name, double price, ItemType type, int restaurantID, int amount, String description, String image) {
 		super();
 		this.name = name;
 		this.price = price;
 		this.type = type;
-		this.restaurant = rastaurant;
+		this.restaurantID = restaurantID;
 		this.amount = amount;
 		this.description = description;
+		this.image = image;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	public String getName() {
@@ -49,12 +58,12 @@ public class Item {
 		this.type = type;
 	}
 	
-	public Restaurant getRestaurant() {
-		return restaurant;
+	public int getRestaurantID() {
+		return restaurantID;
 	}
 	
-	public void setRestaurant(Restaurant restaurant) {
-		this.restaurant = restaurant;
+	public void setRestaurantID(int restaurantID) {
+		this.restaurantID = restaurantID;
 	}
 	
 	public int getAmount() {

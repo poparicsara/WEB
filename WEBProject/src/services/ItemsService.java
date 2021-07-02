@@ -20,9 +20,9 @@ public class ItemsService {
 	public List<Item> getRestaurantItems(String restaurantName) throws Exception {
 		List<Item> restaurantItems = new ArrayList<Item>();
 	    for (Item item : getItems()) {
-			if(item.getRestaurant().getName().equals(restaurantName)) {
+			/*if(item.getRestaurant().getName().equals(restaurantName)) {
 				restaurantItems.add(item);
-			}
+			}*/
 		}
 		return restaurantItems;
 	}

@@ -9,6 +9,7 @@ public class Restaurant implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -6988085224503300665L;
+	private int id;
 	private String name;
 	private String type;
 	private ArrayList<Item> items;
@@ -20,14 +21,23 @@ public class Restaurant implements Serializable{
 		super();
 	}
 
-	public Restaurant(String name, String type, ArrayList<Item> items, boolean status, Location location, String image) {
+	public Restaurant(int id, String name, String type, ArrayList<Item> items, boolean status, Location location, String image) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.type = type;
 		this.items = items;
 		this.status = status;
 		this.location = location;
 		this.image = image;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getName() {
