@@ -108,3 +108,21 @@
 		h1.manager{
 			color: darkblue;
 		}
+		
+		#searchUsers{
+			position:relative;
+			width: 300px;
+			left: 500px;
+			font-size: 16px;
+			height: 30px;
+		}
+		
+		div.sortUsers{
+			position:relative;
+			left:500px;
+		}
+		
+		div.filterUsers{
+			position:relative;
+			left:500px;
+		}

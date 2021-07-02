@@ -9,7 +9,17 @@
    .sort:hover {
     background-color: deepskyblue;
     }
-
+	
+	select.filter{
+		width: 100px;
+	}
+	
+	#filter{
+		height:30px;
+		width:35px;
+		
+	}
+	
   	#restaurantHeader{
         color: lightblue;
         position: relative;

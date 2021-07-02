@@ -1,5 +1,7 @@
 package services;
 
+import java.io.FileWriter;
+import java.io.Writer;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -10,6 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import beans.Manager;
+import dto.ManagerDTO;
 
 public class ManagerService {
 	
@@ -36,5 +39,17 @@ public class ManagerService {
 	private static String readFileAsString(String file)throws Exception{
         return new String(Files.readAllBytes(Paths.get(file)));
     }
+	
+	public void updateManager(ManagerDTO manager) throws Exception {
+		for (Manager m : getManagers()) {
+			if(m.getUsername().equals(manager.getUsername())) {
+				m.setRestaurant(manager.getRestaurant());
+				break;
+			}
+		}
+		Writer writer = new FileWriter(filePath);
+		gson.toJson(managers, writer);
+		writer.close();
+	}
 	
 }

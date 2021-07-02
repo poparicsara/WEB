@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 
 import beans.Customer;
 import beans.Restaurant;
+import dto.ManagerDTO;
 import dto.UserDTO;
 import services.CustomerService;
 import services.ItemsService;
@@ -27,7 +28,7 @@ public class Main {
 	private static ManagerService managerService = new ManagerService();
 
 	public static void main(String[] args) throws Exception{
-		port(8080);
+		port(80);
 
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
 		
@@ -65,8 +66,9 @@ public class Main {
 		
 		post("rest/restaurants/addRestaurant", (req, res) -> {
 			res.type("application/json");
-			Restaurant restaurant = g.fromJson(req.body(), Restaurant.class);
-			restaurantsService.addRestaurant(restaurant);
+			ManagerDTO managerDTO = g.fromJson(req.body(), ManagerDTO.class);
+			restaurantsService.addRestaurant(managerDTO.getRestaurant());
+			managerService.updateManager(managerDTO);
 			return "SUCCESS";
 		});
 		
