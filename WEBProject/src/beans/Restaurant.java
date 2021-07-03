@@ -23,7 +23,7 @@ public class Restaurant implements Serializable{
 		super();
 	}
 
-	public Restaurant(int id, String name, String type, ArrayList<Item> items, boolean status, Location location, String image) {
+	public Restaurant(int id, String name, RestaurantType type, ArrayList<Item> items, boolean status, Location location, String image) {
 		super();
 		this.id = id;
 		this.name = name;
