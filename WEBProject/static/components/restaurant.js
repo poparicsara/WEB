@@ -60,8 +60,8 @@ Vue.component("restaurant", {
 		                <label class="restaurantItemLabels">Opis:</label><br/>
 		                <input class="restaurantItemInput" type="text" name="description" v-model = "item.description"><br/><br/>
 		                <form action="/action_page.php" >
-	                  		<input class="addRestaurantItemImage" v-on:change = "item.image" type="file" id="image" name="image" accept="image/*">
-	                	</form>
+                  			<input v-model = "item.image" type="file" class="addRestaurantItemImage" name="image" accept="image/*">
+                		</form>
 		                <br/>
 		                <input class="restaurantItemButtons" type="submit" value="Sačuvaj" v-on:click="saveItem"><br/>
 		                <input class="restaurantItemButtons" type="submit" value="Odustani" v-on:click="cancelAdding">
@@ -84,9 +84,6 @@ Vue.component("restaurant", {
 	        	<input type="text" v-model="edit.amount"></input><br/>
 	        	<label>Opis:</label><br/>
 	        	<input type="text" v-model="edit.description"></input><br/>
-	        	<form action="/action_page.php" >
-                  	<input v-on:change="edit.image" type="file" id="editImage" name="editImage" accept="image/*">
-                </form>
 	        	<button v-on:click="saveEditing">Sacuvaj</button>
 	        	<button v-on:click="cancelEditing">Odustani</button>
 	        </div>
