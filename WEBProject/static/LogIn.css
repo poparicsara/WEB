@@ -8,12 +8,13 @@ body{
     padding: 30px;
     margin-top: 150px;
     margin-left: 500px;
-    margin-right: 550px;
+    margin-right: 660px;
     font-size: larger;
     border-radius: 5px; 
 }
 
 /*h1{
+h1.login{
     margin-left: 80px;
     color: lightblue;
     font-size: 40px;

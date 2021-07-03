@@ -7,7 +7,7 @@ Vue.component("registration", {
 	},
 	    template: ` 
         <div id="registrationForm">
-            <h1>Registracija</h1>
+            <h1 class="registration">Registracija</h1>
             <form>
                 <br/>
                 <label>Korisničko ime:</label><br/>

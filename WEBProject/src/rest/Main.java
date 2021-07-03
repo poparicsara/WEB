@@ -12,6 +12,9 @@ import com.google.gson.Gson;
 
 import dto.EditItemDTO;
 import dto.ItemDTO;
+import beans.Customer;
+import beans.Restaurant;
+import dto.ManagerDTO;
 import dto.UserDTO;
 import services.ItemsService;
 import services.ManagerService;
@@ -62,6 +65,16 @@ public class Main {
 			userService.addDeliverer(user);
 			return "SUCCESS";
 		});
+		
+		post("rest/restaurants/addRestaurant", (req, res) -> {
+			res.type("application/json");
+			ManagerDTO managerDTO = g.fromJson(req.body(), ManagerDTO.class);
+			restaurantsService.addRestaurant(managerDTO.getRestaurant());
+			managerService.updateManager(managerDTO);
+			return "SUCCESS";
+		});
+		
+		
 		
 		post("rest/users/admin", (req, res) -> {
 			res.type("application/json");
@@ -115,6 +128,11 @@ public class Main {
 			return "SUCCESS";
 		});
 
+		get("rest/managers/",(req, res) ->{
+			res.type("application/json");
+			return g.toJson(managerService.getManagers());
+		});
+		
 	}
 
 }

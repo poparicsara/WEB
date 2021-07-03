@@ -9,7 +9,21 @@
    .sort:hover {
     background-color: deepskyblue;
     }
-
+	
+	select.filter{
+		width: 100px;
+	}
+	
+	#filter{
+		height:30px;
+		width:35px;
+		
+	}
+	
+  	#restaurantHeader{
+        color: lightblue;
+        position: relative;
+    }
    #restaurants{
         color: lightblue;
         position: relative;
@@ -20,15 +34,12 @@
     #input{
         position: relative;
         font-size: 16px;
-        left: 250px;
+        left: 100px;
         width: 300px;
         height: 30px;
         border-radius: 5px;
     }
-    #searchButton{
-    	height: 25px;
-    	width: 25px;
-    }
+   
     h3.restaurantSort{
     	position: relative;
     	left: 500px;
@@ -42,7 +53,7 @@
         position: relative;
         background-color: lightblue;
         color:white;
-        left: 540px;
+        left: 390px;
         height: 30px;
         width: 120px;
         font-size: 16px;
@@ -98,9 +109,10 @@
     	margin-top: 200px;
     }
     
-    hr{
-    	color: lightblue;
-    }
+     hr{
+        border-top: 2px solid lightskyblue;
+        position: relative;
+    } 
 
     #search{
     	position: relative;
