@@ -10,20 +10,31 @@ Vue.component("restaurant", {
 	},
 	    template: ` 
 	    <div>
-	        <h1>Ime restorana</h1>
-	        <input type="text" name="search" id="search" placeholder="Pretraži...">
+	        <h1 class="restaurantHeader">Ime restorana</h1>
+	        <input class="restaurantSearchBox" type="text" name="search" placeholder="Pretraži...">
+	        <img class="restaurantItemsSearchIMG" src="images/search.png"/>
 	        <br/><br/>
-	        <button v-on:click = "orders">Porudzbine</button>
+	        <div class="restaurantButtonsGroup">
+	        <button class="restaurantButtons" v-on:click = "orders">
+	        	<img class="restaurantOrdersIMG" src="images/restaurantOrders.png"/>
+	        	Porudzbine
+	        </button>
+	        <button class="restaurantButtons" v-on:click = "customers">
+	        	<img class="restaurantCustomersIMG" src="images/restaurantCustomers.png"/>
+	        	Kupci
+	        </button>
+	        <button class="restaurantButtons" v-on:click = "addRestaurantItem">
+	        	<img class="restaurantAddItemIMG" src="images/addItem.png"/>
+	        	Novi artikal
+	        </button>
+	        </div>
 	        <br/><br/>
-	        <button v-on:click = "customers">Kupci</button>
-	        <br/><br/>
-	        <button v-on:click = "addRestaurantItem">Dodaj artikal</button>
-	        <br/><br/>
-	        <div id="restaurantFood" v-for="(i, index) in items">
+	        <div class="restaurantItemGroup" v-for="(i, index) in items">
 	            <a v-on:click="itemClicked(i)">
-                <div class="food">
+                <div class="restaurantItem">
                 	<img :src = i.image><br/><br/>
-                    <label class="foodName"><b>{{i.name}}</b></label><br/>
+                	<hr class="restaurantItemHR">
+                    <label class="foodName"><b>{{i.name}}</b></label><br/><br/>
                     <label class="price">Cena: {{i.price}} RSD</label><br/>
                     <label v-if="i.type=='FOOD'">Kolicina: {{i.amount}} g</label>
                     <label v-if="i.type=='DRINK'">Kolicina: {{i.amount}} ml</label>
@@ -31,31 +42,31 @@ Vue.component("restaurant", {
             </a>
 	        </div>
 	        <div class="addRestaurantItem" v-if="addItem">
-	        	<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-	        	<span class="addItemClose" v-on:click="closeAdding">&times;</span>
-	        	<h1>Dodavanje novog artikla</h1>
-	            <form>
-	                <br/>
-	                <label>Naziv artikla:</label><br/>
-	                <input class="input" type="text" name="name" v-model = "item.name"><br/><br/>
-	                <label>Cena:</label><br/>
-	                <input class="input" type="text" name="price" v-model = "item.price"><br/><br/>
-	                <label>Tip:</label><br/>
-	                <select name="itemType" id="itemType" v-model = "item.type">
-	                    <option value="FOOD">hrana</option>
-	                    <option value="DRINK">piće</option>
-	                </select><br/><br/>
-	                <label>Kolicina:</label><br/>
-	                <input class="input" type="text" name="amount" v-model = "item.amount"><br/><br/>
-	                <label>Opis:</label><br/>
-	                <input class="input" type="text" name="description" v-model = "item.description"><br/><br/>
-	                <form action="/action_page.php" >
-                  		<input v-model = "item.image" type="file" id="image" name="image" accept="image/*">
-                	</form>
-	                <br/><br/><br/>
-	                <input id="submitAdding" type="submit" value="Sačuvaj" v-on:click="saveItem">
-	                <input id="cancelAdding" type="submit" value="Odustani" v-on:click="cancelAdding">
-	            </form>
+	        	<div class="addRestaurantItemComponents">
+		        	<span class="addRestaurantItemClose" v-on:click="closeAdding">&times;</span>
+		        	<h1 class="addRestaurantHeader">Dodavanje novog artikla</h1>
+		            <form>  
+		                <label class="restaurantItemLabels">Naziv artikla:</label><br/>
+		                <input class="restaurantItemInput" type="text" name="name" v-model = "item.name"><br/><br/>
+		                <label class="restaurantItemLabels">Cena:</label><br/>
+		                <input class="restaurantItemInput" type="text" name="price" v-model = "item.price"><br/><br/>
+		                <label class="restaurantItemLabels">Tip:</label><br/>
+		                <select name="itemType" v-model = "item.type" class="restaurantItemInput">
+		                    <option value="FOOD">hrana</option>
+		                    <option value="DRINK">piće</option>
+		                </select><br/><br/>
+		                <label class="restaurantItemLabels">Kolicina:</label><br/>
+		                <input class="restaurantItemInput" type="text" name="amount" v-model = "item.amount"><br/><br/>
+		                <label class="restaurantItemLabels">Opis:</label><br/>
+		                <input class="restaurantItemInput" type="text" name="description" v-model = "item.description"><br/><br/>
+		                <form action="/action_page.php" >
+	                  		<input class="addRestaurantItemImage" v-on:change = "item.image" type="file" id="image" name="image" accept="image/*">
+	                	</form>
+		                <br/>
+		                <input class="restaurantItemButtons" type="submit" value="Sačuvaj" v-on:click="saveItem"><br/>
+		                <input class="restaurantItemButtons" type="submit" value="Odustani" v-on:click="cancelAdding">
+		            </form>
+	            </div>
 	        </div>
 	        <div class="selectedRestaurantItem" v-if="selectedItem">
 	        	<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
@@ -73,6 +84,9 @@ Vue.component("restaurant", {
 	        	<input type="text" v-model="edit.amount"></input><br/>
 	        	<label>Opis:</label><br/>
 	        	<input type="text" v-model="edit.description"></input><br/>
+	        	<form action="/action_page.php" >
+                  	<input v-on:change="edit.image" type="file" id="editImage" name="editImage" accept="image/*">
+                </form>
 	        	<button v-on:click="saveEditing">Sacuvaj</button>
 	        	<button v-on:click="cancelEditing">Odustani</button>
 	        </div>
@@ -132,7 +146,7 @@ Vue.component("restaurant", {
 	    		this.selectedItem = false;
 	    	}, 
 	    	saveEditing : function() {
-	    		this.selectedItem = false
+	    		this.selectedItem = false;
 	    		event.preventDefault()
 	    		axios.post(`/rest/editRestaurantItem/`, this.edit)
     			.then(response => (this.$router.go()))

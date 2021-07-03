@@ -2,37 +2,18 @@ body{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-h1{
-    margin-top: 20px;
-    margin-left: 50px;
-    color: lightblue;
-    font-size: 40px;
-}
-
-input{
+/*input{
     margin-top: 20px;
     margin-left: 105px;
     border-radius: 5px;
     height: 40px;
     width: 400px;
     font-size: 16px;
-}
+}*/
 
-#restaurantFood{
-    margin-top: 50px;
-    margin-left: 50px;
-}
 
-.food{
-    margin-left: 50px;
-    margin-top: 100px;
-    float: left;
-    border-style: solid;
-    border-width: 3px;
-    border-color: lightblue;
-    padding: 5px;
-    border-radius: 5px;
-}
+
+
 
 /*.food:hover{
     border-style: solid;
@@ -50,8 +31,177 @@ img{
 
 .foodName{
     font-weight: bold;
+    color: lightblue;
 }
 
 .price{
     margin-top: 10px;
+}
+
+.restaurantHeader{
+	margin-top: 80px;
+	font-size: 45px;
+	color: lightblue;
+}
+
+.restaurantSearchBox{
+	height: 30px;
+	width: 400px;
+	margin-left: 500px;
+	margin-top: -30px;
+	font-size: 14px;
+	border-radius: 5px;
+}
+
+.restaurantItemsSearchIMG{
+	bottom: -10px;
+	height: 30px;
+	width: 30px;
+}
+
+.restaurantButtons{
+	background-color: white;
+	color: lightblue;
+	border-radius: 5px;
+	border-color: lightblue;
+	height: 50px;
+	width: 200px;
+	font-size: 18px;
+	margin-left: 50px;
+}
+
+.restaurantButtons{
+	cursor: pointer;
+}
+
+.restaurantButtons:hover{
+	background-color: lightblue;
+	color: white;
+}
+
+.restaurantButtonsGroup{
+	margin-left: 300px;
+	margin-top: 60px;
+}
+
+.restaurantItemGroup{
+    margin-top: -30px;
+    margin-left: -30px;
+}
+
+.restaurantOrdersIMG{
+	height: 23px;
+	width: 23px;
+}
+
+.restaurantCustomersIMG{
+	height: 28px;
+	width: 28px;
+}
+
+.restaurantAddItemIMG{
+	height: 28px;
+	width: 28px;
+}
+
+.restaurantItem{
+    margin-left: 50px;
+    margin-top: 100px;
+    float: left;
+    border-style: solid;
+    border-width: 3px;
+    border-color: lightblue;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.restaurantItemHR{
+	color: lightblue;
+}
+
+.restaurantItem:hover{
+	box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.addRestaurantItem{
+	position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: white; /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.addRestaurantItemComponents{
+	width: 30%;
+	height: 100%;
+	background-color: white; 
+	margin-left: 550px;
+	border-color: black;
+	border-radius: 10px;
+}
+
+.restaurantItemLabels{
+	position: relative;
+	left: 70px;
+}
+
+.restaurantItemInput{
+	margin-top:5px;
+	position: relative;
+	height: 30px;
+	font-size: 12px;
+	width: 300px;
+	left: 70px;
+	border-radius: 5px;
+}
+
+.addRestaurantHeader{
+	position: relative;
+	font-size: 30px;
+	margin-left: 20px;
+	top: -5px;
+}
+
+.addRestaurantItemClose,
+.addRestaurantItemClose {
+	position: relative;
+  	color: lightblue;
+  	font-size: 40px;
+  	text-decoration: none;
+  	cursor: pointer;
+  	margin-left: 400px;
+}
+
+.restaurantItemButtons{
+	margin-top:10px;
+	position: relative;
+	height: 35px;
+	font-size: 14px;
+	width: 300px;
+	left: 70px;
+	border-radius: 5px;
+	background-color: lightblue;
+	color: white;
+	bottom: 15px;
+}
+
+.restaurantItemButtons:hover{
+	cursor: pointer;
+}
+
+.addrestaurantItemImage{
+	margin-top:10px;
+	position: relative;
+	height: 40px;
+	font-size: 16px;
+	width: 300px;
+	left: 70px;
+	border-radius: 5px;
+	background-color: white;
+	color: black;
 }
