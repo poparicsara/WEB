@@ -3,6 +3,8 @@ package beans;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import enums.RestaurantType;
+
 public class Restaurant implements Serializable{
 
 	/**
@@ -11,7 +13,7 @@ public class Restaurant implements Serializable{
 	private static final long serialVersionUID = -6988085224503300665L;
 	private int id;
 	private String name;
-	private String type;
+	private RestaurantType type;
 	private ArrayList<Item> items;
 	private boolean status;
 	private Location location;
@@ -21,7 +23,7 @@ public class Restaurant implements Serializable{
 		super();
 	}
 
-	public Restaurant(int id, String name, String type, ArrayList<Item> items, boolean status, Location location, String image) {
+	public Restaurant(int id, String name, RestaurantType type, ArrayList<Item> items, boolean status, Location location, String image) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -48,11 +50,11 @@ public class Restaurant implements Serializable{
 		this.name = name;
 	}
 	
-	public String getType() {
+	public RestaurantType getType() {
 		return type;
 	}
 	
-	public void setType(String type) {
+	public void setType(RestaurantType type) {
 		this.type = type;
 	}
 	

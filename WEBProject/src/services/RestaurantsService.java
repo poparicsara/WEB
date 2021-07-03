@@ -21,6 +21,8 @@ import dto.ItemDTO;
 import dto.OrderDTO;
 import enums.ItemType;
 import enums.OrderStatus;
+import dto.UserDTO;
+import enums.UserType;
 
 
 public class RestaurantsService {
@@ -241,4 +243,17 @@ public class RestaurantsService {
     {
         return new String(Files.readAllBytes(Paths.get(file)));
     }
+	
+	public void addRestaurant(Restaurant restaurant) throws Exception {
+		restaurants = getRestaurants();
+		restaurants.add(restaurant);
+		Writer writer = new FileWriter("./static/restaurants.json");
+		gson.toJson(restaurants, writer);
+		writer.close();
+	}
+	
+	
+	
+	
+	
 }
