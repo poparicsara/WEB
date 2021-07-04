@@ -12,11 +12,8 @@ import com.google.gson.Gson;
 
 import dto.EditItemDTO;
 import dto.ItemDTO;
-import beans.Customer;
-import beans.Restaurant;
 import dto.ManagerDTO;
 import dto.UserDTO;
-import services.ItemsService;
 import services.ManagerService;
 import services.RestaurantsService;
 import services.UserService;
@@ -26,11 +23,12 @@ public class Main {
 	private static Gson g = new Gson();
 	private static RestaurantsService restaurantsService = new RestaurantsService();
 	private static UserService userService = new UserService();
-	private static ItemsService itemsService = new ItemsService();
 	private static ManagerService managerService = new ManagerService();
+	private static String loggedInUser = "";
+	private static int ID = -1;
 
 	public static void main(String[] args) throws Exception{
-		port(80);
+		port(8080);
 
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
 		
@@ -56,6 +54,7 @@ public class Main {
 			res.type("application/json");
 			UserDTO user = g.fromJson(req.body(), UserDTO.class);
 			userService.addManager(user);
+			managerService.addManager(user);
 			return "SUCCESS";
 		});
 		
@@ -74,8 +73,6 @@ public class Main {
 			return "SUCCESS";
 		});
 		
-		
-		
 		post("rest/users/admin", (req, res) -> {
 			res.type("application/json");
 			return "SUCCESS";
@@ -83,18 +80,19 @@ public class Main {
 		
 		post("rest/logingIn", (req, res) -> {
 			res.type("application/json");
+			loggedInUser = g.fromJson(req.body(), String.class);
 			return "SUCCESS";
 		});
 		
 		get("rest/restorauntItems/", (req, res) -> {
 			res.type("application/json");
-			return g.toJson(restaurantsService.getRestaurantItems(101));
+			ID = managerService.getRestaurantID(loggedInUser);
+			return g.toJson(restaurantsService.getRestaurantItems(ID));
 		});
 		
 		get("rest/managerRestaurant/", (req, res) -> {
 			res.type("application/json");
-			String username = g.fromJson(req.body(), String.class);
-			return g.toJson(managerService.getManegerRestaurant(username));
+			return g.toJson(managerService.getManagerRestaurant(loggedInUser));
 		});
 		
 		get("rest/restaurantOrders/", (req, res) -> {
@@ -112,7 +110,7 @@ public class Main {
 		post("/rest/addItemToRestaurant/", (req, res) -> {
 			res.type("application/json");
 			ItemDTO item = g.fromJson(req.body(), ItemDTO.class);
-			restaurantsService.addItemToRestaurant(item);
+			restaurantsService.addItemToRestaurant(item, ID);
 			return "SUCCESS";
 		});
 		

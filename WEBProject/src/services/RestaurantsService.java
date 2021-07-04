@@ -52,11 +52,11 @@ public class RestaurantsService {
 		return restaurantOrders;
 	}
 	
-	public void addItemToRestaurant(ItemDTO newItem) throws Exception {
+	public void addItemToRestaurant(ItemDTO newItem, int ID) throws Exception {
 		Item item = setItem(newItem);
 		restaurants = getRestaurants();
 		for (Restaurant r : restaurants) {
-			if(r.getName().equals("KFC")){
+			if(r.getId() == ID){
 				if(r.getItems() == null) {
 					r.setItems(new ArrayList<Item>());
 				}
@@ -145,7 +145,7 @@ public class RestaurantsService {
 		item.setDescription(newItem.getDescription());
 		item.setPrice(new Double(newItem.getPrice()));
 		item.setType(setItemType(newItem.getType()));
-		item.setRestaurantID(101);
+		//item.setRestaurantID(101);
 		item.setImage(newItem.getImage());
 		return item;
 	}

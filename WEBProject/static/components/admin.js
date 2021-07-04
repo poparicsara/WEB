@@ -156,60 +156,67 @@ Vue.component("admin", {
          </div>   
               
            
-         <div v-if="this.showManager" id="managerRegistration">
-            <h1 class="manager">Novi menadžer</h1>
+         <div v-if="this.showManager" class="addRestaurantItem">
+          <div class="addRestaurantItemComponents">
+         	<span class="addRestaurantItemClose" v-on:click="closeAddingManager">&times;</span>
+            <h1 class="addRestaurantHeader">Novi menadžer</h1>
             <form>
                 <br/>
-                <label>Korisničko ime:</label><br/>
-                <input class="input" type="text" name="username" v-model = "user.username"><br/><br/>
-                <label>Lozinka:</label><br/>
-                <input class="input" type="text" name="password" v-model = "user.password"><br/><br/>
-                <label>Ime:</label><br/>
-                <input class="input" type="text" name="name" v-model = "user.name"><br/><br/>
-                <label>Prezime:</label><br/>
-                <input class="input" type="text" name="lastname" v-model = "user.lastname"><br/><br/>
-                <label>Pol:</label><br/>
-                <select name="gender" id="gender"  v-model = "user.gender">
+                <label class="restaurantItemLabels">Korisničko ime:</label><br/>
+                <input class="restaurantItemInput" type="text" name="username" v-model = "user.username"><br/><br/>
+                <label class="restaurantItemLabels">Lozinka:</label><br/>
+                <input class="restaurantItemInput" type="text" name="password" v-model = "user.password"><br/><br/>
+                <label class="restaurantItemLabels">Ime:</label><br/>
+                <input class="restaurantItemInput" type="text" name="name" v-model = "user.name"><br/><br/>
+                <label class="restaurantItemLabels">Prezime:</label><br/>
+                <input class="restaurantItemInput" type="text" name="lastname" v-model = "user.lastname"><br/><br/>
+                <label class="restaurantItemLabels">Pol:</label><br/>
+                <select name="gender" class="restaurantItemInput"  v-model = "user.gender">
                     <option value="MALE">muški</option>
                     <option value="FEMALE">ženski</option>
                 </select>
                 <br/><br/>
-                <label>Datum rođenja:</label><br/>
-                <input class="input" type="date" name="dateOfBirth" value=" " v-model = "user.date"><br/><br/><br/>
-                <input id="submitRegistration" type="submit" value="Dodaj" v-on:click = "addManager">
+                <label class="restaurantItemLabels">Datum rođenja:</label><br/>
+                <input class="restaurantItemInput" type="date" name="dateOfBirth" value=" " v-model = "user.date"><br/><br/><br/>
+                <input class="restaurantItemButtons" type="submit" value="Dodaj" v-on:click = "addManager">
             </form>
+         </div>
         </div>       
-         <div v-if="this.showDeliverer" id="managerRegistration">
-            <h1 class="manager">Novi dostavljač</h1>
+         <div v-if="this.showDeliverer" class="addRestaurantItem">
+          <div class="addRestaurantItemComponents">
+         	<span class="addRestaurantItemClose" v-on:click="closeAddingDeliverer">&times;</span>
+            <h1 class="addRestaurantHeader">Novi dostavljač</h1>
             <form>
                 <br/>
-                <label>Korisničko ime:</label><br/>
-                <input class="input" type="text" name="username" v-model = "user.username"><br/><br/>
-                <label>Lozinka:</label><br/>
-                <input class="input" type="text" name="password" v-model = "user.password"><br/><br/>
-                <label>Ime:</label><br/>
-                <input class="input" type="text" name="name" v-model = "user.name"><br/><br/>
-                <label>Prezime:</label><br/>
-                <input class="input" type="text" name="lastname" v-model = "user.lastname"><br/><br/>
-                <label>Pol:</label><br/>
-                <select name="gender" id="gender"  v-model = "user.gender">
+                <label class="restaurantItemLabels">Korisničko ime:</label><br/>
+                <input class="restaurantItemInput" type="text" name="username" v-model = "user.username"><br/><br/>
+                <label class="restaurantItemLabels">Lozinka:</label><br/>
+                <input class="restaurantItemInput" type="text" name="password" v-model = "user.password"><br/><br/>
+                <label class="restaurantItemLabels">Ime:</label><br/>
+                <input class="restaurantItemInput" type="text" name="name" v-model = "user.name"><br/><br/>
+                <label class="restaurantItemLabels">Prezime:</label><br/>
+                <input class="restaurantItemInput" type="text" name="lastname" v-model = "user.lastname"><br/><br/>
+                <label class="restaurantItemLabels">Pol:</label><br/>
+                <select name="gender" class="restaurantItemInput"  v-model = "user.gender">
                     <option value="MALE">muški</option>
                     <option value="FEMALE">ženski</option>
                 </select>
                 <br/><br/>
-                <label>Datum rođenja:</label><br/>
-                <input class="input" type="date" name="dateOfBirth" value=" " v-model = "user.date"><br/><br/><br/>
-                <input id="submitRegistration" type="submit" value="Dodaj" v-on:click = "addDeliverer">
+                <label class="restaurantItemLabels"> Datum rođenja:</label><br/>
+                <input class="restaurantItemInput" type="date" name="dateOfBirth" value=" " v-model = "user.date"><br/><br/><br/>
+                <input class="restaurantItemButtons" type="submit" value="Dodaj" v-on:click = "addDeliverer">
             </form>
+          </div>
         </div>   
-         <div v-if="this.showRestaurant" id="managerRegistration">
-            <h1 class="manager">Novi restoran</h1>
+         <div v-if="this.showRestaurant"  class="addRestaurantItem">
+         <div class="addRestaurantItemComponents">
+         	<span class="addRestaurantItemClose" v-on:click="closeAddingRestaurant">&times;</span>
+            <h1 class="addRestaurantHeader">Novi restoran</h1>
             <form>
-                <br/>
-                <label>Naziv restorana:</label><br/>
-                <input class="input" type="text" name="name" v-model = "restaurant.name"><br/><br/>
-                <label>Tip:</label><br/>
-                <select name="type" id="gender" v-model = "restaurant.type">
+                <label class="restaurantItemLabels" >Naziv restorana:</label><br/>
+                <input class="restaurantItemInput" type="text" name="name" v-model = "restaurant.name"><br/><br/>
+                <label class="restaurantItemLabels">Tip:</label><br/>
+                <select class="restaurantItemInput" name="type" v-model = "restaurant.type">
                     <option value="BURGERI">Burgeri</option>
                     <option value="GYROS">Giros</option>
                     <option value="ITALIJANSKA">Italijanska</option>
@@ -226,19 +233,19 @@ Vue.component("admin", {
                     <option value="FASTFOOD">Brza hrana</option>
                 </select>
                 <br/><br/> 
-                <label>Logo restorana:</label><br/>
+                <label class="restaurantItemLabels">Logo restorana:</label><br/>
                 <form action="/action_page.php" >
-				  <input v-model = "restaurant.image" type="file" id="image" name="image" accept="image/*">
+				  <input v-model = "restaurant.image" class="addRestaurantItemImage" type="file" id="image" name="image" accept="image/*">
 				</form>
-				<br/><br/>
-				  <label>Manager:</label><br/>
-                <select name="manager" v-model = "managerID" >
+			
+				  <label class="restaurantItemLabels" >Manager:</label><br/>
+                <select name="manager" class="restaurantItemInput"  v-model = "managerID" >
    					<option v-for="m in managers" v-if="m.restaurant == null" v-bind:value="m.username"> {{m.name}} {{m.lastname}}, username:{{m.username}} </option>
                 </select>
                 <br/><br/> 	
-                <input id="submitRegistration" type="submit" value="Dodaj" v-on:click = "addRestaurant">
+                <input class="restaurantItemButtons" type="submit" value="Dodaj" v-on:click = "addRestaurant">
             </form>
-        
+        </div>
         </div>   
         </div>
     	`,
@@ -338,11 +345,36 @@ Vue.component("admin", {
 				this.showRestaurant = false
 			}	
 			else if(this.object == 'RESTORAN'){
-				this.showRestaurant = true
-				this.showManager = false
-				this.showDeliverer = false
+				let availableManagers = 0
+	    		for(m of this.managers){
+	    			if(m.restaurant == null){
+	    				availableManagers++
+	    			}
+	    		}
+	    		alert(availableManagers)
+	    		if(availableManagers == 0){
+	    			alert('Ne postoji menadžer bez restorana! Dodajte novog!')
+	    			this.showRestaurant = false
+					this.showManager = true
+					this.showDeliverer = false
+	    		}
+	    		else{
+	    			this.showRestaurant = true
+					this.showManager = false
+					this.showDeliverer = false
+	    		}
+			
 			}
 		},
+		closeAddingManager : function() {
+	   		this.showManager = false
+	    },
+		closeAddingRestaurant : function() {
+	   		this.showRestaurant = false
+	    },
+	    closeAddingDeliverer : function(){
+	    	this.showDeliverer = false
+	    },
     	addManager: function(){
     		var exists = false
     		for(oldUser of this.users){
@@ -388,7 +420,7 @@ Vue.component("admin", {
     		this.restaurant.image = "images/" + array[2]
     		this.managerDTO.restaurant = this.restaurant
     		this.managerDTO.username = this.managerID
-    		var exists = false
+    		let exists = false
     		if(exists){
     			event.preventDefault()
     			alert('Korisničko ime je zauzeto!')
@@ -426,6 +458,9 @@ Vue.component("admin", {
 		   
 		},
 		filter : function() {
+			this.sortName = false;
+		    this.sortLastName = false;
+		    this.sortUsername = false;
 			if(this.filterType == "all"){
 				this.filterOK = false
 			}

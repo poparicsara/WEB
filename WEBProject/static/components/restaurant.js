@@ -6,11 +6,12 @@ Vue.component("restaurant", {
 			item : {name: '', price: '', type: '', amount: '', description: '', image: null},
 			selectedItem: false,
 			edit : {oldName: '', name: '', price: '', type: '', amount: '', description: '', image: null},
+			restaurantName : ''
 	    }
 	},
 	    template: ` 
 	    <div>
-	        <h1 class="restaurantHeader">Ime restorana</h1>
+	        <h1 class="restaurantHeader">{{this.restaurantName}}</h1>
 	        <input class="restaurantSearchBox" type="text" name="search" placeholder="Pretraži...">
 	        <img class="restaurantItemsSearchIMG" src="images/search.png"/>
 	        <br/><br/>
@@ -93,10 +94,12 @@ Vue.component("restaurant", {
 		mounted () {
         axios
           .get('rest/restorauntItems/')
-          .then(response => (this.items = response.data))
-     	}
-    	,
-    	methods: {
+          .then(response => (this.items = response.data));
+          axios
+          .get('rest/managerRestaurant/')
+          .then(response => (this.restaurantName = response.data))  
+        },
+    	methods: {    	
 	    	orders : function() {
 	    		router.push(`/restaurantOrders`);
 	    	},
@@ -105,6 +108,7 @@ Vue.component("restaurant", {
 	    	},
 	    	addRestaurantItem : function() {
 	    		this.addItem = true
+	    	
 	    	},
 	    	closeAdding : function() {
 	    		this.addItem = false

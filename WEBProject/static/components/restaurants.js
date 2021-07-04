@@ -109,12 +109,12 @@ Vue.component("restaurants", {
            			</div>
            			<div v-else-if="filterOK">
            				 <div v-for="(r, index) in restaurants">
-	           		    <div class="restaurants" v-if="r.type == filterType">
+	           		     <div class="restaurants" v-if="r.type == filterType">
 	           		    	<img class="restaurants" :src = r.image > <br>
 				      		<label class="title">{{r.name}} </label> <br>
 				      		<label>{{r.type}}</label> <br>
 				      		<label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label> 
-				      	</div> 	
+				      	 </div> 	
 			      		</div>
            			</div>
            			<div v-else>
@@ -186,6 +186,8 @@ Vue.component("restaurants", {
 		   
 		},
 		filter : function() {
+			this.sortAddress = false;
+			this.sortName = false;
 			if(this.filterType == "all"){
 				this.filterOK = false
 			}
