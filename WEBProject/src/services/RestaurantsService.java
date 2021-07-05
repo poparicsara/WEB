@@ -7,7 +7,10 @@ import java.io.Writer;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -45,8 +48,8 @@ public class RestaurantsService {
 	public List<OrderDTO> getRestaurantOrders(String restaurantName) throws Exception {
 		restaurantOrders = new ArrayList<OrderDTO>();
 		for (Order order : getOrders()) {
-			if(order.getRestaurant().getName().equals(restaurantName)) {
-				restaurantOrders.add(setOrder(order));
+			if(order.getRestaurant() == 101) {
+				restaurantOrders.add(setOrderToDTO(order));
 			}
 		}
 		return restaurantOrders;
@@ -75,16 +78,13 @@ public class RestaurantsService {
 		return null;
 	}
 	
-	private ItemDTO setItemToDTO(Item item) {
-		ItemDTO i = new ItemDTO();
-		i.setName(item.getName());
-		i.setPrice(getItemPrice(item.getPrice()));
-		i.setType(getItemType(item.getType()));
-		i.setRestaurant(item.getRestaurantID());
-		i.setAmount(getItemAmount(item));
-		i.setDescription(item.getDescription());
-		i.setImage(item.getImage());
-		return i;
+	public void changeOrderStatus(OrderDTO order) throws Exception {
+		Order newOrder = setDTOToOrder(order);
+		orders = getOrders();
+		int index = getOrderIndex(order.getId());
+		orders.remove(index);
+		orders.add(index, newOrder);
+		saveOrderChange(orders);
 	}
 	
 	public Item getRestaurantItemByIndex(int index) throws Exception {
@@ -104,6 +104,44 @@ public class RestaurantsService {
 			}
 		}
 		saveChange(restaurants);
+	}
+	
+	private int getOrderIndex(String id) throws Exception {
+		int index = 0;
+		for (Order order : getOrders()) {
+			if(order.getId() == Integer.parseInt(id)) {
+				break;
+			}
+			index++;
+		}
+		return index;
+	}
+	
+	@SuppressWarnings("deprecation")
+	private Order setDTOToOrder(OrderDTO o) {
+		Order order = new Order();
+		order.setId(Integer.parseInt(o.getId()));
+		order.setItems(o.getItems());
+		order.setRestaurant(Integer.parseInt(o.getRestaurant()));
+		order.setDate(o.getDate());
+		order.setPrice(new Double(o.getPrice()));
+		order.setCustomerUsername(o.getCustomerUsername());
+		order.setStatus(OrderStatus.WAITING);
+		return order;
+	}
+	
+	
+	
+	private ItemDTO setItemToDTO(Item item) {
+		ItemDTO i = new ItemDTO();
+		i.setName(item.getName());
+		i.setPrice(getItemPrice(item.getPrice()));
+		i.setType(getItemType(item.getType()));
+		i.setRestaurant(item.getRestaurantID());
+		i.setAmount(getItemAmount(item));
+		i.setDescription(item.getDescription());
+		i.setImage(item.getImage());
+		return i;
 	}
 	
 	private String getItemPrice(double price) {
@@ -187,6 +225,12 @@ public class RestaurantsService {
 		writer.close();
 	}
 	
+	private void saveOrderChange(List<Order> orders) throws IOException {
+		Writer writer = new FileWriter(ordersPath);
+		gson.toJson(orders, writer);
+		writer.close();
+	}
+	
 	private ItemType setItemType(String type) {
 		if(type.equals("FOOD")) {
 			return ItemType.FOOD;
@@ -204,14 +248,15 @@ public class RestaurantsService {
 		return null;
 	}
 	
-	private OrderDTO setOrder(Order o) throws Exception {
+	private OrderDTO setOrderToDTO(Order o) throws Exception {
 		OrderDTO order = new OrderDTO();
 		order.setDate(o.getDate());
-		order.setId(o.getId());
+		order.setId(String.valueOf(o.getId()));
 		order.setItems(o.getItems());
-		order.setPrice(Double.toString(o.getPrice()) + " RSD");
-		order.setRestaurant(o.getRestaurant());
+		order.setPrice(Double.toString(o.getPrice()));
+		order.setRestaurant(String.valueOf(o.getRestaurant()));
 		order.setStatus(setOrderStatus(o.getStatus()));
+		order.setCustomerUsername(o.getCustomerUsername());
 		order.setCustomerFullName(userService.getUserFullName(o.getCustomerUsername()));
 		return order;
 	}
@@ -229,6 +274,20 @@ public class RestaurantsService {
 			return "DOSTAVLJENA";
 		} else {
 			return "OTKAZANA";
+		}
+	}
+	
+	private OrderStatus setStringToOrderStatus(String status) {
+		if(status.equals("U PRIPREMI")) {
+			return OrderStatus.PREPARATION;
+		} else if(status.equals("ČEKA DOSTAVLJAČA")) {
+			return OrderStatus.WAITING;
+		} else if(status.equals("U TRANSPORTU")) {
+			return OrderStatus.TRANSPORT;
+		} else if(status.equals("DOSTAVLJENA")) {
+			return OrderStatus.DELIVERED;
+		} else {
+			return OrderStatus.CANCELED;
 		}
 	}
 	

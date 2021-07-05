@@ -11,10 +11,11 @@ public class OrderDTO {
 
 	private String id;
 	private ArrayList<Item> items;
-	private Restaurant restaurant;
+	private String restaurant;
 	private Date date;
 	private String price;
 	private String customerFullName;
+	private String customerUsername;
 	private String status;
 	
 	
@@ -23,8 +24,8 @@ public class OrderDTO {
 	}
 
 
-	public OrderDTO(String id, ArrayList<Item> items, Restaurant restaurant, Date date, String price,
-			String customerFullName, String status) {
+	public OrderDTO(String id, ArrayList<Item> items, String restaurant, Date date, String price,
+			String customerFullName, String customerUsername, String status) {
 		super();
 		this.id = id;
 		this.items = items;
@@ -32,7 +33,18 @@ public class OrderDTO {
 		this.date = date;
 		this.price = price;
 		this.customerFullName = customerFullName;
+		this.customerUsername = customerUsername;
 		this.status = status;
+	}
+
+
+	public String getCustomerUsername() {
+		return customerUsername;
+	}
+
+
+	public void setCustomerUsername(String customerUsername) {
+		this.customerUsername = customerUsername;
 	}
 
 
@@ -56,12 +68,12 @@ public class OrderDTO {
 	}
 
 
-	public Restaurant getRestaurant() {
+	public String getRestaurant() {
 		return restaurant;
 	}
 
 
-	public void setRestaurant(Restaurant restaurant) {
+	public void setRestaurant(String restaurant) {
 		this.restaurant = restaurant;
 	}
 

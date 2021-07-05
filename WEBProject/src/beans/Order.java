@@ -7,9 +7,9 @@ import enums.OrderStatus;
 
 public class Order {
 
-	private String id;
+	private int id;
 	private ArrayList<Item> items;
-	private Restaurant restaurant;
+	private int restaurantID;
 	private Date date;
 	private double price;
 	private String customerUsername;
@@ -20,23 +20,23 @@ public class Order {
 		super();
 	}
 
-	public Order(String id, ArrayList<Item> items, Restaurant restaurant, Date date, double price, String customerUsername,
+	public Order(int id, ArrayList<Item> items, int restaurantID, Date date, double price, String customerUsername,
 			OrderStatus status) {
 		super();
 		this.id = id;
 		this.items = items;
-		this.restaurant = restaurant;
+		this.restaurantID = restaurantID;
 		this.date = date;
 		this.price = price;
 		this.customerUsername = customerUsername;
 		this.status = status;
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 	
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	
@@ -48,12 +48,12 @@ public class Order {
 		this.items = items;
 	}
 	
-	public Restaurant getRestaurant() {
-		return restaurant;
+	public int getRestaurant() {
+		return restaurantID;
 	}
 	
-	public void setRestaurant(Restaurant restaurant) {
-		this.restaurant = restaurant;
+	public void setRestaurant(int restaurant) {
+		this.restaurantID = restaurant;
 	}
 	
 	public Date getDate() {

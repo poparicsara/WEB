@@ -15,6 +15,7 @@ import dto.ItemDTO;
 import beans.Customer;
 import beans.Restaurant;
 import dto.ManagerDTO;
+import dto.OrderDTO;
 import dto.UserDTO;
 import services.ItemsService;
 import services.ManagerService;
@@ -131,6 +132,13 @@ public class Main {
 		get("rest/managers/",(req, res) ->{
 			res.type("application/json");
 			return g.toJson(managerService.getManagers());
+		});
+		
+		post("/rest/changeOrderStatus/", (req, res) -> {
+			res.type("application/json");
+			OrderDTO order = g.fromJson(req.body(), OrderDTO.class);
+			restaurantsService.changeOrderStatus(order);
+			return "SUCCESS";
 		});
 		
 	}
