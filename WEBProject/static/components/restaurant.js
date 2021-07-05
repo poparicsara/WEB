@@ -3,9 +3,9 @@ Vue.component("restaurant", {
 	    return {
 			items: null,
 			addItem: false,
-			item : {name: '', price: '', type: '', amount: '', description: '', image: null},
+			item : {name: '', price: '', type: '', amount: '0', description: '', image: ''},
 			selectedItem: false,
-			edit : {oldName: '', name: '', price: '', type: '', amount: '', description: '', image: null},
+			edit : {oldName: '', name: '', price: '', type: '', amount: '0', description: '', image: ''},
 	    }
 	},
 	    template: ` 
@@ -47,16 +47,16 @@ Vue.component("restaurant", {
 		        	<h1 class="addRestaurantHeader">Dodavanje novog artikla</h1>
 		            <form>  
 		                <label class="restaurantItemLabels">Naziv artikla:</label><br/>
-		                <input class="restaurantItemInput" type="text" name="name" v-model = "item.name"><br/><br/>
+		                <input class="restaurantItemInput" type="text" name="name" v-model = "item.name" required ><br/><br/>
 		                <label class="restaurantItemLabels">Cena:</label><br/>
-		                <input class="restaurantItemInput" type="text" name="price" v-model = "item.price"><br/><br/>
+		                <input class="restaurantItemInput" type="number" name="price" v-model = "item.price" required ><br/><br/>
 		                <label class="restaurantItemLabels">Tip:</label><br/>
-		                <select name="itemType" v-model = "item.type" class="restaurantItemInput">
+		                <select name="itemType" v-model = "item.type" class="restaurantItemInput" selected="FOOD">
 		                    <option value="FOOD">hrana</option>
 		                    <option value="DRINK">piće</option>
 		                </select><br/><br/>
 		                <label class="restaurantItemLabels">Kolicina:</label><br/>
-		                <input class="restaurantItemInput" type="text" name="amount" v-model = "item.amount"><br/><br/>
+		                <input class="restaurantItemInput" type="number" name="amount" v-model="item.amount"><br/><br/>
 		                <label class="restaurantItemLabels">Opis:</label><br/>
 		                <input class="restaurantItemInput" type="text" name="description" v-model = "item.description"><br/><br/>
 		                <form action="/action_page.php" >
@@ -75,14 +75,14 @@ Vue.component("restaurant", {
 		        	<label class="editRestaurantItemLabel">Naziv:</label><br/>
 		        	<input class="editRestaurantItemInput" type="text" v-model="edit.name"></input><br/></br>
 		        	<label class="editRestaurantItemLabel">Cena:</label><br/>
-		        	<input class="editRestaurantItemInput" type="text" v-model="edit.price"></input><br/></br>
+		        	<input class="editRestaurantItemInput" type="text" v-model="edit.price" pattern="[0-9]*"></input><br/></br>
 		        	<label class="editRestaurantItemLabel">Tip:</label><br/>
 		        	<select class="editRestaurantItemInput" v-model="edit.type" selected="edit.type">
 		        		<option value="FOOD">hrana</option>
 		        		<option value="DRINK">pice</option>
 		        	</select><br/><br/>
 		        	<label class="editRestaurantItemLabel">Kolicina:</label><br/>
-		        	<input class="editRestaurantItemInput" type="text" v-model="edit.amount"></input><br/><br/>
+		        	<input class="editRestaurantItemInput" type="text" v-model="edit.amount" pattern="[0-9]"><br/><br/>
 		        	<label class="editRestaurantItemLabel">Opis:</label><br/>
 		        	<input class="editRestaurantItemInput" type="text" v-model="edit.description"></input><br/><br/>
 		        	<div class="editRestaurantItemButtons">
@@ -114,12 +114,19 @@ Vue.component("restaurant", {
 	    		this.addItem = false
 	    	},
 	    	saveItem : function() {
-	    		let array = this.item.image.split("\\")
-            	this.item.image = "images/items/" + array[2]
-	    		event.preventDefault()
-    			axios
-    			.post(`/rest/addItemToRestaurant/`, this.item)
-    			.then(response => (this.$router.go()))
+	    		this.addItem = true
+	    		if(this.item.price == ''){
+	    			alert("Polje za unos cene je obavezno popuniti!");
+	    		} else if(this.item.image == ''){
+	    			alert("Obavezno je odabrati sliku!");
+	    		} else {
+	    			let array = this.item.image.split("\\")
+	            	this.item.image = "images/items/" + array[2]
+		    		event.preventDefault()
+	    			axios
+	    			.post(`/rest/addItemToRestaurant/`, this.item)
+	    			.then(response => (this.$router.go()))
+	    		}
 	    	},
 	    	cancelAdding : function() {
 	    		this.addItem = false
