@@ -68,24 +68,28 @@ Vue.component("restaurant", {
 		            </form>
 	            </div>
 	        </div>
-	        <div class="selectedRestaurantItem" v-if="selectedItem">
-	        	<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-	        	<span class="selectedRestaurantItemClose" v-on:click="closeItem">&times;</span>
-	        	<label>Naziv:</label><br/>
-	        	<input type="text" v-model="edit.name"></input><br/>
-	        	<label>Cena:</label><br/>
-	        	<input type="text" v-model="edit.price"></input><br/>
-	        	<label>Tip:</label><br/>
-	        	<select v-model="edit.type" selected="edit.type">
-	        		<option value="FOOD">hrana</option>
-	        		<option value="DRINK">pice</option>
-	        	</select><br/>
-	        	<label>Kolicina:</label><br/>
-	        	<input type="text" v-model="edit.amount"></input><br/>
-	        	<label>Opis:</label><br/>
-	        	<input type="text" v-model="edit.description"></input><br/>
-	        	<button v-on:click="saveEditing">Sacuvaj</button>
-	        	<button v-on:click="cancelEditing">Odustani</button>
+	        <div class="editRestaurantItem" v-if="selectedItem">
+	        	<div class="editRestaurantItemComponents">
+		        	<span class="editRestaurantItemClose" v-on:click="closeItem">&times;</span>
+		        	<h1 class="editRestaurantItemHeader">Izmena artikla</h1>
+		        	<label class="editRestaurantItemLabel">Naziv:</label><br/>
+		        	<input class="editRestaurantItemInput" type="text" v-model="edit.name"></input><br/></br>
+		        	<label class="editRestaurantItemLabel">Cena:</label><br/>
+		        	<input class="editRestaurantItemInput" type="text" v-model="edit.price"></input><br/></br>
+		        	<label class="editRestaurantItemLabel">Tip:</label><br/>
+		        	<select class="editRestaurantItemInput" v-model="edit.type" selected="edit.type">
+		        		<option value="FOOD">hrana</option>
+		        		<option value="DRINK">pice</option>
+		        	</select><br/><br/>
+		        	<label class="editRestaurantItemLabel">Kolicina:</label><br/>
+		        	<input class="editRestaurantItemInput" type="text" v-model="edit.amount"></input><br/><br/>
+		        	<label class="editRestaurantItemLabel">Opis:</label><br/>
+		        	<input class="editRestaurantItemInput" type="text" v-model="edit.description"></input><br/><br/>
+		        	<div class="editRestaurantItemButtons">
+			        	<button class="editRestaurantItemButton" v-on:click="saveEditing">Sačuvaj</button>
+			        	<button class="editRestaurantItemButton"s v-on:click="cancelEditing">Odustani</button>
+		        	</div>
+	        	</div>
 	        </div>
         </div>
     	`
