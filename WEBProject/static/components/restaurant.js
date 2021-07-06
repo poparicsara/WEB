@@ -8,7 +8,8 @@ Vue.component("restaurant", {
 			edit : {oldName: '', name: '', price: '', type: '', amount: '', description: '', image: ''},
 			restaurantName : '',
 			username: null,
-			id: null
+			id: null,
+			newPage: false
 	    }
 	},
 	    template: ` 
@@ -125,8 +126,7 @@ Vue.component("restaurant", {
                 </div>
 	        </div>
         </div>
-        <div v-else>
-        </div>
+      
     	`
     	,
 		mounted () {
@@ -144,16 +144,20 @@ Vue.component("restaurant", {
         },
         
         destroyed() {
+        	if(!this.newPage){
         		axios.post(`/rest/logOut`)
     			.then(response => ('success'));
     			  router.push(`/`);
+    		}
         },
         
     	methods: {    	
-	    	orders : function() {
+	    	orders : function() {	    
+	    		this.newPage = true		
 	    		router.push(`/restaurantOrders`);
 	    	},
 	    	customers : function() {
+	    		this.newPage = true	    	
 	    		router.push(`/restaurantCustomers`)
 	    	},
 	    	addRestaurantItem : function() {

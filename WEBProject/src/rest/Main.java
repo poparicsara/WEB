@@ -21,6 +21,9 @@ import services.ManagerService;
 import services.RestaurantsService;
 import services.UserService;
 
+
+
+
 public class Main {
 	
 	private static Gson g = new Gson();
@@ -31,7 +34,7 @@ public class Main {
 	private static int ID = -1;
 
 	public static void main(String[] args) throws Exception{
-		port(8080);
+		port(80);
 
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
 		
