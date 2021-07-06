@@ -31,6 +31,7 @@ Vue.component("logIn", {
          	.get('rest/managerRestaurant/', this.username)
          	.then(response => (this.restaurant = response.data))
      },
+    
      methods: {
     	logIn : function() {
     	    var exists = false
@@ -43,13 +44,13 @@ Vue.component("logIn", {
     		if(exists){
 				if(user.userType.toString() == 'ADMIN'){
 					event.preventDefault();
-					axios.post('/rest/logingIn')
+					axios.post('/rest/logingIn', this.username)
 					.then(response => (router.push(`/admin`)));
 				}
 				else if(user.userType.toString() == 'MANAGER'){
 					event.preventDefault();
-					axios.post('/rest/logingIn')
-					.then(response => (router.push(`/restaurant`), this.restaurant));
+					axios.post('/rest/logingIn', this.username)
+					.then(response => (router.push(`/restaurant`)));
 				}
 				else{
 					alert('Vas deo je jos uvek u doradi, pricekajte...')
