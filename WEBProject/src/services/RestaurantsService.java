@@ -131,7 +131,6 @@ public class RestaurantsService {
 	}
 	
 	
-	
 	private ItemDTO setItemToDTO(Item item) {
 		ItemDTO i = new ItemDTO();
 		i.setName(item.getName());

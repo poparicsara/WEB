@@ -139,9 +139,7 @@ Vue.component("restaurant", {
           axios
           .get('rest/loggedInUser/', this.username)
           .then(response => (this.username = response.data));
-          axios
-          .post('rest/showRestaurant/', this.id)
-		  .then(response => (this.id = response.data));
+         
           
         },
         
@@ -170,6 +168,7 @@ Vue.component("restaurant", {
 	    		if(this.item.price == ''){
 	    			alert("Polje za unos cene je obavezno popuniti!");
 	    		} else if(this.item.image == ''){
+	    			event.preventDefault()
 	    			alert("Obavezno je odabrati sliku!");
 	    		} else {
 	    			let array = this.item.image.split("\\")
