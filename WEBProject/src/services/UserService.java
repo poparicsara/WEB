@@ -28,6 +28,7 @@ public class UserService {
 	private User newUser = new User();
 	private String filePath = "./static/users.json";
 	private Gson gson = new Gson();
+	private ManagerService managerService = new ManagerService();
 	
 	public List<User> getUsers() throws Exception {
 	    Type listType = new TypeToken<ArrayList<User>>() {}.getType();
@@ -69,12 +70,13 @@ public class UserService {
 	
 	private User getEditedUser(EditUserDTO dto) throws ParseException {
 		User user = new User();
-		user.setUsername(user.getUsername());
-		user.setPassword(user.getPassword());
-		user.setName(user.getName());
-		user.setLastname(user.getLastname());
+		user.setUsername(dto.getUsername());
+		user.setPassword(dto.getPassword());
+		user.setName(dto.getName());
+		user.setLastname(dto.getLastname());
 		setDate(dto.getDate(), user);
 		setGender(dto.getGender(), user);
+		setUserType(dto.getUserType(), user);
 		return user;
 	}
 	
@@ -114,6 +116,9 @@ public class UserService {
 		users = getUsers();
 		users.remove(index);
 		users.add(index, user);
+		if(user.getUserType() == UserType.MANAGER) {
+			managerService.editManagerUsername(dto.getOldUsername(), dto.getUsername());
+		}
 		saveChange(users);
 	}
 	
@@ -136,6 +141,7 @@ public class UserService {
 		dto.setLastname(user.getLastname());
 		dto.setGender(user.getGender().toString());
 		dto.setDate(getDate(user.getDateOfBirth()));
+		dto.setType(getUserType(user.getUserType()));
 		return dto;
 	}
 	
@@ -201,6 +207,32 @@ public class UserService {
 		} else {
 			user.setGender(Gender.MALE);
 		}
+	}
+	
+	private void setUserType(String type, User user) {
+		if(type.equals("CUSTOMER")) {
+			user.setUserType(UserType.CUSTOMER);
+		} else if(type.equals("MANAGER")) {
+			user.setUserType(UserType.MANAGER);
+		} else if(type.equals("ADMIN")) {
+			user.setUserType(UserType.ADMIN);
+		} else {
+			user.setUserType(UserType.DELIVERER);
+		}
+	}
+	
+	private String getUserType(UserType userType) {
+		String type = "";
+		if(userType == UserType.CUSTOMER) {
+			type = "CUSTOMER";
+		} else if(userType == UserType.ADMIN) {
+			type = "ADMIN";
+		} else if(userType == UserType.MANAGER) {
+			type = "MANAGER";
+		} else {
+			type = "DELIVERER";
+		}
+		return type;
 	}
 	
 	private void saveChange(List<User> users) throws IOException {

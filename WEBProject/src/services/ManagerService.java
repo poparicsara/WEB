@@ -1,6 +1,7 @@
 package services;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
@@ -67,6 +68,16 @@ public class ManagerService {
 		writer.close();
 	}
 	
+	public void editManagerUsername(String oldUsername, String newUsername) throws Exception {
+		managers = getManagers();
+		for (Manager manager : managers) {
+			if(manager.getUsername().equals(oldUsername)) {
+				manager.setUsername(newUsername);
+			}
+		}
+		saveChange(managers);
+	}
+	
 	public void addManager(UserDTO user) throws Exception {
 		managers = getManagers();
 		setManager(user);
@@ -98,6 +109,12 @@ public class ManagerService {
 		} else {
 			manager.setGender(Gender.MALE);
 		}
+	}
+	
+	private void saveChange(List<Manager> managers) throws IOException {
+		Writer writer = new FileWriter(filePath);
+		gson.toJson(managers, writer);
+		writer.close();
 	}
 	
 }

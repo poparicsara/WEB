@@ -250,8 +250,8 @@ Vue.component("restaurant", {
 	    		}
     		},
     		managerProfile : function() {
-    			this.profile = true;
-    			this.editUser.oldUsername = this.user.username;
+    			this.newPage = true		
+	    		router.push(`/profile`);
     		},
     		closeProfile: function() {
     			this.profile = false;

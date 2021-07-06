@@ -177,6 +177,7 @@ public class Main {
 			res.type("application/json");
 			EditUserDTO user = g.fromJson(req.body(), EditUserDTO.class);
 			userService.editUser(user);
+			loggedInUser = user.getUsername();
 			return "SUCCESS";
 		});
 		
