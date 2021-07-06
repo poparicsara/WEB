@@ -13,6 +13,7 @@ import javax.print.attribute.standard.JobOriginatingUserName;
 import com.google.gson.Gson;
 
 import dto.EditItemDTO;
+import dto.EditUserDTO;
 import dto.ItemDTO;
 import dto.ManagerDTO;
 import dto.OrderDTO;
@@ -31,7 +32,7 @@ public class Main {
 	private static int ID = -1;
 
 	public static void main(String[] args) throws Exception{
-		port(8080);
+		port(80);
 
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
 		
@@ -158,6 +159,21 @@ public class Main {
 			res.type("application/json");
 			OrderDTO order = g.fromJson(req.body(), OrderDTO.class);
 			restaurantsService.changeOrderStatus(order);
+			return "SUCCESS";
+		});
+		
+		get("rest/loggedUser/",(req, res) ->{
+			res.type("application/json");
+			//System.out.println(loggedInUser);
+			UserDTO user = userService.getLoggedUser(loggedInUser);
+			//System.out.println(user.getUsername());
+			return g.toJson(user);
+		});
+		
+		post("/rest/editProfile/", (req, res) -> {
+			res.type("application/json");
+			EditUserDTO user = g.fromJson(req.body(), EditUserDTO.class);
+			userService.editUser(user);
 			return "SUCCESS";
 		});
 		

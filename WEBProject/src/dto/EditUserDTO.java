@@ -1,7 +1,8 @@
 package dto;
 
-public class UserDTO {
+public class EditUserDTO {
 
+	private String oldUsername;
 	private String username;
 	private String password;
 	private String name;
@@ -10,27 +11,29 @@ public class UserDTO {
 	private String date;
 	private String userType;
 	
-	public UserDTO() {
+	public EditUserDTO() {
 		super();
 	}
 
-	public UserDTO(String username, String password, String name, String lastname, String gender, String date, String type) {
+	public EditUserDTO(String oldUsername, String username, String password, String name, String lastname,
+			String gender, String date, String userType) {
 		super();
+		this.oldUsername = oldUsername;
 		this.username = username;
 		this.password = password;
 		this.name = name;
 		this.lastname = lastname;
 		this.gender = gender;
 		this.date = date;
-		this.userType = type;
+		this.userType = userType;
 	}
 
-	public String getType() {
-		return userType;
+	public String getOldUsername() {
+		return oldUsername;
 	}
 
-	public void setType(String type) {
-		this.userType = type;
+	public void setOldUsername(String oldUsername) {
+		this.oldUsername = oldUsername;
 	}
 
 	public String getUsername() {
@@ -79,6 +82,14 @@ public class UserDTO {
 
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
 	}
 	
 	

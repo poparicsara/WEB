@@ -8,7 +8,10 @@ Vue.component("restaurant", {
 			edit : {oldName: '', name: '', price: '', type: '', amount: '', description: '', image: ''},
 			restaurantName : '',
 			username: null,
-			id: null
+			id: null,
+			profile: false,
+			user : null,
+			editUser: null
 	    }
 	},
 	    template: ` 
@@ -19,7 +22,7 @@ Vue.component("restaurant", {
 	            	<div class="dropdown">
 	                <button> <img id="adminImage" src="images/manager.png"> </button>
 		                <div class="dropdown-content">
-		                  <button>Profil</button>
+		                  <button v-on:click="managerProfile">Profil</button>
 		                  <button v-on:click = "logOut"> Odjava</button>
 		                </div>
 	            	</div>
@@ -102,8 +105,31 @@ Vue.component("restaurant", {
 		        	<input class="editRestaurantItemInput" type="text" v-model="edit.description"></input><br/><br/>
 		        	<div class="editRestaurantItemButtons">
 			        	<button class="editRestaurantItemButton" v-on:click="saveEditing">Sačuvaj</button>
-			        	<button class="editRestaurantItemButton"s v-on:click="cancelEditing">Odustani</button>
+			        	<button class="editRestaurantItemButton" v-on:click="cancelEditing">Odustani</button>
 		        	</div>
+	        	</div>
+	        </div>
+	        <div class="profileModal" v-if="profile">
+	        	<div class="profileModalComponents">
+	        		<span class="profileModalClose" v-on:click="closeProfile">&times;</span>
+	        		<h1 class="profileModalHeader">Profil</h1>
+	        		<label class="profileModalLabel">Korisničko ime:</label><br/>
+	        		<input class="profileModalInput" v-model="user.username" type="text"><br/><br/>
+	        		<label class="profileModalLabel">Lozinka:</label><br/>
+	        		<input class="profileModalInput" v-model="user.password" type="text"><br/><br/>
+	        		<label class="profileModalLabel">Ime:</label><br/>
+	        		<input class="profileModalInput" v-model="user.name" type="text"><br/><br/>
+	        		<label class="profileModalLabel">Prezime:</label><br/>
+	        		<input class="profileModalInput" v-model="user.lastname" type="text"><br/><br/>
+	        		<label class="profileModalLabel">Pol:</label><br/>
+	        		<select class="profileModalInput" v-model="user.gender" selected="user.gender">
+	        			<option value="FEMALE">zenski</option>
+	        			<option value="MALE">muski</option>		
+	        		</select><br/><br/>
+	        		<label class="profileModalLabel">Datum rodjenja:</label><br/>
+	        		<input class="profileModalInput" v-model="user.date" type="date"><br/><br/>
+	        		<button class="profileModalButton" v-on:click="saveProfileEdit">Sačuvaj</button>
+			        <button class="profileModalButton" v-on:click="cancelProfileEdit">Odustani</button>
 	        	</div>
 	        </div>
         </div>
@@ -139,7 +165,9 @@ Vue.component("restaurant", {
           axios
           .get('rest/loggedInUser/', this.username)
           .then(response => (this.username = response.data));
-         
+         axios
+         .get('rest/loggedUser/')
+         .then(response => (this.user = response.data));
           
         },
         
@@ -211,12 +239,35 @@ Vue.component("restaurant", {
     			.then(response => (this.$router.go()))
 	    	},
 	    	logOut: function() {
-    		if(confirm('Da li ste sigurni?')){
-    		  
-    			axios.post(`/rest/logOut`)
-    			.then(response => ('success'));
-    			  router.push(`/`);
-    		}	
-    	},
+	    		if(confirm('Da li ste sigurni?')){
+	    			axios.post(`/rest/logOut`)
+	    			.then(response => ('success'));
+	    			  router.push(`/`);
+	    		}
+    		},
+    		managerProfile : function() {
+    			this.profile = true;
+    			this.editUser.oldUsername = this.user.username;
+    		},
+    		closeProfile: function() {
+    			this.profile = false;
+    		},
+    		saveProfileEdit : function() {
+    			this.editUser.oldUsername = this.user.username;
+    			this.editUser.username = this.user.username;
+    			this.editUser.password = this.user.password;
+    			this.editUser.name = this.user.name;
+    			this.editUser.lastname = this.user.lastname;
+    			this.editUser.gender = this.user.gender;
+    			this.editUser.date = this.user.date;
+    			this.editUser.userType = this.user.userType;
+    			event.preventDefault()
+    			axios
+    			.post('/rest/editProfile/', this.editUser)
+    			.then(response => (this.profile = false));
+    		},
+    		cancelProfileEdit : function() {
+    			this.profile = false;
+    		}
     	},
 });
