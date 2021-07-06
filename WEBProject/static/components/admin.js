@@ -1,3 +1,4 @@
+
 Vue.component("admin", { 
 	data: function () {
 	    return {
@@ -14,7 +15,7 @@ Vue.component("admin", {
 	      managerID: '',
 	      managerDTO: {username: null, restaurant: null},
 	      user: {username: null, password: null, name: null, lastname: null, gender: '', date: ''},
-	      restaurant: {name: null, type: null, status:true, items:null, location: { address: {} }, image: ''},
+	      restaurant: {name: null, type: null, status:true, items:null, location: { address: {street : '', number : '', city: '', }, longitude:0, latitude:0 }, image: ''},
 	      searchText: '',
 	      searchOK: false,
 	      currentSort: 'name',
@@ -24,7 +25,9 @@ Vue.component("admin", {
 	      sortUsername: false,
 	      filterType: null,
 	      filterOK: false,
-	      map: false
+	      map: false,
+	      marker: null,
+	      flag : false
 	    }
 	},
 	    template: ` 
@@ -40,7 +43,7 @@ Vue.component("admin", {
 	       </div>
         </h1>
         <hr class="admin">
-        <h2 >
+        <h2>
             <label id = "new"> <a href="#" v-on:click = "addUser">+</a> </label>
              <select name="object" id="object" v-model = "object">
                     <option value="MENADZER">Menadžer</option>
@@ -239,7 +242,9 @@ Vue.component("admin", {
                 <form action="/action_page.php" >
 				  <input v-model = "restaurant.image" class="addRestaurantItemImage" type="file" id="image" name="image" accept="image/*">
 				</form>
-				
+				<button v-on:click = "showMap"> Lokacija </button>
+				<div id="mapid">
+				</div>  
 				  <label class="restaurantItemLabels" >Manager:</label><br/>
                 <select name="manager" class="restaurantItemInput"  v-model = "managerID" >
    					<option v-for="m in managers" v-if="m.restaurant == null" v-bind:value="m.username"> {{m.name}} {{m.lastname}}, username:{{m.username}} </option>
@@ -248,8 +253,10 @@ Vue.component("admin", {
                 <input class="restaurantItemButtons" type="submit" value="Dodaj" v-on:click = "addRestaurant">
             </form>
         </div>
-        </div>   
+        </div> 
+        
         </div>
+        
     	`,
     mounted () {
         axios
@@ -364,7 +371,6 @@ Vue.component("admin", {
 	    				availableManagers++
 	    			}
 	    		}
-	    		alert(availableManagers)
 	    		if(availableManagers == 0){
 	    			alert('Ne postoji menadžer bez restorana! Dodajte novog!')
 	    			this.showRestaurant = false
@@ -492,6 +498,44 @@ Vue.component("admin", {
     	},
     	rLower : function(item) {
   			return item.toLowerCase()
+  		},
+  		showMap : function() {
+  			event.preventDefault()
+  		    this.map = true
+  			var mymap = L.map('mapid').setView([45.2635752, 19.8434573], 13);
+  			L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+			    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+			    maxZoom: 18,
+			    id: 'mapbox/streets-v11',
+			    tileSize: 512,
+			    zoomOffset: -1,
+			    accessToken: 'pk.eyJ1Ijoib2dpamFoIiwiYSI6ImNrcXMzbjR0ZDE3N24zMXFhOXM5MDlmeWwifQ.V05sowv93LiOgv4O-0bIgw'
+			}).addTo(mymap);
+		
+  			function onMapClick(e) {
+  				
+        		L.esri.Geocoding.reverseGeocode()
+				  .latlng(e.latlng)
+				  .run(function (error, result, response) {
+				    // callback is called with error, result, and raw response
+				    // result.latlng contains the coordinates of the located address
+				    // result.address contains information about the match
+				    if(this.flag){
+	  					mymap.removeLayer(this.marker)
+  					}
+				    this.marker = new L.marker(e.latlng).addTo(mymap);					    			    
+				    this.flag = true
+				    let elems = result.address.LongLabel.split(',')
+				    alert(elems)
+					alert(elems[0])	    
+					let street = elems[0].split(/[ ,]+/);
+					alert(street[street.length - 1])
+					
+            		
+				  });
+			}
+			
+			mymap.on('click', onMapClick);
   		}
     },
 });

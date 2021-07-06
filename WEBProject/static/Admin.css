@@ -4,6 +4,7 @@
             left: 100px;
             top: -20px;
         }
+        
 
 		#object{
 			position:relative;
@@ -125,3 +126,6 @@
 			position:relative;
 			left:500px;
 		}
+		
+		#mapid { height: 180px; }
+		
