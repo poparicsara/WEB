@@ -44,7 +44,7 @@ Vue.component("logIn", {
     		if(exists){
 				if(user.userType.toString() == 'ADMIN'){
 					event.preventDefault();
-					axios.post('/rest/logingIn')
+					axios.post('/rest/logingIn', this.username)
 					.then(response => (router.push(`/admin`)));
 				}
 				else if(user.userType.toString() == 'MANAGER'){

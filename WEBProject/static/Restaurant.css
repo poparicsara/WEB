@@ -205,3 +205,9 @@ img{
 	background-color: white;
 	color: black;
 }
+
+div.restaurantHeaderProfil{
+	position:relative;
+	left:520px;
+	bottom:50px;
+}

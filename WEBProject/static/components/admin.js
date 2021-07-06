@@ -1,6 +1,7 @@
 Vue.component("admin", { 
 	data: function () {
 	    return {
+	      username: null,
 	      restaurants: null,
 	      object: null,
 	      showManager: false,
@@ -22,21 +23,21 @@ Vue.component("admin", {
 	      sortLastName: false,
 	      sortUsername: false,
 	      filterType: null,
-	      filterOK: false
+	      filterOK: false,
+	      map: false
 	    }
 	},
 	    template: ` 
-        <div>
+        <div v-if="username != ''">
           <h1 class="admin"> 
             <img id="adminLogo" src="images/logo.jpg">
-            <img id="adminImage" src="images/admin.png">
             <div class="dropdown">
-                <button class="dropbtn">🠗</button>
-                <div class="dropdown-content">
-                  <button>Profil</button>
-                  <button v-on:click = "logOut">Odjava</button>
-                </div>
-            </div>
+	           <button> <img id="adminImage" src="images/admin.png"> </button>
+		               <div class="dropdown-content">
+		                  <button>Profil</button>
+		                  <button v-on:click = "logOut"> Odjava</button>
+		                </div>
+	       </div>
         </h1>
         <hr class="admin">
         <h2 >
@@ -56,6 +57,7 @@ Vue.component("admin", {
 	            <img class="restaurants" :src = r.image > <br>
 	           	<label class="title">{{r.name}} </label> <br>
 	           	<label>{{r.type}}</label> 
+	           	<label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label> 
 	         </div>
          </div> 
          <div v-if="this.showUsers" >
@@ -237,7 +239,7 @@ Vue.component("admin", {
                 <form action="/action_page.php" >
 				  <input v-model = "restaurant.image" class="addRestaurantItemImage" type="file" id="image" name="image" accept="image/*">
 				</form>
-			
+				
 				  <label class="restaurantItemLabels" >Manager:</label><br/>
                 <select name="manager" class="restaurantItemInput"  v-model = "managerID" >
    					<option v-for="m in managers" v-if="m.restaurant == null" v-bind:value="m.username"> {{m.name}} {{m.lastname}}, username:{{m.username}} </option>
@@ -258,8 +260,17 @@ Vue.component("admin", {
           .then(response => (this.users = response.data)),
        axios
           .get('rest/managers/')
-          .then(response => (this.managers = response.data))
+          .then(response => (this.managers = response.data)),
+       axios
+          .get('rest/loggedInUser/', this.username)
+          .then(response => (this.username = response.data));
        
+    },
+    
+    destroyed () {
+    			axios.post(`/rest/logOut`)
+    			.then(response => (''));
+    			router.push(`/`);   	
     },
     computed: {
     	searchInLowerCase() {
@@ -322,6 +333,8 @@ Vue.component("admin", {
     methods: {
     	logOut: function() {
     		if(confirm('Da li ste sigurni?')){
+    			axios.post(`/rest/logOut`)
+    			.then(response => (''));
     			router.push(`/`);
     		}	
     	},

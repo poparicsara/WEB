@@ -118,7 +118,7 @@ Vue.component("restaurants", {
 			      		</div>
            			</div>
            			<div v-else>
-	           			<div class="restaurants" v-for="(r, index) in restaurants">           				
+	           			<div class="restaurants" v-for="(r, index) in restaurants"  v-on:click = "openRestaurant(r)">           				
 			       		    <img class="restaurants" :src = r.image > <br>
 						    <label class="title">{{r.name}} </label> <br>
 						    <label>{{r.type}}</label> <br>
@@ -132,7 +132,7 @@ Vue.component("restaurants", {
     mounted () {
         axios
           .get('rest/restaurants/')
-          .then(response => (this.restaurants = response.data))
+          .then(response => (this.restaurants = response.data))   
     },
     computed: {
   		searchInLowerCase() {
@@ -184,6 +184,11 @@ Vue.component("restaurants", {
 		    	 this.sortAddress = false;
 		    }
 		   
+		},
+		openRestaurant : function(restaurant) {
+			event.preventDefault();
+			axios.post('rest/showRestaurant/', restaurant.id)
+			.then(response => (router.push(`/restaurant`)));
 		},
 		filter : function() {
 			this.sortAddress = false;

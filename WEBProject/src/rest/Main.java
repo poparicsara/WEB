@@ -8,6 +8,8 @@ import static spark.Spark.staticFiles;
 
 import java.io.File;
 
+import javax.print.attribute.standard.JobOriginatingUserName;
+
 import com.google.gson.Gson;
 
 import dto.EditItemDTO;
@@ -84,10 +86,31 @@ public class Main {
 			return "SUCCESS";
 		});
 		
+		post("rest/logOut", (req, res) -> {
+			res.type("application/json");
+			loggedInUser = "";
+			ID = -1;
+			return "SUCCESS";
+		});
+		
 		get("rest/restorauntItems/", (req, res) -> {
 			res.type("application/json");
-			ID = managerService.getRestaurantID(loggedInUser);
+			if(!loggedInUser.isEmpty()) {
+				ID = managerService.getRestaurantID(loggedInUser);
+			}
 			return g.toJson(restaurantsService.getRestaurantItems(ID));
+		});
+		
+		get("rest/loggedInUser/", (req, res) -> {
+			res.type("application/json");
+			return g.toJson(loggedInUser);
+		});
+		
+		post("rest/showRestaurant/", (req, res) -> {
+			res.type("application/json");
+			ID = g.fromJson(req.body(), int.class);
+			return "SUCCESS";
+					
 		});
 		
 		get("rest/managerRestaurant/", (req, res) -> {
@@ -105,7 +128,6 @@ public class Main {
 			String username = g.fromJson(req.body(), String.class);
 			return g.toJson(userService.getUserFullName(username));
 		});
-		
 		
 		post("/rest/addItemToRestaurant/", (req, res) -> {
 			res.type("application/json");

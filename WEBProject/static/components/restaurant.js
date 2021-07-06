@@ -6,12 +6,26 @@ Vue.component("restaurant", {
 			item : {name: '', price: '', type: '', amount: '', description: '', image: null},
 			selectedItem: false,
 			edit : {oldName: '', name: '', price: '', type: '', amount: '', description: '', image: null},
-			restaurantName : ''
+			restaurantName : '',
+			username: null,
+			id: null
 	    }
 	},
 	    template: ` 
-	    <div>
-	        <h1 class="restaurantHeader">{{this.restaurantName}}</h1>
+	    <div v-if = "username != ''">
+	        <h1 class="restaurantHeader">
+	        	<label>{{this.restaurantName}}</label>
+	        	<div class = "restaurantHeaderProfil">	            	
+	            	<div class="dropdown">
+	                <button> <img id="adminImage" src="images/manager.png"> </button>
+		                <div class="dropdown-content">
+		                  <button>Profil</button>
+		                  <button v-on:click = "logOut"> Odjava</button>
+		                </div>
+	            	</div>
+            	</div>
+        	</h1>
+	        </h1>
 	        <input class="restaurantSearchBox" type="text" name="search" placeholder="Pretraži...">
 	        <img class="restaurantItemsSearchIMG" src="images/search.png"/>
 	        <br/><br/>
@@ -89,16 +103,50 @@ Vue.component("restaurant", {
 	        	<button v-on:click="cancelEditing">Odustani</button>
 	        </div>
         </div>
+        <div v-else-if = "id != -1">
+        	<div id="restaurantHeader">
+                <img id="logo" src="images/logo.jpg">                 
+                <button class="b" > Prijava </button>
+                <button class = "b" > Registracija</button>
+            	<hr>
+            </div>
+        	<div class="restaurantItemGroup" v-for="(i, index) in items">
+                <div class="restaurantItem">
+                	<img :src = i.image><br/><br/>
+                	<hr class="restaurantItemHR">
+                    <label class="foodName"><b>{{i.name}}</b></label><br/><br/>
+                    <label class="price">Cena: {{i.price}} RSD</label><br/>
+                    <label v-if="i.type=='FOOD'">Kolicina: {{i.amount}} g</label>
+                    <label v-if="i.type=='DRINK'">Kolicina: {{i.amount}} ml</label>
+                </div>
+	        </div>
+        </div>
+        <div v-else>
+        </div>
     	`
     	,
 		mounted () {
-        axios
+          axios
           .get('rest/restorauntItems/')
           .then(response => (this.items = response.data));
           axios
           .get('rest/managerRestaurant/')
-          .then(response => (this.restaurantName = response.data))  
+          .then(response => (this.restaurantName = response.data));
+          axios
+          .get('rest/loggedInUser/', this.username)
+          .then(response => (this.username = response.data));
+          axios
+          .post('rest/showRestaurant/', this.id)
+		  .then(response => (this.id = response.data));
+          
         },
+        
+        destroyed() {
+        		axios.post(`/rest/logOut`)
+    			.then(response => ('success'));
+    			  router.push(`/`);
+        },
+        
     	methods: {    	
 	    	orders : function() {
 	    		router.push(`/restaurantOrders`);
@@ -151,6 +199,14 @@ Vue.component("restaurant", {
 	    		event.preventDefault()
 	    		axios.post(`/rest/editRestaurantItem/`, this.edit)
     			.then(response => (this.$router.go()))
-	    	}
+	    	},
+	    	logOut: function() {
+    		if(confirm('Da li ste sigurni?')){
+    		  
+    			axios.post(`/rest/logOut`)
+    			.then(response => ('success'));
+    			  router.push(`/`);
+    		}	
+    	},
     	},
 });
