@@ -137,8 +137,16 @@ public class RestaurantsService {
 		order.setDate(o.getDate());
 		order.setPrice(new Double(o.getPrice()));
 		order.setCustomerUsername(o.getCustomerUsername());
-		order.setStatus(OrderStatus.WAITING);
+		setStatus(order, o.getStatus());
 		return order;
+	}
+	
+	private void setStatus(Order order, String status) {
+		if(status.equals("ČEKA DOSTAVLJAČA")) {
+			order.setStatus(OrderStatus.WAITING);			
+		} else {
+			order.setStatus(OrderStatus.PREPARATION);
+		}
 	}
 	
 	

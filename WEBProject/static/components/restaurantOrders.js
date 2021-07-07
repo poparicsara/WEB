@@ -43,7 +43,8 @@ Vue.component("restaurantOrders", {
 				{{order.id}}<br/>
 				<label>Status porudžbine</label>
 				{{order.status}}
-				<button v-on:click="changeOrderStatus" v-if="order.status=='U PRIPREMI'">Promeni status</button>
+				<button v-on:click="changeOrderStatus" v-if="order.status=='U PRIPREMI'">Spremno za dostavu</button>
+				<button v-on:click="processToPreparation" v-if="order.status=='OBRADA'">Prihvati porudzbinu</button>
 				<br/>
 				<label>Kupac</label>
 				{{order.customerFullName}}<br/>
@@ -89,6 +90,12 @@ Vue.component("restaurantOrders", {
 			},
 			changeOrderStatus : function() {
 				this.order.status = 'ČEKA DOSTAVLJAČA';
+				event.preventDefault()
+	    		axios.post(`/rest/changeOrderStatus/`, this.order)
+    			.then(response => (this.$router.go()))
+			},
+			processToPreparation : function() {
+				this.order.status = 'U PRIPREMI';
 				event.preventDefault()
 	    		axios.post(`/rest/changeOrderStatus/`, this.order)
     			.then(response => (this.$router.go()))
