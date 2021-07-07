@@ -17,6 +17,7 @@ public class OrderDTO {
 	private String customerFullName;
 	private String customerUsername;
 	private String status;
+	private String delivererUsername = "";
 	
 	
 	public OrderDTO() {
@@ -25,7 +26,7 @@ public class OrderDTO {
 
 
 	public OrderDTO(String id, ArrayList<Item> items, String restaurant, Date date, String price,
-			String customerFullName, String customerUsername, String status) {
+			String customerFullName, String customerUsername, String status, String delivererUsername) {
 		super();
 		this.id = id;
 		this.items = items;
@@ -35,6 +36,17 @@ public class OrderDTO {
 		this.customerFullName = customerFullName;
 		this.customerUsername = customerUsername;
 		this.status = status;
+		this.delivererUsername = delivererUsername;
+	}
+
+
+	public String getDelivererUsername() {
+		return delivererUsername;
+	}
+
+
+	public void setDelivererUsername(String delivererUsername) {
+		this.delivererUsername = delivererUsername;
 	}
 
 

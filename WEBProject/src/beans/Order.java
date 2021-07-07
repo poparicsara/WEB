@@ -14,6 +14,7 @@ public class Order {
 	private double price;
 	private String customerUsername;
 	private OrderStatus status;
+	private String delivererUsername = "";
 
 	
 	public Order() {
@@ -21,7 +22,7 @@ public class Order {
 	}
 
 	public Order(int id, ArrayList<Item> items, int restaurantID, Date date, double price, String customerUsername,
-			OrderStatus status) {
+			OrderStatus status, String delivererUsername) {
 		super();
 		this.id = id;
 		this.items = items;
@@ -30,6 +31,15 @@ public class Order {
 		this.price = price;
 		this.customerUsername = customerUsername;
 		this.status = status;
+		this.delivererUsername = delivererUsername;
+	}
+
+	public String getDelivererUsername() {
+		return delivererUsername;
+	}
+
+	public void setDelivererUsername(String delivererUsername) {
+		this.delivererUsername = delivererUsername;
 	}
 
 	public int getId() {

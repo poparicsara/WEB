@@ -194,11 +194,39 @@ public class Main {
 			return "SUCCESS";
 		});
 		
-		get("/rest/orderRequests/",(req, res) ->{
+		post("/rest/orderRequests/",(req, res) ->{
 			res.type("application/json");
 			OrderDTO order = g.fromJson(req.body(), OrderDTO.class);
-			System.out.println(order.getId());
 			return g.toJson(orderService.getOrderRequests(order));
+		});
+		
+		post("/rest/acceptOrderRequest/",(req, res) ->{
+			res.type("application/json");
+			OrderRequest request = g.fromJson(req.body(), OrderRequest.class);
+			orderService.acceptOrderRequest(request);
+			return "SUCCESS";
+		});
+		
+		post("/rest/rejectOrderRequest/",(req, res) ->{
+			res.type("application/json");
+			OrderRequest request = g.fromJson(req.body(), OrderRequest.class);
+			orderService.rejectOrderRequest(request);
+			return "SUCCESS";
+		});
+		
+		get("/rest/requests/",(req, res) ->{
+			res.type("application/json");
+			return g.toJson(orderService.getRequests());
+		});
+		
+		get("rest/delivererOrders/",(req, res) ->{
+			res.type("application/json");
+			return g.toJson(orderService.getDelivererOrders(loggedInUser));
+		});
+		
+		get("rest/delivererNotDeliveredOrders/",(req, res) ->{
+			res.type("application/json");
+			return g.toJson(orderService.getDelivererNotDeliveredOrders(loggedInUser));
 		});
 		
 	}

@@ -7,6 +7,7 @@ const restaurantOrders = {template: '<restaurantOrders></restaurantOrders>'}
 const restaurantCustomers = {template: '<restaurantCustomers></restaurantCustomers>'}
 const profile = {template: '<profile></profile>'}
 const deliverer = {template: '<deliverer></deliverer>'}
+const delivererOrders = {template: '<delivererOrders></delivererOrders>'}
 
 const router = new VueRouter({
 	mode: 'hash',
@@ -19,7 +20,8 @@ const router = new VueRouter({
 		{ path: '/restaurantOrders', component: restaurantOrders},
 		{ path: '/restaurantCustomers', component: restaurantCustomers},
 		{ path: '/profile', component: profile},
-		{ path: '/deliverer', component: deliverer}
+		{ path: '/deliverer', component: deliverer},
+		{ path: '/delivererOrders', component: delivererOrders}
 	  ]
 });
 
