@@ -15,7 +15,7 @@ Vue.component("admin", {
 	      managerID: '',
 	      managerDTO: {username: null, restaurant: null},
 	      user: {username: null, password: null, name: null, lastname: null, gender: '', date: ''},
-	      restaurant: {name: null, type: null, status:true, items:null, location: { address: {street : '', number : '', city: '', }, longitude:0, latitude:0 }, image: ''},
+	      restaurant: {id:null, name: null, type: null, status:true, location: { address: {street : '', number : '', city: '', postNumber: 0} , longitude: 0, latitude: 0}, items:null, image: ''},	      
 	      searchText: '',
 	      searchOK: false,
 	      currentSort: 'name',
@@ -27,7 +27,12 @@ Vue.component("admin", {
 	      filterOK: false,
 	      map: false,
 	      marker: null,
-	      flag : false
+	      flag : false,
+	      elems : [],
+  		  street : [],
+  	      streetName : '',
+  	      lat : null,
+  	      lng : null
 	    }
 	},
 	    template: ` 
@@ -242,7 +247,7 @@ Vue.component("admin", {
                 <form action="/action_page.php" >
 				  <input v-model = "restaurant.image" class="addRestaurantItemImage" type="file" id="image" name="image" accept="image/*">
 				</form>
-				<button v-on:click = "showMap"> Lokacija </button>
+				<button class="restaurantItemInput" v-on:click = "showMap"> Lokacija </button>
 				<div id="mapid">
 				</div>  
 				  <label class="restaurantItemLabels" >Manager:</label><br/>
@@ -271,7 +276,12 @@ Vue.component("admin", {
        axios
           .get('rest/loggedInUser/', this.username)
           .then(response => (this.username = response.data));
-       
+          window.latitude = 0;
+          window.longitude = 0;
+          window.street = '';
+          window.city = '';
+          window.number = '';
+          window.postNumber = 0;      
     },
     
     destroyed () {
@@ -280,6 +290,7 @@ Vue.component("admin", {
     			router.push(`/`);   	
     },
     computed: {
+    
     	searchInLowerCase() {
     		return this.searchText.toLowerCase().trim();
   		},
@@ -434,9 +445,37 @@ Vue.component("admin", {
     			this.showDeliverer = false
     		}
     	},
+    	addLocationToRestaurant: function() {
+    		this.restaurant.location.latitude = window.latitude
+    		this.restaurant.location.longitude = window.longitude
+    		this.restaurant.location.address.number = window.number.toString()
+    		this.restaurant.location.address.street = window.street.toString()
+    		this.restaurant.location.address.postNumber = window.postNumber
+    		this.restaurant.location.address.city = window.city.toString()
+    	},
     	addRestaurant: function(){
     		let array = this.restaurant.image.split("\\")
     		this.restaurant.image = "images/" + array[2]
+			this.addLocationToRestaurant()
+			var unique = false
+			while(!unique){
+				uniqueID = 0
+				id = Math.floor(Math.random() * 100);
+				for(r in this.restaurants){
+					if(r.id == id){
+						uniqueID ++
+						break
+					}
+				}
+				if(uniqueID == 0){
+					unique = true
+				}
+			}
+			this.restaurant.id = id
+			alert(this.restaurant.id)
+			alert(this.restaurant.location.address.city)
+			alert(this.restaurant.location.address.street)
+			alert(this.restaurant.location.address.number)
     		this.managerDTO.restaurant = this.restaurant
     		this.managerDTO.username = this.managerID
     		let exists = false
@@ -511,7 +550,7 @@ Vue.component("admin", {
 			    zoomOffset: -1,
 			    accessToken: 'pk.eyJ1Ijoib2dpamFoIiwiYSI6ImNrcXMzbjR0ZDE3N24zMXFhOXM5MDlmeWwifQ.V05sowv93LiOgv4O-0bIgw'
 			}).addTo(mymap);
-		
+			
   			function onMapClick(e) {
   				
         		L.esri.Geocoding.reverseGeocode()
@@ -525,17 +564,36 @@ Vue.component("admin", {
   					}
 				    this.marker = new L.marker(e.latlng).addTo(mymap);					    			    
 				    this.flag = true
-				    let elems = result.address.LongLabel.split(',')
-				    alert(elems)
-					alert(elems[0])	    
-					let street = elems[0].split(/[ ,]+/);
-					alert(street[street.length - 1])
-					
-            		
-				  });
+				    this.elems = result.address.LongLabel.split(',')
+				    alert(this.elems)
+					this.street = this.elems[0].split(/[ ]+/);
+					this.streetName = ''
+					for(let i = 0; i < this.street.length; i++){
+						if(i == this.street.length - 1){
+							window.number = this.street[i]
+						}
+						else{
+							this.streetName += this.street[i]
+							this.streetName += ' '
+						}
+					}
+					this.lng = e.latlng.lng
+					this.lat = e.latlng.lat	
+					window.latitude = this.lat
+					window.longitude = this.lng
+					window.city = this.elems[2]
+					window.street = this.streetName
+					alert(this.streetName)
+					window.postNumber = this.elems[1]
+					alert(window.number)
+				  });			
+				  
+				 
 			}
+			 
+			mymap.on('click', onMapClick);			
 			
-			mymap.on('click', onMapClick);
   		}
     },
+ 
 });
