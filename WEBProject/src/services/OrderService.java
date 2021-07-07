@@ -58,7 +58,7 @@ public class OrderService {
 	public void acceptOrderRequest(OrderRequest request) throws NumberFormatException, Exception {
 		orders = getOrders();
 		for (Order o : orders) {
-			if(o.getId() == Integer.parseInt(request.getOrderID())) {
+			if(o.getId().equals(request.getOrderID())) {
 				o.setStatus(OrderStatus.TRANSPORT);
 				o.setDelivererUsername(request.getDelivererUsername());
 			}
@@ -154,7 +154,7 @@ public class OrderService {
 	public void setOrderToDelivered(OrderDTO order) throws Exception {
 		orders = getOrders();
 		for (Order o : orders) {
-			if(o.getId() == Integer.parseInt(order.getId())) {
+			if(o.getId().equals(order.getId())) {
 				o.setStatus(OrderStatus.DELIVERED);
 			}
 		}
