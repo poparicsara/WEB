@@ -3,22 +3,42 @@ package dto;
 
 public class CommentDTO {
 
+	private String id;
 	private String customer;
 	private String restaurant;
 	private String text;
 	private String grade;
+	private String status;
 	
 	
 	public CommentDTO() {
 		super();
 	}
 
-	public CommentDTO(String customer, String restaurant, String text, String grade) {
+	public CommentDTO(String id, String customer, String restaurant, String text, String grade, String status) {
 		super();
+		this.id = id;
 		this.customer = customer;
 		this.restaurant = restaurant;
 		this.text = text;
 		this.grade = grade;
+		this.status = status;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public String getCustomer() {

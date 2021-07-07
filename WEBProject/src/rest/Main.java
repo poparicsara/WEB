@@ -13,6 +13,7 @@ import javax.print.attribute.standard.JobOriginatingUserName;
 import com.google.gson.Gson;
 
 import beans.OrderRequest;
+import dto.CommentDTO;
 import dto.EditItemDTO;
 import dto.EditUserDTO;
 import dto.ItemDTO;
@@ -246,6 +247,20 @@ public class Main {
 		get("rest/selectedRestaurant/",(req, res) ->{
 			res.type("application/json");
 			return g.toJson(restaurantsService.getRestaurantByID(ID));
+		});
+		
+		post("rest/acceptComment/",(req, res) ->{
+			res.type("application/json");
+			CommentDTO comment = g.fromJson(req.body(), CommentDTO.class);
+			commentService.acceptComment(comment);
+			return "SUCCESS";
+		});
+		
+		post("rest/rejectComment/",(req, res) ->{
+			res.type("application/json");
+			CommentDTO comment = g.fromJson(req.body(), CommentDTO.class);
+			commentService.rejectComment(comment);
+			return "SUCCESS";
 		});
 		
 	}
