@@ -1,18 +1,19 @@
-package beans;
+package dto;
 
-public class Comment {
+
+public class CommentDTO {
 
 	private String customer;
-	private int restaurant;
+	private String restaurant;
 	private String text;
-	private int grade;
+	private String grade;
 	
 	
-	public Comment() {
+	public CommentDTO() {
 		super();
 	}
 
-	public Comment(String customer, int restaurant, String text, int grade) {
+	public CommentDTO(String customer, String restaurant, String text, String grade) {
 		super();
 		this.customer = customer;
 		this.restaurant = restaurant;
@@ -23,32 +24,32 @@ public class Comment {
 	public String getCustomer() {
 		return customer;
 	}
-	
+
 	public void setCustomer(String customer) {
 		this.customer = customer;
 	}
-	
-	public int getRestaurant() {
+
+	public String getRestaurant() {
 		return restaurant;
 	}
-	
-	public void setRestaurant(int restaurant) {
+
+	public void setRestaurant(String restaurant) {
 		this.restaurant = restaurant;
 	}
-	
+
 	public String getText() {
 		return text;
 	}
-	
+
 	public void setText(String text) {
 		this.text = text;
 	}
-	
-	public int getGrade() {
+
+	public String getGrade() {
 		return grade;
 	}
-	
-	public void setGrade(int grade) {
+
+	public void setGrade(String grade) {
 		this.grade = grade;
 	}
 	

@@ -1,5 +1,4 @@
-/beans/
-/dto/
-/enums/
-/rest/
 /services/
+/rest/
+/dto/
+/beans/

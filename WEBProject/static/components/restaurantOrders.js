@@ -3,7 +3,7 @@ Vue.component("restaurantOrders", {
 	    return {
 	    	orders : null,
 	    	display : false,
-	    	order: {id: '', items: null, restaurant: '', date: null, price: '', customerFullName: '', customerUsername: '', status: ''},
+	    	order: {id: '', items: null, restaurant: '', date: null, price: '', customerFullName: '', customerUsername: '', status: '', deliverer: ''},
 	    	requests: null,
 	    	requestsModal: false
 	    }
@@ -29,7 +29,7 @@ Vue.component("restaurantOrders", {
 		                <td>{{o.customerFullName}}</td>
 		                <td>{{o.price}}</td>
 		                <td><button v-on:click="openModal(o)">Detalji</button></td>
-		                <td><button v-on:click="orderRequests(o)">Zahtevi</button></td>
+		                <td><button v-on:click="orderRequests(o)" v-if="o.status=='ČEKA DOSTAVLJAČA'">Zahtevi</button></td>
 		            </tr>
 	            </table>
 	        </div>
@@ -46,7 +46,7 @@ Vue.component("restaurantOrders", {
 				<button v-on:click="changeOrderStatus" v-if="order.status=='U PRIPREMI'">Promeni status</button>
 				<br/>
 				<label>Kupac</label>
-				{{order.customer}}<br/>
+				{{order.customerFullName}}<br/>
 				<label>Datum</label>
 				{{order.date}}<br/>
 				<label>Ukupan iznos</label>
@@ -57,9 +57,11 @@ Vue.component("restaurantOrders", {
 			
 			<div v-if="requestsModal">
 				<div  v-for="(r, index) in requests">
-		                <div>
-		                    <label>Redni broj porudžbine:{{r.orderID}}</label><br/><br/>
-		                    <label>Username dostavljaca: {{r.delivererUsername}}</label><br/>
+		                <div v-if="r.status!='REJECTED'">
+		                    <label>Redni broj porudžbine:{{r.orderID}}</label><br/>
+		                    <label>Username dostavljaca: {{r.delivererUsername}}</label><br/><br/>
+		                	<button v-on:click="acceptRequest(r)">Prihvati zahtev</button>
+		                	<button v-on:click="rejectRequest(r)">Odbij zahtev</button><br/><br>
 		                </div>
 	        	</div>
 			</div>
@@ -91,12 +93,23 @@ Vue.component("restaurantOrders", {
 	    		axios.post(`/rest/changeOrderStatus/`, this.order)
     			.then(response => (this.$router.go()))
 			},
-			orderRequests : function(order){
-				
+			orderRequests : function(order){						
 				axios
-				.get(`/rest/orderRequests/`, order)
+				.post(`/rest/orderRequests/`, order)
     			.then(response => (this.requests = response.data))
-    			requestsModal = true;
+    			this.requestsModal = true;
+			},
+			acceptRequest : function(request) {
+				event.preventDefault()
+				axios
+				.post(`/rest/acceptOrderRequest/`, request)
+				.then(response => (this.$router.go()))
+			},
+			rejectRequest(request){
+				event.preventDefault()
+				axios
+				.post(`/rest/rejectOrderRequest/`, request)
+				.then(response => (this.$router.go()))
 			}
 		}
 });

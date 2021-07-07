@@ -16,6 +16,7 @@ import beans.Order;
 import beans.OrderRequest;
 import dto.OrderDTO;
 import enums.OrderStatus;
+import enums.RequestStatus;
 
 public class OrderService {
 	
@@ -25,6 +26,7 @@ public class OrderService {
 	private String ordersPath = "./static/orders.json";
 	private String requestsPath = "./static/requests.json";
 	private UserService userService = new UserService();
+	private RestaurantsService restaurantService = new RestaurantsService();
 	
 	public List<OrderDTO> getOrdersForDeliverers() throws Exception{
 		List<OrderDTO> dtos = new ArrayList<OrderDTO>();
@@ -38,18 +40,51 @@ public class OrderService {
 	
 	public void addOrderRequest(OrderRequest request) throws Exception {
 		requests = getRequests();
+		request.setStatus(RequestStatus.SENT);
 		requests.add(request);
 		saveRequestChange(requests);
 	}
 	
 	public List<OrderRequest> getOrderRequests(OrderDTO order) throws Exception{
-		requests = new ArrayList<OrderRequest>();
+		ArrayList<OrderRequest> ret = new ArrayList<OrderRequest>();
 		for (OrderRequest r : getRequests()) {
 			if(r.getOrderID().equals(order.getId())) {
-				requests.add(r);
+				ret.add(r);
 			}
 		}
-		return requests;
+		return ret;
+	}
+	
+	public void acceptOrderRequest(OrderRequest request) throws NumberFormatException, Exception {
+		orders = getOrders();
+		for (Order o : orders) {
+			if(o.getId() == Integer.parseInt(request.getOrderID())) {
+				o.setStatus(OrderStatus.TRANSPORT);
+				o.setDelivererUsername(request.getDelivererUsername());
+			}
+		}
+		requests = getRequests();
+		for (OrderRequest r : requests) {
+			if(r.getOrderID().equals(request.getOrderID())){
+				if(r.getDelivererUsername().equals(request.getDelivererUsername())) {
+					r.setStatus(RequestStatus.ACCEPTED);
+				} else {
+					r.setStatus(RequestStatus.REJECTED);
+				}	
+			}
+		}
+		saveRequestChange(requests);
+		saveOrderChange(orders);
+	}
+	
+	public void rejectOrderRequest(OrderRequest request) throws Exception {
+		requests = getRequests();
+		for (OrderRequest r : requests) {
+			if(r.getOrderID().equals(request.getOrderID()) && r.getDelivererUsername().equals(request.getDelivererUsername())){
+				r.setStatus(RequestStatus.REJECTED);
+			}
+		}
+		saveRequestChange(requests);
 	}
 	
 	private OrderDTO setOrderToDTO(Order o) throws Exception {
@@ -59,6 +94,7 @@ public class OrderService {
 		order.setItems(o.getItems());
 		order.setPrice(Double.toString(o.getPrice()));
 		order.setRestaurant(String.valueOf(o.getRestaurant()));
+		order.setRestaurantName(restaurantService.getRestaurantNameById(o.getRestaurant()));
 		order.setStatus(setOrderStatus(o.getStatus()));
 		order.setCustomerUsername(o.getCustomerUsername());
 		order.setCustomerFullName(userService.getUserFullName(o.getCustomerUsername()));
@@ -88,17 +124,53 @@ public class OrderService {
 		return orders;
 	}
 	
-	private List<OrderRequest> getRequests() throws Exception{
+	public List<OrderRequest> getRequests() throws Exception{
 		Type listType = new TypeToken<ArrayList<OrderRequest>>() {}.getType();
 	    String json = readFileAsString(requestsPath);
 		requests = gson.fromJson(json, listType);
 		return requests;
 	}
 	
+	public List<OrderDTO> getDelivererOrders(String username) throws Exception{
+		List<OrderDTO> dtos = new ArrayList<OrderDTO>();
+		for (Order o : getOrders()) {
+			if(o.getDelivererUsername().equals(username)) {
+				dtos.add(setOrderToDTO(o));
+			}
+		}
+		return dtos;
+	}
+	
+	public List<OrderDTO> getDelivererNotDeliveredOrders(String username) throws Exception{
+		List<OrderDTO> dtos = new ArrayList<OrderDTO>();
+		for (Order o : getOrders()) {
+			if(o.getDelivererUsername().equals(username) && o.getStatus() == OrderStatus.TRANSPORT) {
+				dtos.add(setOrderToDTO(o));
+			}
+		}
+		return dtos;
+	}
+	
+	public void setOrderToDelivered(OrderDTO order) throws Exception {
+		orders = getOrders();
+		for (Order o : orders) {
+			if(o.getId() == Integer.parseInt(order.getId())) {
+				o.setStatus(OrderStatus.DELIVERED);
+			}
+		}
+		saveOrderChange(orders);
+	}
+	
 	private static String readFileAsString(String file)throws Exception
     {
         return new String(Files.readAllBytes(Paths.get(file)));
     }
+	
+	private void saveOrderChange(List<Order> orders) throws Exception {
+		Writer writer = new FileWriter(ordersPath);
+		gson.toJson(orders, writer);
+		writer.close();
+	}
 	
 	private void saveRequestChange(List<OrderRequest> requests) throws Exception {
 		Writer writer = new FileWriter(requestsPath);
