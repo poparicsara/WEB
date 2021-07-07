@@ -1,4 +1,4 @@
-Vue.component("restaurants", { 
+Vue.component("customer", { 
 	data: function () {
 	    return {
 	      restaurants: null,
@@ -10,21 +10,32 @@ Vue.component("restaurants", {
   		  currentSortDir:'asc',
   		  filterType: null,
   		  status: true,
-  		  filterOK: false
+  		  filterOK: false,
+  		  username: null,
+  		  newPage: false
 	    }
 	 
 	},
 	    template: ` 
         <div id="restaurantHeader">
-                <img id="logo" src="images/logo.jpg">                 
-                <input id="input" type="text" placeholder="Pretraži..." v-model="searchText" v-on:change = "searchRestaurants"> 
-                <button class="b" v-on:click = "logIn"> Prijava </button>
-                <button class = "b" v-on:click = "registration"> Registracija</button>
+                <img id="logo" src="images/logo.jpg"> 
+                 
+                <div class="dropdown">
+	           <button> <img id="adminImage" src="images/customer.jpg"> </button>
+		               <div class="dropdown-content">
+		                  <button>Profil</button>
+		                  <button> Odjava</button>
+		                </div>
+	       		</div>               
             <hr>
            <h2>
                <label class="r"> <b> Restorani </b></label>
+                <button class="buttonsCustomer" > Restorani </button>
+            	<button class="buttonsCustomer" > Porudžbine </button>
            </h2>
            <h3 class = "restaurantSort"> 
+           		<input id="input" type="text" placeholder="Pretraži..." v-model="searchText" v-on:change = "searchRestaurants"> 
+           		<br> <br> <br>
            		<div>
 	           		<label> Sortiraj: </label>
 	      			<button class="sort" v-on:click = "sort('name')"> Ime </button>
@@ -60,7 +71,7 @@ Vue.component("restaurants", {
            </h3>
            		<div v-if="searchOK">
            			  <div v-if="sortName">
-           				<div v-for="r in sortedRestaurants"  v-on:click = "openRestaurant(r)"> 
+           				<div v-for="r in sortedRestaurants"> 
            					<div class="restaurants" v-if="rLower(r.name).includes(searchInLowerCase) || rLower(r.type).includes(searchInLowerCase)">		           		    
 		           		    	<img class="restaurants" :src = r.image > <br>
 					      		<label class="title">{{r.name}} </label> <br>
@@ -70,7 +81,7 @@ Vue.component("restaurants", {
            				</div>
            			  </div>
            			  <div v-else-if="sortAddress">
-           			  	<div  v-for="r in sortedAddresses"  v-on:click = "openRestaurant(r)"> 
+           			  	<div  v-for="r in sortedAddresses"> 
            					<div class="restaurants" v-if="rLower(r.name).includes(searchInLowerCase) || rLower(r.type).includes(searchInLowerCase)">		           		    
 		           		    	<img class="restaurants" :src = r.image > <br>
 					      		<label class="title">{{r.name}} </label> <br>
@@ -80,7 +91,7 @@ Vue.component("restaurants", {
            				</div>
            			  </div>
            			  <div v-else>
-	           			  <div v-for="(r, index) in restaurants"  v-on:click = "openRestaurant(r)">
+	           			  <div v-for="(r, index) in restaurants">
 		           		    <div class="restaurants" v-if="rLower(r.name).includes(searchInLowerCase) || rLower(r.type).includes(searchInLowerCase)">		           		    
 		           		    	<img class="restaurants" :src = r.image > <br>
 					      		<label class="title">{{r.name}} </label> <br>
@@ -92,7 +103,7 @@ Vue.component("restaurants", {
 			    </div>
            		<div v-else>
            			<div v-if="sortName">
-           				<div class="restaurants" v-for="r in sortedRestaurants"  v-on:click = "openRestaurant(r)">           				
+           				<div class="restaurants" v-for="r in sortedRestaurants">           				
 			       		    <img class="restaurants" :src = r.image > <br>
 						    <label class="title">{{r.name}} </label> <br>
 						    <label>{{r.type}}</label> <br>
@@ -100,7 +111,7 @@ Vue.component("restaurants", {
 					    </div>  
            			</div>
            			<div v-else-if="sortAddress">
-	           			<div class="restaurants" v-for="r in sortedAddresses"  v-on:click = "openRestaurant(r)">           				
+	           			<div class="restaurants" v-for="r in sortedAddresses">           				
 			       		    <img class="restaurants" :src = r.image > <br>
 						    <label class="title">{{r.name}} </label> <br>
 						    <label>{{r.type}}</label> <br>
@@ -108,7 +119,7 @@ Vue.component("restaurants", {
 					    </div>  
            			</div>
            			<div v-else-if="filterOK">
-           				 <div v-for="(r, index) in restaurants"  v-on:click = "openRestaurant(r)">
+           				 <div v-for="(r, index) in restaurants">
 	           		     <div class="restaurants" v-if="r.type == filterType">
 	           		    	<img class="restaurants" :src = r.image > <br>
 				      		<label class="title">{{r.name}} </label> <br>
@@ -132,7 +143,17 @@ Vue.component("restaurants", {
     mounted () {
         axios
           .get('rest/restaurants/')
-          .then(response => (this.restaurants = response.data))   
+          .then(response => (this.restaurants = response.data));
+         axios
+          .get('rest/loggedInUser/', this.username)
+          .then(response => (this.username = response.data));  
+    },
+     destroyed() {
+     			if(!this.newPage){
+	        		axios.post(`/rest/logOut`)
+	    			.then(response => ('success'));
+	    			  router.push(`/`);
+    			 }    		
     },
     computed: {
   		searchInLowerCase() {
@@ -186,9 +207,10 @@ Vue.component("restaurants", {
 		   
 		},
 		openRestaurant : function(restaurant) {
+			this.newPage = true
 			event.preventDefault();
 			axios.post('rest/showRestaurant/', restaurant.id)
-			.then(response => (router.push(`/restaurant`)));
+			.then(response => (router.push(`/customerOrder`)));
 		},
 		filter : function() {
 			this.sortAddress = false;
@@ -201,12 +223,6 @@ Vue.component("restaurants", {
 			}
 			
 		},
-    	logIn : function() {
-    		router.push(`/logIn`);
-    	},
-    	registration : function() {
-    		router.push(`/registration`)
-    	},
     	searchRestaurants : function(){
     		if(this.searchText === ""){
     			this.searchOK = false

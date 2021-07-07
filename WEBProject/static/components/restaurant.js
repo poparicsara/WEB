@@ -12,7 +12,10 @@ Vue.component("restaurant", {
 			profile: false,
 			user : null,
 			editUser: null,
-			newPage: false
+			newPage: false,
+			restaurant: null,
+			details: false,
+			showMap: false
 	    }
 	},
 	    template: ` 
@@ -138,13 +141,17 @@ Vue.component("restaurant", {
 	        	</div>
 	        </div>
         </div>
-        <div v-else-if = "id != -1">
+         <div v-else>
         	<div id="restaurantHeader">
-                <img id="logo" src="images/logo.jpg">                 
+                <img id="logo" src="images/logo.jpg"> 
+                <label class="r"> <b> {{restaurant.name}} </b></label>                                
                 <button class="b" > Prijava </button>
                 <button class = "b" > Registracija</button>
             	<hr>
             </div>
+            <h2>   
+               <a href="#" v-on:click="showDetails"> Detaljniji prikaz restorana </a>                     
+           	</h2>
         	<div class="restaurantItemGroup" v-for="(i, index) in items">
                 <div class="restaurantItem">
                 	<img :src = i.image><br/><br/>
@@ -155,8 +162,24 @@ Vue.component("restaurant", {
                     <label v-if="i.type=='DRINK'">Kolicina: {{i.amount}} ml</label>
                 </div>
 	        </div>
+	        <div v-if="details" class="addRestaurantItem">
+	        	<div class="addRestaurantItemComponents">
+	        		<span class="addRestaurantItemClose" v-on:click="closeDetails">&times;</span>
+	        		<h1 class="addRestaurantHeader">Informacije o restoranu</h1>
+	        		<label class="restaurantItemLabels" >Naziv restorana:</label><br/>
+                	<input class="restaurantItemInput" type="text" name="name" v-model = "restaurant.name"><br/><br/>
+                	<label class="restaurantItemLabels" >Tip restorana:</label><br/>
+                	<input class="restaurantItemInput" type="text" name="name" v-model = "restaurant.type"><br/><br/>
+					<label class="restaurantItemLabels" >Adresa:</label><br/>
+					<label class="restaurantItemInput" >{{restaurant.location.address.street}}  {{restaurant.location.address.number}}, {{restaurant.location.address.city}}</label>
+					<br/><br/>
+					<button class="restaurantItemInput" v-on:click="showLocation">Mapa:</button><br/>
+					<div v-if="showMap" id="mapid">
+					</div>
+					</div>  
+				</div>
+       	   </div>
         </div>
-      
     	`
     	,
 		mounted () {
@@ -172,6 +195,9 @@ Vue.component("restaurant", {
          axios
          .get('rest/loggedUser/')
          .then(response => (this.user = response.data));
+          axios
+         .get('rest/selectedRestaurant/')
+         .then(response => (this.restaurant = response.data));
           
         },
         
@@ -183,7 +209,29 @@ Vue.component("restaurant", {
     		}
         },
         
-    	methods: {    	
+    	methods: {   
+    		
+    		closeDetails: function(){
+    			this.details = false
+    		},
+    		showDetails: function(){
+    			this.details = true	
+    		}, 	
+    		showLocation: function(){
+    			event.preventDefault()
+  		   		this.showMap = true
+	  			var mymap = L.map('mapid').setView([this.restaurant.location.latitude, this.restaurant.location.longitude], 13);
+	  			L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+				    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+				    maxZoom: 18,
+				    id: 'mapbox/streets-v11',
+				    tileSize: 512,
+				    zoomOffset: -1,
+				    accessToken: 'pk.eyJ1Ijoib2dpamFoIiwiYSI6ImNrcXMzbjR0ZDE3N24zMXFhOXM5MDlmeWwifQ.V05sowv93LiOgv4O-0bIgw'
+				}).addTo(mymap);
+				
+				var marker = new L.marker([this.restaurant.location.latitude, this.restaurant.location.longitude]).addTo(mymap);
+    		},
 	    	orders : function() {	    
 	    		this.newPage = true		
 	    		router.push(`/restaurantOrders`);

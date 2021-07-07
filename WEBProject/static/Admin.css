@@ -129,3 +129,18 @@
 		
 		#mapid { height: 180px; }
 		
+		div.basket{
+			position:relative;
+			left:1200px;
+			top:-40px;
+		}
+		
+		button.basket{
+			height:64px;
+			width:64px;
+		}
+		
+		img.basket{
+			height:50px;
+			width:50px;	
+		}

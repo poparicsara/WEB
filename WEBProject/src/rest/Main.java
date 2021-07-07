@@ -105,7 +105,7 @@ public class Main {
 		
 		get("rest/restorauntItems/", (req, res) -> {
 			res.type("application/json");
-			if(!loggedInUser.isEmpty()) {
+			if(!loggedInUser.isEmpty() && ID == -1) {
 				ID = managerService.getRestaurantID(loggedInUser);
 			}
 			return g.toJson(restaurantsService.getRestaurantItems(ID));
@@ -241,6 +241,11 @@ public class Main {
 		get("rest/restaurantComments/",(req, res) ->{
 			res.type("application/json");
 			return g.toJson(commentService.getRestaurantComments(ID));
+		});
+		
+		get("rest/selectedRestaurant/",(req, res) ->{
+			res.type("application/json");
+			return g.toJson(restaurantsService.getRestaurantByID(ID));
 		});
 		
 	}
