@@ -42,6 +42,10 @@ Vue.component("restaurant", {
 	        	<img class="restaurantCustomersIMG" src="images/restaurantCustomers.png"/>
 	        	Kupci
 	        </button>
+	        <button class="restaurantButtons" v-on:click = "comments">
+	        	
+	        	Komentari
+	        </button>
 	        <button class="restaurantButtons" v-on:click = "addRestaurantItem">
 	        	<img class="restaurantAddItemIMG" src="images/addItem.png"/>
 	        	Novi artikal
@@ -271,6 +275,10 @@ Vue.component("restaurant", {
     		},
     		cancelProfileEdit : function() {
     			this.profile = false;
+    		},
+    		comments : function() {
+    			this.newPage = true		
+	    		router.push(`/restaurantComments`);
     		}
     	},
 });

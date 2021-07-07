@@ -19,6 +19,7 @@ import dto.ItemDTO;
 import dto.ManagerDTO;
 import dto.OrderDTO;
 import dto.UserDTO;
+import services.CommentService;
 import services.ManagerService;
 import services.OrderService;
 import services.RestaurantsService;
@@ -34,6 +35,7 @@ public class Main {
 	private static UserService userService = new UserService();
 	private static ManagerService managerService = new ManagerService();
 	private static OrderService orderService = new OrderService();
+	private static CommentService commentService = new CommentService();
 	private static String loggedInUser = "";
 	private static int ID = -1;
 
@@ -234,6 +236,11 @@ public class Main {
 			OrderDTO order = g.fromJson(req.body(), OrderDTO.class);
 			orderService.setOrderToDelivered(order);
 			return "SUCCESS";
+		});
+		
+		get("rest/restaurantComments/",(req, res) ->{
+			res.type("application/json");
+			return g.toJson(commentService.getRestaurantComments(ID));
 		});
 		
 	}
