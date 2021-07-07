@@ -45,10 +45,10 @@ public class RestaurantsService {
 		return restaurants;
 	}
 	
-	public List<OrderDTO> getRestaurantOrders(String restaurantName) throws Exception {
+	public List<OrderDTO> getRestaurantOrders(int restaurantID) throws Exception {
 		restaurantOrders = new ArrayList<OrderDTO>();
 		for (Order order : getOrders()) {
-			if(order.getRestaurant() == 101) {
+			if(order.getRestaurant() == restaurantID) {
 				restaurantOrders.add(setOrderToDTO(order));
 			}
 		}

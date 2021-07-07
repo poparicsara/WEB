@@ -12,6 +12,7 @@ import javax.print.attribute.standard.JobOriginatingUserName;
 
 import com.google.gson.Gson;
 
+import beans.OrderRequest;
 import dto.EditItemDTO;
 import dto.EditUserDTO;
 import dto.ItemDTO;
@@ -19,6 +20,7 @@ import dto.ManagerDTO;
 import dto.OrderDTO;
 import dto.UserDTO;
 import services.ManagerService;
+import services.OrderService;
 import services.RestaurantsService;
 import services.UserService;
 
@@ -31,6 +33,7 @@ public class Main {
 	private static RestaurantsService restaurantsService = new RestaurantsService();
 	private static UserService userService = new UserService();
 	private static ManagerService managerService = new ManagerService();
+	private static OrderService orderService = new OrderService();
 	private static String loggedInUser = "";
 	private static int ID = -1;
 
@@ -125,7 +128,7 @@ public class Main {
 		
 		get("rest/restaurantOrders/", (req, res) -> {
 			res.type("application/json");
-			return g.toJson(restaurantsService.getRestaurantOrders("KFC"));
+			return g.toJson(restaurantsService.getRestaurantOrders(ID));
 		});
 		
 		get("rest/userFullName/", (req, res) -> {
@@ -167,9 +170,7 @@ public class Main {
 		
 		get("rest/loggedUser/",(req, res) ->{
 			res.type("application/json");
-			//System.out.println(loggedInUser);
 			UserDTO user = userService.getLoggedUser(loggedInUser);
-			//System.out.println(user.getUsername());
 			return g.toJson(user);
 		});
 		
@@ -179,6 +180,25 @@ public class Main {
 			userService.editUser(user);
 			loggedInUser = user.getUsername();
 			return "SUCCESS";
+		});
+		
+		get("rest/deliverersOrders/",(req, res) ->{
+			res.type("application/json");
+			return g.toJson(orderService.getOrdersForDeliverers());
+		});
+		
+		post("/rest/sendOrderRequest/", (req, res) -> {
+			res.type("application/json");
+			OrderRequest request = g.fromJson(req.body(), OrderRequest.class);
+			orderService.addOrderRequest(request);
+			return "SUCCESS";
+		});
+		
+		get("/rest/orderRequests/",(req, res) ->{
+			res.type("application/json");
+			OrderDTO order = g.fromJson(req.body(), OrderDTO.class);
+			System.out.println(order.getId());
+			return g.toJson(orderService.getOrderRequests(order));
 		});
 		
 	}

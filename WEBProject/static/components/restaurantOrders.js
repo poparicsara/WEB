@@ -3,7 +3,9 @@ Vue.component("restaurantOrders", {
 	    return {
 	    	orders : null,
 	    	display : false,
-	    	order: {id: '', items: null, restaurant: '', date: null, price: '', customerFullName: '', customerUsername: '', status: ''}
+	    	order: {id: '', items: null, restaurant: '', date: null, price: '', customerFullName: '', customerUsername: '', status: ''},
+	    	requests: null,
+	    	requestsModal: false
 	    }
 	},
 	    template: `
@@ -17,7 +19,8 @@ Vue.component("restaurantOrders", {
 	                    <th>Datum</th>
 	                    <th>Kupac</th>
 	                    <th>Ukupan iznos</th>
-	                    <th>Detalji</th>
+	                    <th></th>
+	                    <th></th>
 	                </tr>
 		            <tr v-for="(o, index) in orders">
 		            	<td>{{o.status}}</td>
@@ -26,6 +29,7 @@ Vue.component("restaurantOrders", {
 		                <td>{{o.customerFullName}}</td>
 		                <td>{{o.price}}</td>
 		                <td><button v-on:click="openModal(o)">Detalji</button></td>
+		                <td><button v-on:click="orderRequests(o)">Zahtevi</button></td>
 		            </tr>
 	            </table>
 	        </div>
@@ -49,6 +53,15 @@ Vue.component("restaurantOrders", {
 				{{order.price}}<br/>
 				
 	
+			</div>
+			
+			<div v-if="requestsModal">
+				<div  v-for="(r, index) in requests">
+		                <div>
+		                    <label>Redni broj porudžbine:{{r.orderID}}</label><br/><br/>
+		                    <label>Username dostavljaca: {{r.delivererUsername}}</label><br/>
+		                </div>
+	        	</div>
 			</div>
 		</div>
     	`
@@ -77,6 +90,13 @@ Vue.component("restaurantOrders", {
 				event.preventDefault()
 	    		axios.post(`/rest/changeOrderStatus/`, this.order)
     			.then(response => (this.$router.go()))
+			},
+			orderRequests : function(order){
+				
+				axios
+				.get(`/rest/orderRequests/`, order)
+    			.then(response => (this.requests = response.data))
+    			requestsModal = true;
 			}
 		}
 });

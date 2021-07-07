@@ -189,8 +189,7 @@ Vue.component("restaurant", {
 	    		router.push(`/restaurantCustomers`)
 	    	},
 	    	addRestaurantItem : function() {
-	    		this.addItem = true
-	    	
+	    		this.addItem = true;
 	    	},
 	    	closeAdding : function() {
 	    		this.addItem = false

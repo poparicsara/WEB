@@ -52,6 +52,11 @@ Vue.component("logIn", {
 					axios.post('/rest/logingIn', this.username)
 					.then(response => (router.push(`/restaurant`)));
 				}
+				else if(user.userType.toString() == 'DELIVERER'){
+					event.preventDefault();
+					axios.post('/rest/logingIn', this.username)
+					.then(response => (router.push(`/deliverer`)));
+				}
 				else{
 					alert('Vas deo je jos uvek u doradi, pricekajte...')
 				}
