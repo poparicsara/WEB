@@ -12,6 +12,7 @@ import javax.print.attribute.standard.JobOriginatingUserName;
 
 import com.google.gson.Gson;
 
+import beans.Order;
 import beans.OrderRequest;
 import dto.EditItemDTO;
 import dto.EditUserDTO;
@@ -20,6 +21,7 @@ import dto.ManagerDTO;
 import dto.OrderDTO;
 import dto.UserDTO;
 import services.CommentService;
+import services.CustomerService;
 import services.ManagerService;
 import services.OrderService;
 import services.RestaurantsService;
@@ -36,6 +38,7 @@ public class Main {
 	private static ManagerService managerService = new ManagerService();
 	private static OrderService orderService = new OrderService();
 	private static CommentService commentService = new CommentService();
+	private static CustomerService customerService = new CustomerService();
 	private static String loggedInUser = "";
 	private static int ID = -1;
 
@@ -246,6 +249,14 @@ public class Main {
 		get("rest/selectedRestaurant/",(req, res) ->{
 			res.type("application/json");
 			return g.toJson(restaurantsService.getRestaurantByID(ID));
+		});
+	
+		post("rest/sendOrder/",(req, res) ->{
+			res.type("application/json");
+			Order order = g.fromJson(req.body(), Order.class);
+			orderService.addNewOrder(order);
+			customerService.saveCustomerOrder(order);
+			return "SUCCESS";
 		});
 		
 	}

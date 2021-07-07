@@ -4,9 +4,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -161,19 +163,70 @@ public class OrderService {
 		saveOrderChange(orders);
 	}
 	
+	public void addNewOrder(Order order) throws Exception {
+		orders = getOrders();
+		boolean exists = true;
+		while(exists) {
+			boolean sameIDs = false;
+			String ID = getAlphaNumericString();
+			for (Order oldOrders : orders) {
+				if(oldOrders.getId().equals(ID)) {
+					sameIDs = true;
+					break;
+				}
+			}
+			if(!sameIDs) {
+				exists = false;
+			}
+		}
+		order.setId(getAlphaNumericString());
+		order.setStatus(OrderStatus.PROCESSING);
+		Date date = new Date();
+		order.setDate(date);
+		orders.add(order);
+		saveOrderChange(orders);
+	}
+	
+	private String getAlphaNumericString()
+    {
+  
+        // chose a Character random from this String
+        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                                    + "0123456789"
+                                    + "abcdefghijklmnopqrstuvxyz";
+  
+        // create StringBuffer size of AlphaNumericString
+        StringBuilder sb = new StringBuilder(10);
+  
+        for (int i = 0; i < 10; i++) {
+  
+            // generate a random number between
+            // 0 to AlphaNumericString variable length
+            int index
+                = (int)(AlphaNumericString.length()
+                        * Math.random());
+  
+            // add Character one by one in end of sb
+            sb.append(AlphaNumericString
+                          .charAt(index));
+        }
+  
+        return sb.toString();
+    }
+	
 	private static String readFileAsString(String file)throws Exception
     {
-        return new String(Files.readAllBytes(Paths.get(file)));
+        return new String(Files.readString(Paths.get(file)));
     }
 	
 	private void saveOrderChange(List<Order> orders) throws Exception {
-		Writer writer = new FileWriter(ordersPath);
+		Writer writer = new FileWriter(ordersPath, StandardCharsets.UTF_8);
 		gson.toJson(orders, writer);
 		writer.close();
 	}
 	
 	private void saveRequestChange(List<OrderRequest> requests) throws Exception {
-		Writer writer = new FileWriter(requestsPath);
+		Writer writer = new FileWriter(requestsPath, StandardCharsets.UTF_8);
 		gson.toJson(requests, writer);
 		writer.close();
 	}
