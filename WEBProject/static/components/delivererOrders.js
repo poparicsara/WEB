@@ -41,13 +41,17 @@ Vue.component("delivererOrders", {
 	                    <th>Datum</th>
 	                    <th>Kupac</th>
 	                    <th>Ukupan iznos</th>
+	                    <th></th>
 	                </tr>
 		            <tr v-for="(o, index) in notDelivereds">
 		            	<td>{{o.status}}</td>
 		                <td>{{o.id}}</td>
 		                <td>{{o.date}}</td>
 		                <td>{{o.customerFullName}}</td>
-		                <td>{{o.price}}</td>
+		                <td>{{o.price}}</td> 
+		                <td>
+		                	<button v-on:click="delivered(o)">Dostavljena</button>
+		                </td>
 		            </tr>
 	            </table>
 	        </div>        
@@ -73,6 +77,12 @@ Vue.component("delivererOrders", {
     	orders : function() {
     		this.allOrders = true;
     		this.notDeliveredOrders = false;
+    	},
+    	
+    	delivered : function(order) {
+    		axios
+		    .post(`/rest/setOrderToDelivered/`, order)
+		    .then(response => (this.$router.go()))
     	}
     
     }

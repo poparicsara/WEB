@@ -149,6 +149,16 @@ public class OrderService {
 		return dtos;
 	}
 	
+	public void setOrderToDelivered(OrderDTO order) throws Exception {
+		orders = getOrders();
+		for (Order o : orders) {
+			if(o.getId() == Integer.parseInt(order.getId())) {
+				o.setStatus(OrderStatus.DELIVERED);
+			}
+		}
+		saveOrderChange(orders);
+	}
+	
 	private static String readFileAsString(String file)throws Exception
     {
         return new String(Files.readAllBytes(Paths.get(file)));

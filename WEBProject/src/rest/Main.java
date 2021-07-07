@@ -229,6 +229,13 @@ public class Main {
 			return g.toJson(orderService.getDelivererNotDeliveredOrders(loggedInUser));
 		});
 		
+		post("/rest/setOrderToDelivered/",(req, res) ->{
+			res.type("application/json");
+			OrderDTO order = g.fromJson(req.body(), OrderDTO.class);
+			orderService.setOrderToDelivered(order);
+			return "SUCCESS";
+		});
+		
 	}
 
 }
