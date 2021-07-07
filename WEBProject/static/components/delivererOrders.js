@@ -20,6 +20,7 @@ Vue.component("delivererOrders", {
 	                    <th>Broj porudžbine</th>
 	                    <th>Datum</th>
 	                    <th>Kupac</th>
+	                    <th>Restoran</th>
 	                    <th>Ukupan iznos</th>
 	                </tr>
 		            <tr v-for="(o, index) in myOrders">
@@ -27,6 +28,7 @@ Vue.component("delivererOrders", {
 		                <td>{{o.id}}</td>
 		                <td>{{o.date}}</td>
 		                <td>{{o.customerFullName}}</td>
+		                <td>{{o.restaurantName}}</td>
 		                <td>{{o.price}}</td>
 		            </tr>
 	            </table>
@@ -40,6 +42,7 @@ Vue.component("delivererOrders", {
 	                    <th>Broj porudžbine</th>
 	                    <th>Datum</th>
 	                    <th>Kupac</th>
+	                    <th>Restoran</th>
 	                    <th>Ukupan iznos</th>
 	                    <th></th>
 	                </tr>
@@ -48,6 +51,7 @@ Vue.component("delivererOrders", {
 		                <td>{{o.id}}</td>
 		                <td>{{o.date}}</td>
 		                <td>{{o.customerFullName}}</td>
+		                <td>{{o.restaurantName}}</td>
 		                <td>{{o.price}}</td> 
 		                <td>
 		                	<button v-on:click="delivered(o)">Dostavljena</button>

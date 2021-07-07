@@ -106,6 +106,15 @@ public class RestaurantsService {
 		saveChange(restaurants);
 	}
 	
+	public String getRestaurantNameById(int id) throws Exception {
+		for (Restaurant r : getRestaurants()) {
+			if(r.getId() == id) {
+				return r.getName();
+			}
+		}
+		return null;
+	}
+	
 	private int getOrderIndex(String id) throws Exception {
 		int index = 0;
 		for (Order order : getOrders()) {

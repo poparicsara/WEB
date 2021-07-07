@@ -26,6 +26,7 @@ public class OrderService {
 	private String ordersPath = "./static/orders.json";
 	private String requestsPath = "./static/requests.json";
 	private UserService userService = new UserService();
+	private RestaurantsService restaurantService = new RestaurantsService();
 	
 	public List<OrderDTO> getOrdersForDeliverers() throws Exception{
 		List<OrderDTO> dtos = new ArrayList<OrderDTO>();
@@ -93,6 +94,7 @@ public class OrderService {
 		order.setItems(o.getItems());
 		order.setPrice(Double.toString(o.getPrice()));
 		order.setRestaurant(String.valueOf(o.getRestaurant()));
+		order.setRestaurantName(restaurantService.getRestaurantNameById(o.getRestaurant()));
 		order.setStatus(setOrderStatus(o.getStatus()));
 		order.setCustomerUsername(o.getCustomerUsername());
 		order.setCustomerFullName(userService.getUserFullName(o.getCustomerUsername()));

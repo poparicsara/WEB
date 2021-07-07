@@ -19,6 +19,7 @@ Vue.component("deliverer", {
 	                    <th>Broj porudžbine</th>
 	                    <th>Datum</th>
 	                    <th>Kupac</th>
+	                    <th>Restoran</th>
 	                    <th>Ukupan iznos</th>
 	                    <th></th>
 	                </tr>
@@ -27,6 +28,7 @@ Vue.component("deliverer", {
 		                <td>{{o.id}}</td>
 		                <td>{{o.date}}</td>
 		                <td>{{o.customerFullName}}</td>
+		                <td>{{o.restaurantName}}</td>
 		                <td>{{o.price}}</td>
 		                <td><button id="index" v-on:click="sendRequest(o, index)">Pošalji zahtev</button></td>
 		            </tr>
