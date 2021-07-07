@@ -1,9 +1,13 @@
 package beans;
 
+
 public class Address {
 
+	/**
+	 * 
+	 */
 	private String street;
-	private String number;
+	private String number;       
 	private String city;
 	private int postNumber;
 	

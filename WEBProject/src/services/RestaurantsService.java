@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Type;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -299,13 +301,16 @@ public class RestaurantsService {
 	
 	private static String readFileAsString(String file)throws Exception
     {
-        return new String(Files.readAllBytes(Paths.get(file)));
+		return new String(Files.readString(Paths.get(file)));
+        //return new String(Files.readAllBytes(Paths.get(file)));
+
     }
 	
 	public void addRestaurant(Restaurant restaurant) throws Exception {
 		restaurants = getRestaurants();
 		restaurants.add(restaurant);
-		Writer writer = new FileWriter("./static/restaurants.json");
+		
+		Writer writer = new FileWriter("./static/restaurants.json",StandardCharsets.UTF_8);
 		gson.toJson(restaurants, writer);
 		writer.close();
 	}
