@@ -130,7 +130,19 @@
         border-radius: 5px;
     }
     
-    
+    button.buttonsCustomer{
+            position:relative;
+            left: 820px;
+            background-color: lightblue;
+            color:white;
+            height: 30px;
+            width: 120px;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+     .buttonsCustomer:hover {
+            background-color: deepskyblue;
+        }
     
     
     

@@ -57,8 +57,10 @@ Vue.component("logIn", {
 					axios.post('/rest/logingIn', this.username)
 					.then(response => (router.push(`/deliverer`)));
 				}
-				else{
-					alert('Vas deo je jos uvek u doradi, pricekajte...')
+				else if(user.userType.toString() == 'CUSTOMER'){
+					event.preventDefault();
+					axios.post('/rest/logingIn', this.username)
+					.then(response => (router.push(`/customer`)));
 				}
     		}
     		else{

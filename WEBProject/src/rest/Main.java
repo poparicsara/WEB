@@ -103,7 +103,7 @@ public class Main {
 		
 		get("rest/restorauntItems/", (req, res) -> {
 			res.type("application/json");
-			if(!loggedInUser.isEmpty()) {
+			if(!loggedInUser.isEmpty() && ID == -1) {
 				ID = managerService.getRestaurantID(loggedInUser);
 			}
 			return g.toJson(restaurantsService.getRestaurantItems(ID));
@@ -199,6 +199,11 @@ public class Main {
 			OrderDTO order = g.fromJson(req.body(), OrderDTO.class);
 			System.out.println(order.getId());
 			return g.toJson(orderService.getOrderRequests(order));
+		});
+		
+		get("rest/selectedRestaurant/",(req, res) ->{
+			res.type("application/json");
+			return g.toJson(restaurantsService.getRestaurantByID(ID));
 		});
 		
 	}

@@ -111,7 +111,7 @@ public class RestaurantsService {
 	private int getOrderIndex(String id) throws Exception {
 		int index = 0;
 		for (Order order : getOrders()) {
-			if(order.getId() == Integer.parseInt(id)) {
+			if(order.getId().equals(id)) {
 				break;
 			}
 			index++;
@@ -122,7 +122,7 @@ public class RestaurantsService {
 	@SuppressWarnings("deprecation")
 	private Order setDTOToOrder(OrderDTO o) {
 		Order order = new Order();
-		order.setId(Integer.parseInt(o.getId()));
+		order.setId(o.getId());
 		order.setItems(o.getItems());
 		order.setRestaurant(Integer.parseInt(o.getRestaurant()));
 		order.setDate(o.getDate());
@@ -240,7 +240,7 @@ public class RestaurantsService {
 		}
 	}
 	
-	private Restaurant getRestaurantByID(int id) throws Exception {
+	public Restaurant getRestaurantByID(int id) throws Exception {
 		for (Restaurant r : getRestaurants()) {
 			if(r.getId() == id) {
 				return r;

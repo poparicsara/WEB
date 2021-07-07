@@ -145,6 +145,17 @@ img{
 	border-radius: 10px;
 }
 
+.orderItemComponents{
+	width: 30%;
+	height: 300%;
+	background-color: white; 
+	margin-left: 550px;
+	border-color: black;
+	border-radius: 10px;
+}
+
+
+
 .restaurantItemLabels{
 	position: relative;
 	left: 70px;
