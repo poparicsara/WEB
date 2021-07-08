@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Customer extends User {
 
-	private ArrayList<Order> orders;
+	private ArrayList<String> orders;
 	private Cart cart;
 	private double totalPoints;
 	private CustomerType type;
@@ -13,7 +13,7 @@ public class Customer extends User {
 		super();
 	}
 
-	public Customer(ArrayList<Order> orders, Cart cart, double totalPoints, CustomerType type) {
+	public Customer(ArrayList<String> orders, Cart cart, double totalPoints, CustomerType type) {
 		super();
 		this.orders = orders;
 		this.cart = cart;
@@ -21,11 +21,11 @@ public class Customer extends User {
 		this.type = type;
 	}
 
-	public ArrayList<Order> getOrders() {
+	public ArrayList<String> getOrders() {
 		return orders;
 	}
 	
-	public void setOrders(ArrayList<Order> orders) {
+	public void setOrders(ArrayList<String> orders) {
 		this.orders = orders;
 	}
 	

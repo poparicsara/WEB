@@ -6,7 +6,7 @@ Vue.component("customerOrder", {
 			item : {name: '', price: '', type: '', amount: '0', description: '', image: ''},
 			selectedItem: false,
 			edit : {oldName: '', name: '', price: '', type: '', amount: '', description: '', image: ''},
-			order: {id: '', items : [], restaurantID : 0, date : null, price: 0, status: null},
+			order: {id: '', items : [], restaurantID : 0, date : null, price: 0, status: null, customerUsername: ''},
 			restaurantName : '',
 			username: null,
 			id: null,
@@ -116,11 +116,10 @@ Vue.component("customerOrder", {
     	methods: {  
     		createOrder: function() {
     			this.order.restaurantID = this.restaurant.id
-    			var today = new Date();
-				var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
-				var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-				var dateTime = date+' '+time;
-				this.order.date = dateTime
+				this.order.customerUsername = this.username;
+				axios
+				.post('rest/sendOrder/', this.order)
+				.then(response => (this.$router.go()));
 				
     		},
     		openBasket: function(){
