@@ -3,7 +3,7 @@ Vue.component("restaurant", {
 	    return {
 			items: null,
 			addItem: false,
-			item : {name: '', price: '', type: '', amount: '0', description: '', image: ''},
+			item : {name: '', price: '', type: 'FOOD', amount: '', description: '', image: ''},
 			selectedItem: false,
 			edit : {oldName: '', name: '', price: '', type: '', amount: '', description: '', image: ''},
 			restaurantName : '',
@@ -253,7 +253,7 @@ Vue.component("restaurant", {
 	    	},
 	    	saveItem : function() {
 	    		for(n of this.names){
-	    			if(n == this.item.name){
+	    			if(n === this.item.name){
 	    				this.nameExist = true;
 	    			}
 	    		}
@@ -267,6 +267,9 @@ Vue.component("restaurant", {
 	    			event.preventDefault()
 	    			alert("Uneto ime artikla vec postoji!");
 	    		} else {
+	    			if(this.item.amount == ''){
+	    				this.item.amount = 0;
+	    			}
 	    			let array = this.item.image.split("\\")
 	            	this.item.image = "images/items/" + array[2]
 		    		event.preventDefault()
