@@ -14,6 +14,7 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import beans.Canceling;
 import beans.Order;
 import beans.OrderRequest;
 import dto.OrderDTO;
@@ -171,8 +172,8 @@ public class OrderService {
 				break;
 			}
 		}
-		saveOrderChange(orders);
 		
+		saveOrderChange(orders);
 	}
 	
 	public void addNewOrder(Order order) throws Exception {

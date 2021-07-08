@@ -100,7 +100,7 @@ public class UserService {
 		writer.close();
 	}
 	
-	public UserDTO getLoggedUser(String username) throws Exception {
+	public UserDTO getUserByUsername(String username) throws Exception {
 		UserDTO user = new UserDTO();
 		for (User u : getUsers()) {
 			if(u.getUsername().equals(username)) {
@@ -152,6 +152,7 @@ public class UserService {
 		dto.setGender(user.getGender().toString());
 		dto.setDate(getDate(user.getDateOfBirth()));
 		dto.setType(getUserType(user.getUserType()));
+		dto.setBlocked(String.valueOf(user.isBlocked()));
 		return dto;
 	}
 	

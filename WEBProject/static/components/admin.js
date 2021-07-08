@@ -32,7 +32,9 @@ Vue.component("admin", {
   		  street : [],
   	      streetName : '',
   	      lat : null,
-  	      lng : null
+  	      lng : null,
+  	      showSuspicious : false,
+  	      suspiciousUsers : null
 	    }
 	},
 	    template: ` 
@@ -68,7 +70,27 @@ Vue.component("admin", {
 	           	<label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label> 
 	         </div>
          </div> 
+         <div v-if="showSuspicious">
+         	<table border="1">
+	                <tr>
+	                	<th>Korisnicko ime</th>
+	                	<th>Ime</th>
+	                	<th>Prezime</th>
+	                	<th></th>
+	                </tr>
+		            <tr v-for="(s, index) in suspiciousUsers">
+		            	<td>{{s.username}}</td>
+		            	<td>{{s.name}}</td>
+		            	<td>{{s.lastname}}</td>
+		            	<td>
+		            	<button v-if="s.blocked=='false'" v-on:click="blockUser(s)">Blokiraj</button>
+		            	<button v-if="s.blocked=='true'" disabled>Blokiran</button>
+		            	</td>
+		            </tr>
+	            </table>   
+         </div>
          <div v-if="this.showUsers" >
+         		<button v-on:click="suspicious">Sumnjivi korisnici</button>
          	  <h3 >
          	       <input id="searchUsers" type="text" placeholder="Pretraži..." v-model="searchText" v-on:change = "searchUsers">  
          	       <br> <br>
@@ -282,7 +304,10 @@ Vue.component("admin", {
           window.street = '';
           window.city = '';
           window.number = '';
-          window.postNumber = 0;      
+          window.postNumber = 0;     
+      axios
+          .get('rest/suspiciousUsers/')
+          .then(response => (this.suspiciousUsers = response.data)) 
     },
     
     destroyed () {
@@ -358,10 +383,12 @@ Vue.component("admin", {
     		}	
     	},
     	showRestaurantList: function(){
+    		this.showSuspicious = false;
     		this.showRestaurants = true
     		this.showUsers = false    		
     	},
     	showUserList: function(){
+    		this.showSuspicious = false;
     		this.showUsers = true
     		this.showRestaurants = false	
     	},
@@ -599,6 +626,10 @@ Vue.component("admin", {
   			axios
   			.post('rest/blockUser/', user)
   			.then(response => (this.$router.go()))
+  		},
+  		suspicious : function() {
+  			this.showUsers = false;
+  			this.showSuspicious = true;
   		}
     },
  
