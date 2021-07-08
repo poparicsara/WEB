@@ -144,3 +144,14 @@
 			height:50px;
 			width:50px;	
 		}
+		
+		button.cancelButton{
+			height:50px;
+			width:50px;
+		}
+		
+		img.cancelButton{
+			height:35px;
+			width:35px;
+		}
+		

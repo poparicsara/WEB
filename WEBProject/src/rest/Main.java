@@ -259,6 +259,18 @@ public class Main {
 			return "SUCCESS";
 		});
 		
+		post("rest/cancelOrder/",(req, res) ->{
+			res.type("application/json");
+			Order order = g.fromJson(req.body(), Order.class);
+			orderService.cancelOrder(order);
+			customerService.cancelCustomerOrder(order);
+			return "SUCCESS";
+		});
+
+		get("rest/orders/",(req, res) ->{
+			res.type("application/json");
+			return g.toJson(orderService.getOrders());
+		});
 	}
 
 }

@@ -28,8 +28,6 @@ public class CustomerService {
 		return customers;
 	}
 	
-	
-
 	public void saveCustomerOrder(Order order) throws Exception {
 		customers = getCustomers();
 		for (Customer customer : customers) {
@@ -38,6 +36,20 @@ public class CustomerService {
 				double points = customer.getTotalPoints();
 				points += order.getPrice()/1000*133;
 				customer.setTotalPoints(points);
+			}
+		}
+		saveCustomersChange(customers);
+	}
+	
+	public void cancelCustomerOrder(Order order) throws Exception {
+		customers = getCustomers();
+		for (Customer customer : customers) {
+			for (String id : customer.getOrders()) {
+				if(id.equals(order.getId())) {
+					double points = customer.getTotalPoints();
+					points -= order.getPrice()/1000*133*4;
+					customer.setTotalPoints(points);
+				}
 			}
 		}
 		saveCustomersChange(customers);

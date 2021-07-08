@@ -119,7 +119,7 @@ public class OrderService {
 		}
 	}
 
-	private List<Order> getOrders() throws Exception {
+	public List<Order> getOrders() throws Exception {
 		Type listType = new TypeToken<ArrayList<Order>>() {}.getType();
 	    String json = readFileAsString(ordersPath);
 		orders = gson.fromJson(json, listType);
@@ -161,6 +161,18 @@ public class OrderService {
 			}
 		}
 		saveOrderChange(orders);
+	}	
+	
+	public void cancelOrder(Order oldOrder) throws Exception {
+		orders = getOrders();
+		for (Order order : orders) {
+			if(order.getId().equals(oldOrder.getId())) {
+				order.setStatus(OrderStatus.CANCELED);
+				break;
+			}
+		}
+		saveOrderChange(orders);
+		
 	}
 	
 	public void addNewOrder(Order order) throws Exception {

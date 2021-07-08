@@ -12,7 +12,10 @@ Vue.component("customer", {
   		  status: true,
   		  filterOK: false,
   		  username: null,
-  		  newPage: false
+  		  newPage: false,
+  		  showRestaurants: true,
+  		  showOrders: false,
+  		  orders: null
 	    }
 	 
 	},
@@ -29,10 +32,11 @@ Vue.component("customer", {
 	       		</div>               
             <hr>
            <h2>
-               <label class="r"> <b> Restorani </b></label>
-                <button class="buttonsCustomer" > Restorani </button>
-            	<button class="buttonsCustomer" > Porudžbine </button>
+                <label class="r"> <b> Restorani </b></label>
+                <button class="buttonsCustomer" v-on:click="showAllRestaurants"> Restorani </button>
+            	<button class="buttonsCustomer" v-on:click="showAllOrders"> Porudžbine </button>
            </h2>
+           <div v-if="showRestaurants">
            <h3 class = "restaurantSort"> 
            		<input id="input" type="text" placeholder="Pretraži..." v-model="searchText" v-on:change = "searchRestaurants"> 
            		<br> <br> <br>
@@ -68,10 +72,10 @@ Vue.component("customer", {
 	                </select>
 	                <button v-on:click = "filter"> <img id="filter" src="images/filter.png"> </button>
       			</div>
-           </h3>
+           </h3> 
            		<div v-if="searchOK">
            			  <div v-if="sortName">
-           				<div v-for="r in sortedRestaurants"> 
+           				<div v-for="r in sortedRestaurants"  v-on:click = "openRestaurant(r)"> 
            					<div class="restaurants" v-if="rLower(r.name).includes(searchInLowerCase) || rLower(r.type).includes(searchInLowerCase)">		           		    
 		           		    	<img class="restaurants" :src = r.image > <br>
 					      		<label class="title">{{r.name}} </label> <br>
@@ -81,7 +85,7 @@ Vue.component("customer", {
            				</div>
            			  </div>
            			  <div v-else-if="sortAddress">
-           			  	<div  v-for="r in sortedAddresses"> 
+           			  	<div  v-for="r in sortedAddresses"  v-on:click = "openRestaurant(r)"> 
            					<div class="restaurants" v-if="rLower(r.name).includes(searchInLowerCase) || rLower(r.type).includes(searchInLowerCase)">		           		    
 		           		    	<img class="restaurants" :src = r.image > <br>
 					      		<label class="title">{{r.name}} </label> <br>
@@ -91,7 +95,7 @@ Vue.component("customer", {
            				</div>
            			  </div>
            			  <div v-else>
-	           			  <div v-for="(r, index) in restaurants">
+	           			  <div v-for="(r, index) in restaurants"  v-on:click = "openRestaurant(r)">
 		           		    <div class="restaurants" v-if="rLower(r.name).includes(searchInLowerCase) || rLower(r.type).includes(searchInLowerCase)">		           		    
 		           		    	<img class="restaurants" :src = r.image > <br>
 					      		<label class="title">{{r.name}} </label> <br>
@@ -103,7 +107,7 @@ Vue.component("customer", {
 			    </div>
            		<div v-else>
            			<div v-if="sortName">
-           				<div class="restaurants" v-for="r in sortedRestaurants">           				
+           				<div class="restaurants" v-for="r in sortedRestaurants"  v-on:click = "openRestaurant(r)">           				
 			       		    <img class="restaurants" :src = r.image > <br>
 						    <label class="title">{{r.name}} </label> <br>
 						    <label>{{r.type}}</label> <br>
@@ -111,7 +115,7 @@ Vue.component("customer", {
 					    </div>  
            			</div>
            			<div v-else-if="sortAddress">
-	           			<div class="restaurants" v-for="r in sortedAddresses">           				
+	           			<div class="restaurants" v-for="r in sortedAddresses"  v-on:click = "openRestaurant(r)">           				
 			       		    <img class="restaurants" :src = r.image > <br>
 						    <label class="title">{{r.name}} </label> <br>
 						    <label>{{r.type}}</label> <br>
@@ -119,7 +123,7 @@ Vue.component("customer", {
 					    </div>  
            			</div>
            			<div v-else-if="filterOK">
-           				 <div v-for="(r, index) in restaurants">
+           				 <div v-for="(r, index) in restaurants"  v-on:click = "openRestaurant(r)">
 	           		     <div class="restaurants" v-if="r.type == filterType">
 	           		    	<img class="restaurants" :src = r.image > <br>
 				      		<label class="title">{{r.name}} </label> <br>
@@ -138,7 +142,26 @@ Vue.component("customer", {
            			</div>
 			    </div>		
            </div>           
+           <div v-else="showOrders">
+         	<div v-for="(o, index) in orders" v-if = "o.customerUsername == username"> 
+         		<div  class="restaurants" v-for="(r, index) in restaurants" v-if="o.restaurantID == r.id ">
+					    <img class="restaurants" :src = r.image > <br>
+						<label class="title">{{r.name}} </label> <br>
+						<label>{{r.type}}</label> <br>
+						<label>Artikli:</label>
+						<div v-for="i in o.items">
+							<label>{{i.name}} </label>
+						</div>
+						<label>Datum: {{o.date}} </label> <br>
+						<label>Cena: {{o.price}} RSD</label> <br>
+						<label>Status: {{o.status}} </label> <br> <br>
+						<button class="cancelButton" v-on:click="cancelOrder(o)" v-if="o.status == 'PROCESSING'"> <img class="cancelButton" src="images/cancel.png"> </button>
+				</div>
+			</div>  
+		  </div>
          </div>
+         </div>
+        
     	`,
     mounted () {
         axios
@@ -146,7 +169,10 @@ Vue.component("customer", {
           .then(response => (this.restaurants = response.data));
          axios
           .get('rest/loggedInUser/', this.username)
-          .then(response => (this.username = response.data));  
+          .then(response => (this.username = response.data)); 
+         axios
+          .get('rest/orders/')
+          .then(response => (this.orders = response.data));
     },
      destroyed() {
      			if(!this.newPage){
@@ -186,6 +212,21 @@ Vue.component("customer", {
   		}
 	},
     methods: {
+    	cancelOrder : function(order){
+    		if(confirm('Da li ste sigurni da otkazujete porudžbinu?')){
+    			axios
+		          .post('rest/cancelOrder/', order)
+		          .then(response => (alert('Uspešno otkazana narudžbina')));
+    		}	
+    	},
+    	showAllRestaurants : function(){
+    		this.showRestaurants = true
+    		this.showOrders = false
+    	},
+    	showAllOrders : function(){
+    		this.showOrders = true
+    		this.showRestaurants = false
+    	},
     	rLower : function(item) {
   			return item.toLowerCase()
   		},
