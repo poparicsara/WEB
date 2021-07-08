@@ -52,15 +52,43 @@ Vue.component("profile", {
     			this.editUser.gender = this.user.gender;
     			this.editUser.date = this.user.date;
     			this.editUser.userType = this.user.userType;
-    			this.newPage = true;	
+    			this.newPage = true;
     			event.preventDefault();
-    			axios
-    			.post('/rest/editProfile/', this.editUser)
-    			.then(response => (router.push(`/restaurant`)));
+    			if(this.user.userType == 'MANAGER'){
+    				axios
+    				.post('/rest/editProfile/', this.editUser)
+    				.then(response => (router.push(`/restaurant`)));
+    			}
+    			else if(this.user.userType == 'ADMIN'){
+    				axios
+    				.post('/rest/editProfile/', this.editUser)
+    				.then(response => (router.push(`/admin`)));
+    			}
+    			else if(this.user.userType == 'CUSTOMER'){
+    				axios
+    				.post('/rest/editProfile/', this.editUser)
+    				.then(response => (router.push(`/customer`)));
+    			}
+    			else if(this.user.userType == 'DELIVERER'){
+    				axios
+    				.post('/rest/editProfile/', this.editUser)
+    				.then(response => (router.push(`/deliverer`)));
+    			}
     		},
     		cancelProfileEdit : function() {
     			this.newPage = true		
-	    		router.push(`/restaurant`);
+    			if(this.user.userType == 'MANAGER'){
+    				router.push(`/restaurant`);
+    			}
+    			else if(this.user.userType == 'ADMIN'){
+    				router.push(`/admin`);
+    			}
+	    		else if(this.user.userType == 'CUSTOMER'){
+	    			router.push('/customer');
+	    		}
+	    		else if(this.user.userType == 'DELIVERER'){
+	    			router.push('/deliverer');
+	    		}
     		}
         }
 });

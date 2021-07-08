@@ -4,6 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -46,7 +47,7 @@ public class UserService {
 	}
 	
 	private static String readFileAsString(String file)throws Exception{
-        return new String(Files.readAllBytes(Paths.get(file)));
+        return new String(Files.readString(Paths.get(file)));
     }
 	
 	public void addUser(UserDTO user) throws Exception {
@@ -236,7 +237,7 @@ public class UserService {
 	}
 	
 	private void saveChange(List<User> users) throws IOException {
-		Writer writer = new FileWriter(filePath);
+		Writer writer = new FileWriter(filePath, StandardCharsets.UTF_8);
 		gson.toJson(users, writer);
 		writer.close();
 	}

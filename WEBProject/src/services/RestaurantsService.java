@@ -18,6 +18,7 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import beans.Comment;
 import beans.Item;
 import beans.Order;
 import beans.Restaurant;
@@ -36,7 +37,9 @@ public class RestaurantsService {
 	private List<Restaurant> restaurants = new ArrayList<Restaurant>();
 	private List<Order> orders = new ArrayList<Order>();
 	private List<OrderDTO> restaurantOrders = new ArrayList<OrderDTO>();
+	private List<Comment> comments = new ArrayList<Comment>();
 	private UserService userService = new UserService();
+	private CommentService commentService = new CommentService();
 	private String ordersPath = "./static/orders.json";
 	private String restaurantsPath = "./static/restaurants.json";
 	
@@ -69,6 +72,29 @@ public class RestaurantsService {
 			}
 		}
 		saveChange(restaurants);
+	}
+	
+	public void updateRestaurantGrades() throws Exception {
+		restaurants = getRestaurants();
+		comments = commentService.getComments();
+		
+		for (Restaurant restaurant : restaurants) {
+			double commentNumber = 0;
+			double gradeSum = 0;
+			for (Comment comment : comments) {
+				if(restaurant.getId() == comment.getRestaurant()) {
+					commentNumber ++;
+					gradeSum += comment.getGrade();
+				}
+			}
+			if(commentNumber > 0) {
+				double averageGrade = gradeSum/commentNumber;
+				restaurant.setAverageGrade(averageGrade);
+			}
+		}
+		
+		saveChange(restaurants);
+		
 	}
 	
 	public List<String> getRestaurantItemNames(int restaurant) throws Exception{

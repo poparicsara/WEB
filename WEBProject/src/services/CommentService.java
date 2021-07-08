@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import beans.Comment;
+import beans.Restaurant;
 import dto.CommentDTO;
 import enums.CommentStatus;
 
@@ -32,6 +33,7 @@ public class CommentService {
 		}
 		return comms;
 	}
+	
 	
 	public void addComment(Comment comment) throws Exception{
 		comments = getComments();

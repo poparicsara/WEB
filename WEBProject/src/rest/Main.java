@@ -50,6 +50,7 @@ public class Main {
 
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
 		
+		
 		//bio je GET OVDE
 		get("rest/restaurants/", (req, res) -> {
 			res.type("application/json");
@@ -304,6 +305,7 @@ public class Main {
 			res.type("application/json");
 			Comment comment = g.fromJson(req.body(), Comment.class);
 			commentService.addComment(comment);
+			restaurantsService.updateRestaurantGrades();
 			return "SUCCESS";
 		});
 		

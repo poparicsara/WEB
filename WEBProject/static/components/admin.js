@@ -32,7 +32,8 @@ Vue.component("admin", {
   		  street : [],
   	      streetName : '',
   	      lat : null,
-  	      lng : null
+  	      lng : null,
+  	      newPage : true
 	    }
 	},
 	    template: ` 
@@ -42,7 +43,7 @@ Vue.component("admin", {
             <div class="dropdown">
 	           <button> <img id="adminImage" src="images/admin.png"> </button>
 		               <div class="dropdown-content">
-		                  <button>Profil</button>
+		                  <button v-on:click = "adminProfile">Profil</button>
 		                  <button v-on:click = "logOut"> Odjava</button>
 		                </div>
 	       </div>
@@ -285,9 +286,11 @@ Vue.component("admin", {
     },
     
     destroyed () {
-    			axios.post(`/rest/logOut`)
-    			.then(response => (''));
-    			router.push(`/`);   	
+    	if(!this.newPage){
+    		axios.post(`/rest/logOut`)
+   			.then(response => (''));
+   			router.push(`/`);
+   		}   	
     },
     computed: {
     
@@ -538,6 +541,10 @@ Vue.component("admin", {
     	rLower : function(item) {
   			return item.toLowerCase()
   		},
+  		adminProfile : function() {
+    		this.newPage = true	
+	    	router.push(`/profile`);
+    	},
   		showMap : function() {
   			event.preventDefault()
   		    this.map = true

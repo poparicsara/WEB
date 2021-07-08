@@ -29,8 +29,8 @@ Vue.component("customer", {
                 <div class="dropdown">
 	           <button> <img id="adminImage" src="images/customer.jpg"> </button>
 		               <div class="dropdown-content">
-		                  <button>Profil</button>
-		                  <button> Odjava</button>
+		                  <button v-on:click="customerProfile">Profil</button>
+		                  <button v-on:click = "logOut">  Odjava</button>
 		                </div>
 	       		</div>               
             <hr>
@@ -239,7 +239,13 @@ Vue.component("customer", {
   		}
 	},
     methods: {
-    	
+    	logOut: function() {
+    		if(confirm('Da li ste sigurni?')){
+    			axios.post(`/rest/logOut`)
+    			.then(response => (''));
+    			router.push(`/`);
+    		}	
+    	},
     	cancelOrder : function(order){
     		if(confirm('Da li ste sigurni da otkazujete porudžbinu?')){
     			axios
@@ -309,6 +315,10 @@ Vue.component("customer", {
     	},
     	closeComment: function(){
     		this.showComment = false
+    	},
+    	customerProfile : function() {
+    		this.newPage = true	
+	    	router.push(`/profile`);
     	},
     	showCommentPage : function(order){
     		var exists = false

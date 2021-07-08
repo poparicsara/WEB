@@ -6,11 +6,23 @@ Vue.component("deliverer", {
 			user: '',
 			newPage: false ,
 			requests: null,
-			alreadySend: false
+			alreadySend: false,
+			username:null
 	    }
 	},
 	template: `
 		<div>
+		<h1 class="admin"> 
+            <img id="adminLogo" src="images/logo.jpg">
+            <div class="dropdown">
+	           <button> <img id="adminImage" src="images/deliverer.png"> </button>
+		               <div class="dropdown-content">
+		                  <button v-on:click="delivererProfile">Profil</button>
+		                  <button v-on:click = "logOut"> Odjava</button>
+		                </div>
+	       </div>
+        </h1>
+        <hr class="admin">
 	        <h1>Porudžbine na čekaju</h1>
 	        	<button v-on:click="myOrders">Moje porudzbine</button>
 	            <table border="1">
@@ -46,6 +58,9 @@ Vue.component("deliverer", {
           axios
           .get('/rest/requests/')
           .then(response => (this.requests = response.data));
+          axios
+          .get('rest/loggedInUser/', this.username)
+          .then(response => (this.username = response.data)); 
     },
     
     destroyed() {
@@ -58,6 +73,17 @@ Vue.component("deliverer", {
 
     
     methods: {
+    	logOut: function() {
+    		if(confirm('Da li ste sigurni?')){
+    			axios.post(`/rest/logOut`)
+    			.then(response => (''));
+    			router.push(`/`);
+    		}	
+    	},
+    	delivererProfile : function() {
+    		this.newPage = true	
+	    	router.push(`/profile`);
+    	},
     	sendRequest: function(order, index) {
     		for(r of this.requests){
     			if(r.orderID == order.id && r.delivererUsername == this.user){
