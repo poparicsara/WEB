@@ -11,12 +11,14 @@ public class Item {
 	private int amount;
 	private String description;
 	private String image;
+	private boolean deleted = false;
 	
 	public Item() {
 		super();
 	}
 
-	public Item(String name, double price, ItemType type, int restaurantID, int amount, String description, String image) {
+	public Item(String name, double price, ItemType type, int restaurantID, int amount, 
+			String description, String image, boolean deleted) {
 		super();
 		this.name = name;
 		this.price = price;
@@ -25,6 +27,15 @@ public class Item {
 		this.amount = amount;
 		this.description = description;
 		this.image = image;
+		this.deleted = deleted;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public String getImage() {

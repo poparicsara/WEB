@@ -306,6 +306,14 @@ public class Main {
 			userService.blockUser(user);
 			return "SUCCESS";
 		});
+		
+		post("/rest/deleteRestaurantItem/",(req, res) ->{
+			res.type("application/json");
+			ItemDTO item = g.fromJson(req.body(), ItemDTO.class);
+			System.out.println(item.getName());
+			restaurantsService.deleteRestaurantItem(item, ID);
+			return "SUCCESS";
+		});
 	}
 
 }

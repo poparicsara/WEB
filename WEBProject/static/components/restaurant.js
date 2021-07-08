@@ -58,16 +58,18 @@ Vue.component("restaurant", {
 	        </div>
 	        <br/><br/>
 	        <div class="restaurantItemGroup" v-for="(i, index) in items">
-	            <a v-on:click="itemClicked(i)">
-                <div class="restaurantItem">
-                	<img :src = i.image><br/><br/>
+                <div class="restaurantItem" v-if="i.deleted===false">
+                	<a v-on:click="itemClicked(i)">
+                		<img :src = i.image><br/><br/>
+                	</a>
                 	<hr class="restaurantItemHR">
                     <label class="foodName"><b>{{i.name}}</b></label><br/><br/>
                     <label class="price">Cena: {{i.price}} RSD</label><br/>
                     <label v-if="i.type=='FOOD'">Kolicina: {{i.amount}} g</label>
                     <label v-if="i.type=='DRINK'">Kolicina: {{i.amount}} ml</label>
+                    <button v-on:click="deleteItem(i)">Obrisi</button>
                 </div>
-            </a>
+            	
 	        </div>
 	        <div class="addRestaurantItem" v-if="addItem">
 	        	<div class="addRestaurantItemComponents">
@@ -343,6 +345,12 @@ Vue.component("restaurant", {
     		comments : function() {
     			this.newPage = true		
 	    		router.push(`/restaurantComments`);
+    		},
+    		deleteItem : function(item){
+    			alert(item.name);
+    			axios
+    			.post('/rest/deleteRestaurantItem/', item)
+    			.then(response => (this.$router.go()))
     		}
     	},
 });

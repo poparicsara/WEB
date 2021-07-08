@@ -359,7 +359,19 @@ public class RestaurantsService {
 		saveChange(restaurants);
 	}
 	
-	
+	public void deleteRestaurantItem(ItemDTO item, int restaurant) throws Exception {
+		restaurants = getRestaurants();
+		for (Restaurant r : restaurants) {
+			if(r.getId() == restaurant) {
+				for (Item i : r.getItems()) {
+					if(i.getName().equals(item.getName())) {
+						i.setDeleted(true);
+					}
+				}
+			}
+		}
+		saveChange(restaurants);
+	}
 	
 	
 	

@@ -10,13 +10,14 @@ public class ItemDTO {
 	private String amount;
 	private String description;
 	private String image;
-	
+	private String deleted;
 	
 	public ItemDTO() {
 		super();
 	}
 
-	public ItemDTO(String name, String price, String type, int restaurant, String amount, String description, String image) {
+	public ItemDTO(String name, String price, String type, int restaurant, String amount, 
+			String description, String image, String deleted) {
 		super();
 		this.name = name;
 		this.price = price;
@@ -25,6 +26,15 @@ public class ItemDTO {
 		this.amount = amount;
 		this.description = description;
 		this.image = image;
+		this.deleted = deleted;
+	}
+
+	public String getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(String deleted) {
+		this.deleted = deleted;
 	}
 
 	public String getImage() {
