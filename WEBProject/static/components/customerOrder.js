@@ -119,8 +119,14 @@ Vue.component("customerOrder", {
 				this.order.customerUsername = this.username;
 				axios
 				.post('rest/sendOrder/', this.order)
-				.then(response => (this.$router.go()));
+				.then(response => (this.cleanBasket()));
 				
+    		},
+    		cleanBasket: function(){
+    			this.itemsOrderedNumber =  0;
+				this.setItemNumber();
+				this.showBasket = false;
+				this.$router.go()
     		},
     		openBasket: function(){
     			this.showBasket = true

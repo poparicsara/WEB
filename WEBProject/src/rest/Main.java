@@ -13,6 +13,7 @@ import javax.print.attribute.standard.JobOriginatingUserName;
 
 import com.google.gson.Gson;
 
+import beans.Comment;
 import beans.Order;
 import beans.OrderRequest;
 import dto.CommentDTO;
@@ -45,7 +46,7 @@ public class Main {
 	private static int ID = -1;
 
 	public static void main(String[] args) throws Exception{
-		port(80);
+		port(8080);
 
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
 		
@@ -293,6 +294,19 @@ public class Main {
 			res.type("application/json");
 			return g.toJson(orderService.getOrders());
 		});
+		
+		get("rest/comments/",(req, res) ->{
+			res.type("application/json");
+			return g.toJson(commentService.getComments());
+		});
+		
+		post("rest/addComment/",(req, res) ->{
+			res.type("application/json");
+			Comment comment = g.fromJson(req.body(), Comment.class);
+			commentService.addComment(comment);
+			return "SUCCESS";
+		});
+		
 	}
 
 }

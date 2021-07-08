@@ -4,6 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -32,10 +33,17 @@ public class CommentService {
 		return comms;
 	}
 	
+	public void addComment(Comment comment) throws Exception{
+		comments = getComments();
+		comment.setStatus(CommentStatus.NONE);
+		comments.add(comment);
+		saveChange(comments);
+	}
+	
 	public void acceptComment(CommentDTO comment) throws Exception {
 		List<Comment> comms = getComments();
 		for (Comment c : comms) {
-			if(c.getId() == Integer.parseInt(comment.getId())) {
+			if(c.getId().equals(comment.getId())) {
 				c.setStatus(CommentStatus.ACCEPTED);
 			}
 		}
@@ -45,7 +53,7 @@ public class CommentService {
 	public void rejectComment(CommentDTO comment) throws Exception {
 		List<Comment> comms = getComments();
 		for (Comment c : comms) {
-			if(c.getId() == Integer.parseInt(comment.getId())) {
+			if(c.getId().equals(comment.getId())) {
 				c.setStatus(CommentStatus.REJECTED);
 			}
 		}
@@ -74,7 +82,7 @@ public class CommentService {
 		}
 	}
 	
-	private List<Comment> getComments() throws Exception{
+	public List<Comment> getComments() throws Exception{
 		Type listType = new TypeToken<ArrayList<Comment>>() {}.getType();
 	    String json = readFileAsString(commentsPath);
 		comments = gson.fromJson(json, listType);
@@ -83,11 +91,11 @@ public class CommentService {
 	
 	private static String readFileAsString(String file)throws Exception
     {
-        return new String(Files.readAllBytes(Paths.get(file)));
+        return new String(Files.readString(Paths.get(file)));
     }
 	
 	private void saveChange(List<Comment> comments) throws IOException {
-		Writer writer = new FileWriter(commentsPath);
+		Writer writer = new FileWriter(commentsPath, StandardCharsets.UTF_8);
 		gson.toJson(comments, writer);
 		writer.close();
 	}

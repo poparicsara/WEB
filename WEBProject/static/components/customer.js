@@ -15,7 +15,10 @@ Vue.component("customer", {
   		  newPage: false,
   		  showRestaurants: true,
   		  showOrders: false,
-  		  orders: null
+  		  orders: null,
+  		  comments: null,
+  		  comment : {id : '', customer : '', restaurant : ' ', text : '', grade : 0, status: null},
+  		  showComment: false	
 	    }
 	 
 	},
@@ -156,8 +159,28 @@ Vue.component("customer", {
 						<label>Cena: {{o.price}} RSD</label> <br>
 						<label>Status: {{o.status}} </label> <br> <br>
 						<button class="cancelButton" v-on:click="cancelOrder(o)" v-if="o.status == 'PROCESSING'"> <img class="cancelButton" src="images/cancel.png"> </button>
+						<button class="cancelButton" v-on:click="showCommentPage(o)"> <img class="cancelButton" src="images/comment.png"> </button>
 				</div>
-			</div>  
+			</div> 
+			<div class="addRestaurantItem" v-if="showComment">
+	        	<div class="addRestaurantItemComponents">
+		        	<span class="addRestaurantItemClose" v-on:click="closeComment">&times;</span>
+		        	<h1 class="addRestaurantHeader">Dodavanje komentara</h1>
+		            <form>  
+		                <label class="restaurantItemLabels">Komentar:</label><br/>
+		                <input class="restaurantItemInput" type="text" name="name" v-model = "comment.text" required ><br/><br/>
+		                <label class="restaurantItemLabels">Ocena:</label><br/>
+		                <select name="itemType" v-model = "comment.grade" class="restaurantItemInput" selected="1">
+		                    <option value="1">1</option>
+		                    <option value="2">2</option>
+		                    <option value="3">3</option>
+		                    <option value="4">4</option>
+		                    <option value="5">5</option>
+		                </select><br/><br/>
+		                <input class="restaurantItemButtons" type="submit" value="Pošalji" v-on:click="sendComment"><br/>
+		            </form>
+	            </div>
+			</div>
 		  </div>
          </div>
          </div>
@@ -173,6 +196,9 @@ Vue.component("customer", {
          axios
           .get('rest/orders/')
           .then(response => (this.orders = response.data));
+         axios
+          .get('rest/comments/')
+          .then(response => (this.comments = response.data));
     },
      destroyed() {
      			if(!this.newPage){
@@ -182,6 +208,7 @@ Vue.component("customer", {
     			 }    		
     },
     computed: {
+    	
   		searchInLowerCase() {
     		return this.searchText.toLowerCase().trim();
   		},
@@ -212,6 +239,7 @@ Vue.component("customer", {
   		}
 	},
     methods: {
+    	
     	cancelOrder : function(order){
     		if(confirm('Da li ste sigurni da otkazujete porudžbinu?')){
     			axios
@@ -271,6 +299,36 @@ Vue.component("customer", {
    			else{
    				this.searchOK = true
    			}   		
-    	}
+    	},
+    	
+    	sendComment:function(){
+    		event.preventDefault();
+    		axios.post('rest/addComment/', this.comment)
+			.then(response => (alert('Komentar poslat na recenziju!')));
+			this.showComment = false
+    	},
+    	closeComment: function(){
+    		this.showComment = false
+    	},
+    	showCommentPage : function(order){
+    		var exists = false
+    		for(c of this.comments){
+    			if(c.id == order.id){
+    				exists = true;
+    				break;
+    			}
+    		}
+    		if(exists){
+    			alert('Već ste dali komentar za ovu narudžbinu!' + this.username)
+    			
+    		}
+    		else{
+    			this.comment.id = order.id
+    			this.comment.restaurant = order.restaurantID
+    			this.comment.customer = this.username
+    			alert(this.comment.customer)
+    			this.showComment = true
+    		}
+    	},
     },
 });
