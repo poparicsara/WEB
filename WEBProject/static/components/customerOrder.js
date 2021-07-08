@@ -32,7 +32,8 @@ Vue.component("customerOrder", {
             	<hr>
             </div>
             <h2>   
-               <a href="#" v-on:click="showDetails"> Detaljniji prikaz restorana </a>  
+               <a href="#" v-on:click="showDetails"> Detaljniji prikaz restorana </a>  <br/>
+               <button v-on:click="comments">Komentari</button>
                 <div class="basket">   
                 <label id = "new"> {{this.itemsOrderedNumber}} </label>                   
                 <button class ="basket" v-on:click ="openBasket" > <img class="basket" src = "images/basket.jpg"> </button>  
@@ -219,6 +220,10 @@ Vue.component("customerOrder", {
     		},
     		cancelProfileEdit : function() {
     			this.profile = false;
+    		}, 
+    		comments : function() {
+    			this.newPage = true		
+	    		router.push(`/restaurantComments`);
     		}
     	},
 });

@@ -52,6 +52,23 @@ public class CommentService {
 		saveChange(comms);
 	}
 	
+	public List<Comment> getAcceptedRestaurantComments(int restaurant) throws Exception{
+		List<Comment> comms = new ArrayList<Comment>();
+		for (Comment c : getComments()) {
+			if(c.getRestaurant() == restaurant && c.getStatus() == CommentStatus.ACCEPTED) {
+				comms.add(c);
+			}
+		}
+		return comms;
+	}
+	
+	public List<Comment> getComments() throws Exception{
+		Type listType = new TypeToken<ArrayList<Comment>>() {}.getType();
+	    String json = readFileAsString(commentsPath);
+		comments = gson.fromJson(json, listType);
+		return comments;
+	}
+	
 	private CommentDTO setCommentToDTO(Comment c) {
 		CommentDTO com = new CommentDTO();
 		com.setId(String.valueOf(c.getId()));
@@ -72,13 +89,6 @@ public class CommentService {
 		} else {
 			return "ODBIJEN";
 		}
-	}
-	
-	private List<Comment> getComments() throws Exception{
-		Type listType = new TypeToken<ArrayList<Comment>>() {}.getType();
-	    String json = readFileAsString(commentsPath);
-		comments = gson.fromJson(json, listType);
-		return comments;
 	}
 	
 	private static String readFileAsString(String file)throws Exception

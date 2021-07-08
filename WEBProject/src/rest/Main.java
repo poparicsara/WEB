@@ -325,6 +325,16 @@ public class Main {
 			return g.toJson(cancelingService.getSuspiciousUsers());
 		});
 		
+		get("rest/acceptedRestaurantComments/",(req, res) ->{
+			res.type("application/json");
+			return g.toJson(commentService.getAcceptedRestaurantComments(ID));
+		});
+		
+		get("rest/comments/",(req, res) ->{
+			res.type("application/json");
+			return g.toJson(commentService.getComments());
+		});
+		
 	}
 
 }

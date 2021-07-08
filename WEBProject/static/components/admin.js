@@ -34,7 +34,8 @@ Vue.component("admin", {
   	      lat : null,
   	      lng : null,
   	      showSuspicious : false,
-  	      suspiciousUsers : null
+  	      suspiciousUsers : null,
+  	      newPage : false
 	    }
 	},
 	    template: ` 
@@ -60,7 +61,7 @@ Vue.component("admin", {
                 </select>
             <button class="buttons" v-on:click = "showRestaurantList" > Restorani </button>
             <button class="buttons" v-on:click = "showUserList"> Korisnici </button>
-            <button class="buttons"> Komentari </button>
+            <button class="buttons" v-on:click="comments"> Komentari </button>
         </h2>
         <div v-if="this.showRestaurants"> 
 	         <div class="restaurants" v-for="(r, index) in restaurants">
@@ -311,9 +312,11 @@ Vue.component("admin", {
     },
     
     destroyed () {
-    			axios.post(`/rest/logOut`)
-    			.then(response => (''));
-    			router.push(`/`);   	
+    	if(!this.newPage){
+    		axios.post(`/rest/logOut`)
+    		.then(response => (''));
+    		router.push(`/`); 
+    	}    			  	
     },
     computed: {
     
@@ -630,6 +633,10 @@ Vue.component("admin", {
   		suspicious : function() {
   			this.showUsers = false;
   			this.showSuspicious = true;
+  		},
+  		comments : function() {
+  			this.newPage = true		
+	    	router.push(`/restaurantComments`);
   		}
     },
  

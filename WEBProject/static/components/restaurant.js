@@ -105,14 +105,14 @@ Vue.component("restaurant", {
 		        	<label class="editRestaurantItemLabel">Naziv:</label><br/>
 		        	<input class="editRestaurantItemInput" type="text" v-model="edit.name"></input><br/></br>
 		        	<label class="editRestaurantItemLabel">Cena:</label><br/>
-		        	<input class="editRestaurantItemInput" type="text" v-model="edit.price" pattern="[0-9]*"></input><br/></br>
+		        	<input class="editRestaurantItemInput" type="number" v-model="edit.price" pattern="[0-9]*"></input><br/></br>
 		        	<label class="editRestaurantItemLabel">Tip:</label><br/>
 		        	<select class="editRestaurantItemInput" v-model="edit.type" selected="edit.type">
 		        		<option value="FOOD">hrana</option>
 		        		<option value="DRINK">pice</option>
 		        	</select><br/><br/>
 		        	<label class="editRestaurantItemLabel">Kolicina:</label><br/>
-		        	<input class="editRestaurantItemInput" type="text" v-model="edit.amount" pattern="[0-9]"><br/><br/>
+		        	<input class="editRestaurantItemInput" type="number" v-model="edit.amount" pattern="[0-9]"><br/><br/>
 		        	<label class="editRestaurantItemLabel">Opis:</label><br/>
 		        	<input class="editRestaurantItemInput" type="text" v-model="edit.description"></input><br/><br/>
 		        	<div class="editRestaurantItemButtons">
@@ -156,6 +156,7 @@ Vue.component("restaurant", {
             <h2>   
                <a href="#" v-on:click="showDetails"> Detaljniji prikaz restorana </a>                     
            	</h2>
+           	<button v-on:click="comments">Komentari</button>
         	<div class="restaurantItemGroup" v-for="(i, index) in items">
                 <div class="restaurantItem">
                 	<img :src = i.image><br/><br/>
@@ -254,13 +255,16 @@ Vue.component("restaurant", {
 	    		this.addItem = false
 	    	},
 	    	saveItem : function() {
+	    		this.nameExist = false;
 	    		for(n of this.names){
 	    			if(n === this.item.name){
 	    				this.nameExist = true;
 	    			}
 	    		}
 	    		this.addItem = true;
-	    		if(this.item.price == ''){
+	    		if(this.item.name == ''){
+	    			alert("Polje za unos imena je obavezno popuniti!");
+	    		} else if(this.item.price == ''){
 	    			alert("Polje za unos cene je obavezno popuniti!");
 	    		} else if(this.item.image == ''){
 	    			event.preventDefault()
@@ -268,7 +272,13 @@ Vue.component("restaurant", {
 	    		} else if(this.nameExist === true){ 
 	    			event.preventDefault()
 	    			alert("Uneto ime artikla vec postoji!");
-	    		} else {
+	    		} else if((this.item.price.includes('-'))) {
+	    			event.preventDefault()
+	    			alert("Cena mora biti pozitivna vrednost");
+	    		} else if((this.item.amount.includes('-'))) {
+	    			event.preventDefault()
+	    			alert("Kolicina mora biti pozitivna vrednost");
+	    		}else {
 	    			if(this.item.amount == ''){
 	    				this.item.amount = 0;
 	    			}
@@ -306,10 +316,35 @@ Vue.component("restaurant", {
 	    		this.selectedItem = false;
 	    	}, 
 	    	saveEditing : function() {
-	    		this.selectedItem = false;
-	    		event.preventDefault()
-	    		axios.post(`/rest/editRestaurantItem/`, this.edit)
-    			.then(response => (this.$router.go()))
+	    		this.nameExist = false;
+	    		for(n of this.names){
+	    			if(n === this.edit.name){
+	    				this.nameExist = true;
+	    			}
+	    		}
+	    		this.addItem = true;
+	    		if(this.edit.name == ''){
+	    			alert("Polje za unos imena je obavezno popuniti!");
+	    		} else if(this.edit.price == ''){
+	    			alert("Polje za unos cene je obavezno popuniti!");
+	    		} else if(this.edit.image == ''){
+	    			event.preventDefault()
+	    			alert("Obavezno je odabrati sliku!");
+	    		} else if((this.edit.price.includes('-'))) {
+	    			event.preventDefault()
+	    			alert("Cena mora biti pozitivna vrednost");
+	    		} else if((this.edit.amount.includes('-'))) {
+	    			event.preventDefault()
+	    			alert("Kolicina mora biti pozitivna vrednost");
+	    		} else{
+	    			this.selectedItem = false;
+	    			event.preventDefault()
+	    			axios.post(`/rest/editRestaurantItem/`, this.edit)
+    				.then(response => (this.$router.go()))
+	    		}
+	    		
+	    		
+	    		
 	    	},
 	    	logOut: function() {
 	    		if(confirm('Da li ste sigurni?')){
