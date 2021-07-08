@@ -42,7 +42,11 @@ Vue.component("logIn", {
     			}
     		}    		
     		if(exists){
-				if(user.userType.toString() == 'ADMIN'){
+    			if(user.blocked === true){
+    				event.preventDefault();
+    				alert('Blokirani ste, nemate pristup svoj profilu!');
+    			}
+				else if(user.userType.toString() == 'ADMIN'){
 					event.preventDefault();
 					axios.post('/rest/logingIn', this.username)
 					.then(response => (router.push(`/admin`)));

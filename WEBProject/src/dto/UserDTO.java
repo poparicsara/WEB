@@ -9,12 +9,14 @@ public class UserDTO {
 	private String gender;
 	private String date;
 	private String userType;
+	private String blocked;
 	
 	public UserDTO() {
 		super();
 	}
 
-	public UserDTO(String username, String password, String name, String lastname, String gender, String date, String type) {
+	public UserDTO(String username, String password, String name, String lastname, String gender, 
+			String date, String type, String blocked) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -23,6 +25,15 @@ public class UserDTO {
 		this.gender = gender;
 		this.date = date;
 		this.userType = type;
+		this.blocked = blocked;
+	}
+
+	public String getBlocked() {
+		return blocked;
+	}
+
+	public void setBlocked(String blocked) {
+		this.blocked = blocked;
 	}
 
 	public String getType() {

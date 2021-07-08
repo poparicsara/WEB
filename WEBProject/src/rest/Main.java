@@ -299,6 +299,13 @@ public class Main {
 			restaurantsService.setRestaurantsStatus();
 			return "SUCCESS";
 		});
+		
+		post("rest/blockUser/",(req, res) ->{
+			res.type("application/json");
+			UserDTO user = g.fromJson(req.body(), UserDTO.class);
+			userService.blockUser(user);
+			return "SUCCESS";
+		});
 	}
 
 }

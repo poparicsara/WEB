@@ -14,13 +14,14 @@ public class User {
 	private Gender gender;
 	private Date dateOfBirth;
 	private UserType userType;
+	private boolean blocked = false;
 	
 	public User() {
 		super();
 	}
 
 	public User(String username, String password, String name, String lastname, Gender gender, Date dateOfBirth,
-			UserType userType) {
+			UserType userType, boolean blocked) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -29,6 +30,15 @@ public class User {
 		this.gender = gender;
 		this.dateOfBirth = dateOfBirth;
 		this.userType = userType;
+		this.blocked = blocked;
+	}
+
+	public boolean isBlocked() {
+		return blocked;
+	}
+
+	public void setBlocked(boolean blocked) {
+		this.blocked = blocked;
 	}
 
 	public String getUsername() {

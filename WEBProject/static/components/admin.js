@@ -161,6 +161,7 @@ Vue.component("admin", {
 			            <br>
 			           	<label class="title">{{u.name}} {{u.lastname}} </label> <br>
 			           	<label>Username: {{u.username}}</label> 
+			           	<button v-if="u.blocked===false && u.userType != 'ADMIN'" v-on:click="blockUser(u)">Blokiraj</button>
 		         </div> 
 	         </div>
          </div>   
@@ -593,6 +594,11 @@ Vue.component("admin", {
 			 
 			mymap.on('click', onMapClick);			
 			
+  		},
+  		blockUser : function(user){
+  			axios
+  			.post('rest/blockUser/', user)
+  			.then(response => (this.$router.go()))
   		}
     },
  
