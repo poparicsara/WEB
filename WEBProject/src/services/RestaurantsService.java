@@ -71,6 +71,18 @@ public class RestaurantsService {
 		saveChange(restaurants);
 	}
 	
+	public List<String> getRestaurantItemNames(int restaurant) throws Exception{
+		List<String> names = new ArrayList<String>();
+		for (Restaurant r : getRestaurants()) {
+			if(r.getId() == restaurant) {
+				for (Item i : r.getItems()) {
+					names.add(i.getName());
+				}
+			}
+		}
+		return names;
+	}
+	
 	public List<Item> getRestaurantItems(int restaurantID) throws Exception {
 		for (Restaurant r : getRestaurants()) {
 			if(r.getId() == restaurantID) {

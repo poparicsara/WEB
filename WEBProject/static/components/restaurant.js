@@ -15,7 +15,9 @@ Vue.component("restaurant", {
 			newPage: false,
 			restaurant: null,
 			details: false,
-			showMap: false
+			showMap: false,
+			names: null,
+			nameExist: false
 	    }
 	},
 	    template: ` 
@@ -198,6 +200,9 @@ Vue.component("restaurant", {
           axios
          .get('rest/selectedRestaurant/')
          .then(response => (this.restaurant = response.data));
+         axios
+         .get('rest/itemNames/')
+         .then(response => (this.names = response.data));
           
         },
         
@@ -247,12 +252,20 @@ Vue.component("restaurant", {
 	    		this.addItem = false
 	    	},
 	    	saveItem : function() {
-	    		this.addItem = true
+	    		for(n of this.names){
+	    			if(n == this.item.name){
+	    				this.nameExist = true;
+	    			}
+	    		}
+	    		this.addItem = true;
 	    		if(this.item.price == ''){
 	    			alert("Polje za unos cene je obavezno popuniti!");
 	    		} else if(this.item.image == ''){
 	    			event.preventDefault()
 	    			alert("Obavezno je odabrati sliku!");
+	    		} else if(this.nameExist === true){ 
+	    			event.preventDefault()
+	    			alert("Uneto ime artikla vec postoji!");
 	    		} else {
 	    			let array = this.item.image.split("\\")
 	            	this.item.image = "images/items/" + array[2]

@@ -7,6 +7,7 @@ import static spark.Spark.port;
 import static spark.Spark.staticFiles;
 
 import java.io.File;
+import java.util.List;
 
 import javax.print.attribute.standard.JobOriginatingUserName;
 
@@ -261,6 +262,12 @@ public class Main {
 			CommentDTO comment = g.fromJson(req.body(), CommentDTO.class);
 			commentService.rejectComment(comment);
 			return "SUCCESS";
+		});
+		
+		get("rest/itemNames/",(req, res) ->{
+			res.type("application/json");
+			List<String> items = restaurantsService.getRestaurantItemNames(ID);
+			return g.toJson(items);
 		});
 		
 	}
