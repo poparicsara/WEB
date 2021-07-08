@@ -133,6 +133,9 @@ Vue.component("restaurants", {
         axios
           .get('rest/restaurants/')
           .then(response => (this.restaurants = response.data))   
+        axios
+        .post('rest/setRestaurantsStatus/')
+        .then(response => (this.restaurants = response.data))
     },
     computed: {
   		searchInLowerCase() {

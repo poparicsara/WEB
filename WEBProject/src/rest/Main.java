@@ -293,6 +293,12 @@ public class Main {
 			res.type("application/json");
 			return g.toJson(orderService.getOrders());
 		});
+		
+		post("rest/setRestaurantsStatus/",(req, res) ->{
+			res.type("application/json");
+			restaurantsService.setRestaurantsStatus();
+			return "SUCCESS";
+		});
 	}
 
 }

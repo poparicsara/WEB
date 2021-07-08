@@ -344,6 +344,21 @@ public class RestaurantsService {
 		writer.close();
 	}
 	
+	@SuppressWarnings("deprecation")
+	public void setRestaurantsStatus() throws Exception {
+		Date date = new Date();
+		int hour = date.getHours();
+		restaurants = getRestaurants();
+		for (Restaurant r : restaurants) {
+			if(r.getStartTime() <= hour && r.getEndTime() > hour) {
+				r.setStatus(true);
+			} else {
+				r.setStatus(false);
+			}
+		}
+		saveChange(restaurants);
+	}
+	
 	
 	
 	
