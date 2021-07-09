@@ -6,6 +6,7 @@ Vue.component("restaurants", {
 	      searchOK: false,
 	      sortName: false,
 	      sortAddress: false,
+	      sortGrades: false,
 	      currentSort:'name',
   		  currentSortDir:'asc',
   		  filterType: null,
@@ -29,7 +30,7 @@ Vue.component("restaurants", {
 	           		<label> Sortiraj: </label>
 	      			<button class="sort" v-on:click = "sort('name')"> Ime </button>
 	      			<button class="sort" v-on:click = "sort('street')"> Lokacija </button>
-	      			<button class="sort"> Ocena </button>
+	      			<button class="sort" v-on:click = "sort('grade')"> Ocena </button>
       			</div>
       			<br>
       			<div >
@@ -61,31 +62,45 @@ Vue.component("restaurants", {
            		<div v-if="searchOK">
            			  <div v-if="sortName">
            				<div v-for="r in sortedRestaurants"  v-on:click = "openRestaurant(r)"> 
-           					<div class="restaurants" v-if="rLower(r.name).includes(searchInLowerCase) || rLower(r.type).includes(searchInLowerCase)">		           		    
+           					<div class="restaurants" v-if="rLower(r.name).includes(searchInLowerCase) || rLower(r.type).includes(searchInLowerCase) || rLower(r.location.address.city).includes(searchInLowerCase) || r.averageGrade == searchText">		           		    
 		           		    	<img class="restaurants" :src = r.image > <br>
 					      		<label class="title">{{r.name}} </label> <br>
 					      		<label>{{r.type}}</label> <br>
-					      		<label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label> 
+					      		<label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label> <br>
+				    			<label>Prosečna ocena: {{r.averageGrade}}</label>
 				    		</div> 	   
            				</div>
            			  </div>
            			  <div v-else-if="sortAddress">
            			  	<div  v-for="r in sortedAddresses"  v-on:click = "openRestaurant(r)"> 
-           					<div class="restaurants" v-if="rLower(r.name).includes(searchInLowerCase) || rLower(r.type).includes(searchInLowerCase)">		           		    
+           					<div class="restaurants" v-if="rLower(r.name).includes(searchInLowerCase) || rLower(r.type).includes(searchInLowerCase) || rLower(r.location.address.city).includes(searchInLowerCase) || r.averageGrade == searchText">		           		    
 		           		    	<img class="restaurants" :src = r.image > <br>
 					      		<label class="title">{{r.name}} </label> <br>
 					      		<label>{{r.type}}</label> <br>
-					      		<label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label> 
+					      		<label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label> <br>
+				    			<label>Prosečna ocena: {{r.averageGrade}}</label>
 				    		</div> 	   
            				</div>
            			  </div>
+           			  <div v-else-if="sortGrades">
+           			  <div v-for="r in sortedGrades"  v-on:click = "openRestaurant(r)">
+		           			<div class="restaurants"  v-if="rLower(r.name).includes(searchInLowerCase) || rLower(r.type).includes(searchInLowerCase) || rLower(r.location.address.city).includes(searchInLowerCase) || r.averageGrade == searchText">		           		               				
+				       		    <img class="restaurants" :src = r.image > <br>
+							    <label class="title">{{r.name}} </label> <br>
+							    <label>{{r.type}}</label> <br>
+							    <label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label><br>
+						    	<label>Prosečna ocena: {{r.averageGrade}}</label>
+						    </div>  
+					   </div>
+           			</div>
            			  <div v-else>
 	           			  <div v-for="(r, index) in restaurants"  v-on:click = "openRestaurant(r)">
-		           		    <div class="restaurants" v-if="rLower(r.name).includes(searchInLowerCase) || rLower(r.type).includes(searchInLowerCase)">		           		    
+		           		    <div class="restaurants" v-if="rLower(r.name).includes(searchInLowerCase) || rLower(r.type).includes(searchInLowerCase) || rLower(r.location.address.city).includes(searchInLowerCase) || r.averageGrade == searchText">		           		    
 		           		    	<img class="restaurants" :src = r.image > <br>
 					      		<label class="title">{{r.name}} </label> <br>
 					      		<label>{{r.type}}</label> <br>
-					      		<label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label> 
+					      		<label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label> <br>
+					      		<label>Prosečna ocena: {{r.averageGrade}}</label>
 					      	</div> 	
 				      	 </div>
 			       	</div>
@@ -96,7 +111,8 @@ Vue.component("restaurants", {
 			       		    <img class="restaurants" :src = r.image > <br>
 						    <label class="title">{{r.name}} </label> <br>
 						    <label>{{r.type}}</label> <br>
-						    <label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label>
+						    <label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label><br>
+					    	<label>Prosečna ocena: {{r.averageGrade}}</label>
 					    </div>  
            			</div>
            			<div v-else-if="sortAddress">
@@ -104,7 +120,17 @@ Vue.component("restaurants", {
 			       		    <img class="restaurants" :src = r.image > <br>
 						    <label class="title">{{r.name}} </label> <br>
 						    <label>{{r.type}}</label> <br>
-						    <label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label>
+						    <label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label><br>
+					    	<label>Prosečna ocena: {{r.averageGrade}}</label>
+					    </div>  
+           			</div>
+           			<div v-else-if="sortGrades">
+	           			<div class="restaurants" v-for="r in sortedGrades"  v-on:click = "openRestaurant(r)">           				
+			       		    <img class="restaurants" :src = r.image > <br>
+						    <label class="title">{{r.name}} </label> <br>
+						    <label>{{r.type}}</label> <br>
+						    <label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label><br>
+					    	<label>Prosečna ocena: {{r.averageGrade}}</label>
 					    </div>  
            			</div>
            			<div v-else-if="filterOK">
@@ -113,7 +139,8 @@ Vue.component("restaurants", {
 	           		    	<img class="restaurants" :src = r.image > <br>
 				      		<label class="title">{{r.name}} </label> <br>
 				      		<label>{{r.type}}</label> <br>
-				      		<label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label> 
+				      		<label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label> <br>
+				      	 	<label>Prosečna ocena: {{r.averageGrade}}</label>
 				      	 </div> 	
 			      		</div>
            			</div>
@@ -122,7 +149,8 @@ Vue.component("restaurants", {
 			       		    <img class="restaurants" :src = r.image > <br>
 						    <label class="title">{{r.name}} </label> <br>
 						    <label>{{r.type}}</label> <br>
-						    <label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label>
+						    <label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label> <br>
+				    		<label>Prosečna ocena: {{r.averageGrade}}</label>					    	
 					    </div>  
            			</div>
 			    </div>		
@@ -162,7 +190,24 @@ Vue.component("restaurants", {
 		      }
 		      return 0;
     		});
-  		}
+  		},
+  		sortedGrades: function() {
+		    return this.restaurants.sort((a,b) => {
+		      let modifier = 1;
+		      if(this.currentSortDir === 'desc') modifier = -1;
+		      if(a.averageGrade < b.averageGrade){
+		      	return -1 * modifier;
+		      } 
+		      else if(a.averageGrade > b.averageGrade){
+		      	return 1 * modifier;
+		      }
+		      else {
+		      	return 0;
+		      }
+		      
+    		});
+  		},
+  		
 	},
     methods: {
     	rLower : function(item) {
@@ -177,11 +222,17 @@ Vue.component("restaurants", {
 		    if(s == 'street'){
 		    	 this.sortAddress = true;
 		    	 this.sortName = false;
-		    	 
+		    	 this.sortGrades = false;
 		    }
-		    else{
+		    else if(s == 'name'){
 		    	 this.sortName = true;
 		    	 this.sortAddress = false;
+		    	 this.sortGrades = false
+		    }
+		    else {
+		    	 this.sortGrades = true;
+		    	 this.sortAddress = false;
+		    	 this.sortName = false
 		    }
 		   
 		},

@@ -46,7 +46,7 @@ public class Main {
 	private static int ID = -1;
 
 	public static void main(String[] args) throws Exception{
-		port(8080);
+		port(80);
 
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
 		

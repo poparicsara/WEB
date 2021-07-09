@@ -47,7 +47,7 @@ public class UserService {
 	}
 	
 	private static String readFileAsString(String file)throws Exception{
-        return new String(Files.readString(Paths.get(file)));
+        return new String(Files.readAllBytes(Paths.get(file)));
     }
 	
 	public void addUser(UserDTO user) throws Exception {
@@ -55,7 +55,7 @@ public class UserService {
 		setNewUser(user);
 		newUser.setUserType(UserType.CUSTOMER);
 		users.add(newUser);
-		Writer writer = new FileWriter(filePath);
+		Writer writer = new FileWriter(filePath, StandardCharsets.UTF_8);
 		gson.toJson(users, writer);
 		writer.close();
 	}
@@ -86,7 +86,7 @@ public class UserService {
 		setNewUser(user);
 		newUser.setUserType(UserType.MANAGER);
 		users.add(newUser);
-		Writer writer = new FileWriter(filePath);
+		Writer writer = new FileWriter(filePath, StandardCharsets.UTF_8);
 		gson.toJson(users, writer);
 		writer.close();
 	}
