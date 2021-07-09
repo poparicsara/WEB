@@ -56,6 +56,24 @@ Vue.component("restaurantComments", {
 			            </tr>
 		            </table>  
 	    		</div>
+	    		<div v-if="user.userType=='CUSTOMER'">
+				<br/><br/><br/><br/>
+	            <h1>Komentari</h1>
+	            <table border="1">
+		                <tr>
+		                	<th>Kupac</th>
+		                	<th>Restoran</th>
+		                    <th>Text</th>
+		                    <th>Ocena</th>
+		                </tr>
+			            <tr v-for="(c, index) in acceptedComments">
+			            	<td>{{c.customer}}</td>
+			            	<td>{{c.restaurant}}</td>
+			                <td>{{c.text}}</td>
+			                <td>{{c.grade}}</td>
+			            </tr>
+		            </table>  
+	    		</div>
 	    	<div v-if="username==''">
 	    		<br/><br/><br/><br/>
 	            <h1>Komentari</h1>
