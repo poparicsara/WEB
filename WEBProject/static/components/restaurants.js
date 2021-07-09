@@ -163,7 +163,7 @@ Vue.component("restaurants", {
           .then(response => (this.restaurants = response.data))   
         axios
         .post('rest/setRestaurantsStatus/')
-        .then(response => (this.restaurants = response.data))
+        .then(response => (''))
     },
     computed: {
   		searchInLowerCase() {

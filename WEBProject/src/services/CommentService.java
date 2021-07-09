@@ -100,13 +100,7 @@ public class CommentService {
 			return "ODBIJEN";
 		}
 	}
-	
-	public List<Comment> getComments() throws Exception{
-		Type listType = new TypeToken<ArrayList<Comment>>() {}.getType();
-	    String json = readFileAsString(commentsPath);
-		comments = gson.fromJson(json, listType);
-		return comments;
-	}
+
 	
 	private static String readFileAsString(String file)throws Exception
     {
