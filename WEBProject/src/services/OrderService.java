@@ -30,6 +30,7 @@ public class OrderService {
 	private String requestsPath = "./static/requests.json";
 	private UserService userService = new UserService();
 	private RestaurantsService restaurantService = new RestaurantsService();
+	private CustomerService customerService = new CustomerService();
 	
 	public List<OrderDTO> getOrdersForDeliverers() throws Exception{
 		List<OrderDTO> dtos = new ArrayList<OrderDTO>();
@@ -196,6 +197,9 @@ public class OrderService {
 		order.setStatus(OrderStatus.PROCESSING);
 		Date date = new Date();
 		order.setDate(date);
+		double discount = customerService.getDiscountByUsername(order.getCustomerUsername());
+		double newPrice = order.getPrice()*(1 - discount);
+		order.setPrice(newPrice);
 		orders.add(order);
 		saveOrderChange(orders);
 	}

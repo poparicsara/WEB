@@ -20,7 +20,8 @@ Vue.component("customerOrder", {
 			itemsOrderedNumber: 0,
 			itemNumber: [],
 			itemsSet: false,
-			showBasket: false
+			showBasket: false,
+			customers
 	    }
 	},
 	    template: ` 
@@ -112,12 +113,22 @@ Vue.component("customerOrder", {
           axios
          .get('rest/selectedRestaurant/')
          .then(response => (this.restaurant = response.data));
+         axios
+         .get('rest/customers/')
+         .then(response => (this.customers = response.data));
           
         },
     	methods: {  
     		createOrder: function() {
     			this.order.restaurantID = this.restaurant.id
 				this.order.customerUsername = this.username;
+				for(c of this.customers){
+					if(c.username == this.username){
+						if(c.type != 'GVOZDENI'){
+							alert('U vašu cenu biće uračunat i popust!')
+						}
+					}
+				}
 				axios
 				.post('rest/sendOrder/', this.order)
 				.then(response => (this.cleanBasket()));
@@ -147,7 +158,6 @@ Vue.component("customerOrder", {
 		    					break
 		    				}
 		    			}
-		    			alert(this.order.price)
 		    			this.itemsOrderedNumber --
 		    			this.itemNumber[index] --
 		    			
@@ -170,7 +180,6 @@ Vue.component("customerOrder", {
     			}
     			this.itemNumber[index] ++ 
     			this.order.price += item.price
-    			alert(this.order.price)
     			
     		},
     		

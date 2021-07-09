@@ -7,13 +7,13 @@ public class Customer extends User {
 	private ArrayList<String> orders;
 	private Cart cart;
 	private double totalPoints;
-	private CustomerType type;
+	private String type;
 	
 	public Customer() {
 		super();
 	}
 
-	public Customer(ArrayList<String> orders, Cart cart, double totalPoints, CustomerType type) {
+	public Customer(ArrayList<String> orders, Cart cart, double totalPoints, String type) {
 		super();
 		this.orders = orders;
 		this.cart = cart;
@@ -45,11 +45,11 @@ public class Customer extends User {
 		this.totalPoints = totalPoints;
 	}
 	
-	public CustomerType getType() {
+	public String getType() {
 		return type;
 	}
 	
-	public void setType(CustomerType type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 	

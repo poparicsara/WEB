@@ -54,7 +54,6 @@ public class Main {
 
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
 		
-		
 		//bio je GET OVDE
 		get("rest/restaurants/", (req, res) -> {
 			res.type("application/json");
@@ -344,6 +343,12 @@ public class Main {
 			restaurantsService.updateRestaurantGrades();
 			return "SUCCESS";
 		});
+		
+		get("rest/customers/",(req, res) ->{
+			res.type("application/json");
+			return g.toJson(customerService.getCustomers());
+		});
+		
 		
 	}
 
