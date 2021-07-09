@@ -20,13 +20,15 @@ public class Restaurant implements Serializable{
 	private String image;
 	private int startTime;
 	private int endTime;
+	private double averageGrade;
+	
 	
 	public Restaurant() {
 		super();
 	}
 
 	public Restaurant(int id, String name, RestaurantType type, ArrayList<Item> items, boolean status, Location location, 
-			String image, int startTime, int endTime) {
+			String image, int startTime, int endTime, double averageGrade) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -35,6 +37,7 @@ public class Restaurant implements Serializable{
 		this.status = status;
 		this.location = location;
 		this.image = image;
+		this.averageGrade = averageGrade;
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}
@@ -109,6 +112,14 @@ public class Restaurant implements Serializable{
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	public double getAverageGrade() {
+		return averageGrade;
+	}
+
+	public void setAverageGrade(double averageGrade) {
+		this.averageGrade = averageGrade;
 	}
 	
 	

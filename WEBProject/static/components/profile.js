@@ -4,7 +4,8 @@ Vue.component("profile", {
 			username: '',
 			user: {username: '', password: '', name: '', lastname: '', gender: '', date: '', userType: ''},
 			editUser: {oldUsername: '', username: '', password: '', name: '', lastname: '', gender: '', date: '', userType: ''},
-	    	newPage: false
+	    	newPage: false,
+	    	users: null
 	    }
 	},
 	    template: `
@@ -39,28 +40,74 @@ Vue.component("profile", {
          axios
          .get('rest/loggedUser/')
          .then(response => (this.user = response.data));
-          
+         axios
+          .get('rest/users/')
+          .then(response => (this.users = response.data))         
         },
 
         methods: {
     		saveProfileEdit : function() {
-    			this.editUser.oldUsername = this.username;
-    			this.editUser.username = this.user.username;
-    			this.editUser.password = this.user.password;
-    			this.editUser.name = this.user.name;
-    			this.editUser.lastname = this.user.lastname;
-    			this.editUser.gender = this.user.gender;
-    			this.editUser.date = this.user.date;
-    			this.editUser.userType = this.user.userType;
-    			this.newPage = true;	
-    			event.preventDefault();
-    			axios
-    			.post('/rest/editProfile/', this.editUser)
-    			.then(response => (router.push(`/restaurant`)));
+    			var exists = false
+    			if(this.user.username != this.username){
+	    			for(u of this.users){
+	    				if(this.user.username == u.username){
+	    					exists = true
+	    					break
+	    				}
+	    			}
+    			}
+    			if(exists){
+    				event.preventDefault();
+    				alert('Korisničko ime je zauzeto!')
+    			}
+    			else{
+	   				this.editUser.oldUsername = this.username;
+	    			this.editUser.username = this.user.username;
+	    			this.editUser.password = this.user.password;
+	    			this.editUser.name = this.user.name;
+	    			this.editUser.lastname = this.user.lastname;
+	    			this.editUser.gender = this.user.gender;
+	    			this.editUser.date = this.user.date;
+	    			this.editUser.userType = this.user.userType;
+	    			this.newPage = true;
+	    			event.preventDefault();
+	    			if(this.user.userType == 'MANAGER'){
+	    				axios
+	    				.post('/rest/editProfile/', this.editUser)
+	    				.then(response => (router.push(`/restaurant`)));
+	    			}
+	    			else if(this.user.userType == 'ADMIN'){
+	    				axios
+	    				.post('/rest/editProfile/', this.editUser)
+	    				.then(response => (router.push(`/admin`)));
+	    			}
+	    			else if(this.user.userType == 'CUSTOMER'){
+	    				axios
+	    				.post('/rest/editProfile/', this.editUser)
+	    				.then(response => (router.push(`/customer`)));
+	    			}
+	    			else if(this.user.userType == 'DELIVERER'){
+	    				axios
+	    				.post('/rest/editProfile/', this.editUser)
+	    				.then(response => (router.push(`/deliverer`)));
+	    			} 			
+       			}
+    			
     		},
     		cancelProfileEdit : function() {
     			this.newPage = true		
-	    		router.push(`/restaurant`);
+    			if(this.user.userType == 'MANAGER'){
+    				router.push(`/restaurant`);
+    			}
+    			else if(this.user.userType == 'ADMIN'){
+    				router.push(`/admin`);
+    			}
+	    		else if(this.user.userType == 'CUSTOMER'){
+	    			router.push('/customer');
+	    		}
+	    		else if(this.user.userType == 'DELIVERER'){
+	    			router.push('/deliverer');
+	    		}
     		}
         }
 });

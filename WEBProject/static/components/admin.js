@@ -14,7 +14,7 @@ Vue.component("admin", {
 	      managers : null,
 	      managerID: '',
 	      managerDTO: {username: null, restaurant: null},
-	      user: {username: null, password: null, name: null, lastname: null, gender: '', date: ''},
+	      user: {username: '', password: '', name: '', lastname: '', gender: null, date: null},
 	      restaurant: {id:null, name: null, type: null, status:true, location: { address: {street : '', number : '', city: '', postNumber: 0} , longitude: 0, latitude: 0}, items:null, image: ''},	      
 	      searchText: '',
 	      searchOK: false,
@@ -45,7 +45,7 @@ Vue.component("admin", {
             <div class="dropdown">
 	           <button> <img id="adminImage" src="images/admin.png"> </button>
 		               <div class="dropdown-content">
-		                  <button>Profil</button>
+		                  <button v-on:click = "adminProfile">Profil</button>
 		                  <button v-on:click = "logOut"> Odjava</button>
 		                </div>
 	       </div>
@@ -67,7 +67,7 @@ Vue.component("admin", {
 	         <div class="restaurants" v-for="(r, index) in restaurants">
 	            <img class="restaurants" :src = r.image > <br>
 	           	<label class="title">{{r.name}} </label> <br>
-	           	<label>{{r.type}}</label> 
+	           	<label>{{r.type}}</label> <br>
 	           	<label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label> 
 	         </div>
          </div> 
@@ -447,13 +447,39 @@ Vue.component("admin", {
     		if(exists){
     		    event.preventDefault()
     			alert('Korisničko ime je zauzeto!')
-    			this.showManager = false
     		}
     		else{
-    			event.preventDefault()
-    			axios.post('/rest/restaurants/addManager', this.user).
-    			then(response => alert('Menadžer uspešno registrovan!'));
-    			this.showManager = false
+    			if(this.user.username == ''){
+    				event.preventDefault()
+    				alert('Unesite korisničko ime!')
+    			}
+    			else if(this.user.password == ''){
+    				event.preventDefault()
+    				alert('Unesite šifru!')
+    			} 
+    			else if(this.user.name == ''){
+    				event.preventDefault()
+    				alert('Unesite ime!')
+    			} 
+    			else if(this.user.lastname == ''){
+    				event.preventDefault()
+    				alert('Unesite prezime!')
+    			} 
+    			else if(this.user.gender == null){
+    				event.preventDefault()
+    				alert('Izaberite pol!')
+    			} 
+    			else if(this.user.date == null){
+    				event.preventDefault()
+    				alert('Unesite datum!')
+    			} 
+    			else{
+    				event.preventDefault()
+    				axios.post('/rest/restaurants/addManager', this.user).
+    				then(response => alert('Menadžer uspešno registrovan!'));
+    				this.showManager = false
+    			}
+    		
     		}
     	},
     	addDeliverer: function(){
@@ -467,13 +493,39 @@ Vue.component("admin", {
     		if(exists){
     		    event.preventDefault()
     			alert('Korisničko ime je zauzeto!')
-    			this.showDeliverer = false
     		}
     		else{
-    			event.preventDefault()
-    			axios.post('/rest/restaurants/addDeliverer', this.user).
-    			then(response => alert('Dostavljač uspešno registrovan!'));
-    			this.showDeliverer = false
+    			if(this.user.username == ''){
+    				event.preventDefault()
+    				alert('Unesite korisničko ime!')
+    			}
+    			else if(this.user.password == ''){
+    				event.preventDefault()
+    				alert('Unesite šifru!')
+    			} 
+    			else if(this.user.name == ''){
+    				event.preventDefault()
+    				alert('Unesite ime!')
+    			} 
+    			else if(this.user.lastname == ''){
+    				event.preventDefault()
+    				alert('Unesite prezime!')
+    			} 
+    			else if(this.user.gender == null){
+    				event.preventDefault()
+    				alert('Izaberite pol!')
+    			} 
+    			else if(this.user.date == null){
+    				event.preventDefault()
+    				alert('Unesite datum!')
+    			} 
+    			else{
+	    			event.preventDefault()
+	    			axios.post('/rest/restaurants/addDeliverer', this.user).
+	    			then(response => alert('Dostavljač uspešno registrovan!'));
+	    			this.showDeliverer = false
+    			}
+    			
     		}
     	},
     	addLocationToRestaurant: function() {
@@ -503,10 +555,6 @@ Vue.component("admin", {
 				}
 			}
 			this.restaurant.id = id
-			alert(this.restaurant.id)
-			alert(this.restaurant.location.address.city)
-			alert(this.restaurant.location.address.street)
-			alert(this.restaurant.location.address.number)
     		this.managerDTO.restaurant = this.restaurant
     		this.managerDTO.username = this.managerID
     		let exists = false
@@ -569,6 +617,10 @@ Vue.component("admin", {
     	rLower : function(item) {
   			return item.toLowerCase()
   		},
+  		adminProfile : function() {
+    		this.newPage = true	
+	    	router.push(`/profile`);
+    	},
   		showMap : function() {
   			event.preventDefault()
   		    this.map = true

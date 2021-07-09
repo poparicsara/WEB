@@ -4,7 +4,7 @@ import enums.CommentStatus;
 
 public class Comment {
 
-	private int id;
+	private String id;
 	private String customer;
 	private int restaurant;
 	private String text;
@@ -16,7 +16,7 @@ public class Comment {
 		super();
 	}
 
-	public Comment(int id, String customer, int restaurant, String text, int grade, CommentStatus status) {
+	public Comment(String id, String customer, int restaurant, String text, int grade, CommentStatus status) {
 		super();
 		this.id = id;
 		this.customer = customer;
@@ -26,11 +26,11 @@ public class Comment {
 		this.status = status;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

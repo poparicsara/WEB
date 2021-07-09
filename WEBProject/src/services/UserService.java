@@ -4,6 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -54,7 +55,7 @@ public class UserService {
 		setNewUser(user);
 		newUser.setUserType(UserType.CUSTOMER);
 		users.add(newUser);
-		Writer writer = new FileWriter(filePath);
+		Writer writer = new FileWriter(filePath, StandardCharsets.UTF_8);
 		gson.toJson(users, writer);
 		writer.close();
 	}
@@ -85,7 +86,7 @@ public class UserService {
 		setNewUser(user);
 		newUser.setUserType(UserType.MANAGER);
 		users.add(newUser);
-		Writer writer = new FileWriter(filePath);
+		Writer writer = new FileWriter(filePath, StandardCharsets.UTF_8);
 		gson.toJson(users, writer);
 		writer.close();
 	}
@@ -247,7 +248,7 @@ public class UserService {
 	}
 	
 	private void saveChange(List<User> users) throws IOException {
-		Writer writer = new FileWriter(filePath);
+		Writer writer = new FileWriter(filePath, StandardCharsets.UTF_8);
 		gson.toJson(users, writer);
 		writer.close();
 	}

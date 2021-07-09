@@ -15,6 +15,7 @@ import javax.print.attribute.standard.JobOriginatingUserName;
 import com.google.gson.Gson;
 
 import beans.Canceling;
+import beans.Comment;
 import beans.Order;
 import beans.OrderRequest;
 import dto.CommentDTO;
@@ -52,6 +53,7 @@ public class Main {
 		port(80);
 
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
+		
 		
 		//bio je GET OVDE
 		get("rest/restaurants/", (req, res) -> {
@@ -333,6 +335,14 @@ public class Main {
 		get("rest/comments/",(req, res) ->{
 			res.type("application/json");
 			return g.toJson(commentService.getComments());
+		});
+		
+		post("rest/addComment/",(req, res) ->{
+			res.type("application/json");
+			Comment comment = g.fromJson(req.body(), Comment.class);
+			commentService.addComment(comment);
+			restaurantsService.updateRestaurantGrades();
+			return "SUCCESS";
 		});
 		
 	}
