@@ -34,7 +34,9 @@ Vue.component("restaurant", {
 	            	</div>
             	</div>
         	</h1>
-	        </h1>
+        	<h2>   
+               <a href="#" v-on:click="showDetails"> Detaljniji prikaz restorana </a>                     
+           	</h2>
 	        <input class="restaurantSearchBox" type="text" name="search" placeholder="Pretraži...">
 	        <img class="restaurantItemsSearchIMG" src="images/search.png"/>
 	        <br/><br/>
@@ -144,6 +146,27 @@ Vue.component("restaurant", {
 			        <button class="profileModalButton" v-on:click="cancelProfileEdit">Odustani</button>
 	        	</div>
 	        </div>
+	        <div v-if="details" class="addRestaurantItem">
+	        	<div class="addRestaurantItemComponents">
+	        		<span class="addRestaurantItemClose" v-on:click="closeDetails">&times;</span>
+	        		<h1 class="addRestaurantHeader">Informacije o restoranu</h1>
+	        		<label class="restaurantItemLabels" >Naziv restorana:</label><br/>
+                	<input class="restaurantItemInput" type="text" name="name" v-model = "restaurant.name"><br/><br/>
+                	<label class="restaurantItemLabels" >Tip restorana:</label><br/>
+                	<input class="restaurantItemInput" type="text" name="name" v-model = "restaurant.type"><br/><br/>
+                	<div v-if="restaurant.averageGrade > 0 ">
+                	<label class="restaurantItemLabels">Prosečna ocena</label><br/>
+                	<input class="restaurantItemInput" type="text" v-model="restaurant.averageGrade"><br/><br/>					
+					</div>  
+					<label class="restaurantItemLabels" >Adresa:</label><br/>
+					<label class="restaurantItemInput" >{{restaurant.location.address.street}}  {{restaurant.location.address.number}}, {{restaurant.location.address.city}}</label>
+					<br/><br/>
+					<button class="restaurantItemInput" v-on:click="showLocation">Mapa:</button><br/>
+					<div v-if="showMap" id="mapid">
+					</div>
+					
+				</div>
+       	   </div>
         </div>
          <div v-else>
         	<div id="restaurantHeader">
@@ -175,13 +198,17 @@ Vue.component("restaurant", {
                 	<input class="restaurantItemInput" type="text" name="name" v-model = "restaurant.name"><br/><br/>
                 	<label class="restaurantItemLabels" >Tip restorana:</label><br/>
                 	<input class="restaurantItemInput" type="text" name="name" v-model = "restaurant.type"><br/><br/>
+                	<div v-if="restaurant.averageGrade > 0 ">
+                	<label class="restaurantItemLabels">Prosečna ocena</label><br/>
+                	<input class="restaurantItemInput" type="text" v-model="restaurant.averageGrade"><br/><br/>					
+					</div>  
 					<label class="restaurantItemLabels" >Adresa:</label><br/>
 					<label class="restaurantItemInput" >{{restaurant.location.address.street}}  {{restaurant.location.address.number}}, {{restaurant.location.address.city}}</label>
 					<br/><br/>
 					<button class="restaurantItemInput" v-on:click="showLocation">Mapa:</button><br/>
 					<div v-if="showMap" id="mapid">
 					</div>
-					</div>  
+					
 				</div>
        	   </div>
         </div>

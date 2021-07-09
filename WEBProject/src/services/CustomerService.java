@@ -13,12 +13,16 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import beans.Customer;
+import beans.CustomerType;
 import beans.Order;
+import enums.CustomerTypeName;
 
 public class CustomerService {
 	
 	private List<Customer> customers = new ArrayList<Customer>();
+	private List<CustomerType> customerTypes = new ArrayList<CustomerType>();
 	private String customerPath = "./static/customers.json";
+	private String customerTypePath = "./static/customerType.json";
 	private Gson gson = new Gson();
 
 	public List<Customer> getCustomers() throws Exception {
@@ -27,6 +31,57 @@ public class CustomerService {
 		customers = gson.fromJson(json, listType);
 		return customers;
 	}
+	
+	public List<CustomerType> getCustomerTypes() throws Exception{
+		Type listType = new TypeToken<ArrayList<CustomerType>>() {}.getType();
+	    String json = readFileAsString(customerTypePath);
+	    customerTypes = gson.fromJson(json, listType);
+		return customerTypes;
+	}
+	
+	public double getDiscountByUsername(String username) throws Exception {
+		String type = "";
+		double discount = 0;
+		customers = getCustomers();
+		customerTypes = getCustomerTypes();
+		for (Customer customer : customers) {
+			if(customer.getUsername().equals(username)) {
+				type = customer.getType();
+				break;
+			}
+		}
+		if(!type.equals("GVOZDENI")) {
+			for (CustomerType customerType : customerTypes) {
+				if(customerType.getTypeName().toString().equals(type)) {
+					discount = customerType.getDiscount();
+					break;
+				}
+			}
+		}
+		return discount;
+	}
+	
+	public void setCustomerTypes() throws Exception {
+		customers = getCustomers();
+		customerTypes = getCustomerTypes();
+		for (Customer customer : customers) {
+			int index = -1;
+			for (CustomerType customerType : customerTypes) {
+				if(customer.getTotalPoints() > customerType.getNeededPoints()) {
+					index++;
+				}
+			}
+			if(index == -1) {
+				customer.setType("GVOZDENI");
+			}
+			else {
+				customer.setType(customerTypes.get(index).getTypeName().toString());
+			}
+		}
+		saveCustomersChange(customers);
+		
+	}
+	
 	
 	public void saveCustomerOrder(Order order) throws Exception {
 		customers = getCustomers();
@@ -59,6 +114,12 @@ public class CustomerService {
     {
         return new String(Files.readString(Paths.get(file)));
     }
+	
+	private void saveCustomerTypeChange(List<CustomerType> customerType) throws Exception {
+		Writer writer = new FileWriter(customerTypePath, StandardCharsets.UTF_8);
+		gson.toJson(customerType, writer);
+		writer.close();
+	}
 	
 	private void saveCustomersChange(List<Customer> customers) throws Exception {
 		Writer writer = new FileWriter(customerPath, StandardCharsets.UTF_8);
