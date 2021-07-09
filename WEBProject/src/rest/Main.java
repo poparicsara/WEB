@@ -345,6 +345,11 @@ public class Main {
 			return "SUCCESS";
 		});
 		
+		get("rest/restaurantNames/",(req, res) ->{
+			res.type("application/json");
+			return g.toJson(restaurantsService.getRestaurantNames());
+		});
+		
 	}
 
 }

@@ -18,7 +18,12 @@ Vue.component("customer", {
   		  orders: null,
   		  comments: null,
   		  comment : {id : '', customer : '', restaurant : ' ', text : '', grade : 0, status: null},
-  		  showComment: false	
+  		  showComment: false,
+  		  searchTextOrders: '',
+  		  searchOKOrders: false,
+  		  restaurantNames: null,
+  		  restaurantFilter: '',
+  		  showFilteredRestaurants: false	
 	    }
 	 
 	},
@@ -146,8 +151,55 @@ Vue.component("customer", {
 			    </div>		
            </div>           
            <div v-else="showOrders">
-         	<div v-for="(o, index) in orders" v-if = "o.customerUsername == username"> 
-         		<div  class="restaurants" v-for="(r, index) in restaurants" v-if="o.restaurantID == r.id ">
+           	<input id="input" type="text" placeholder="Pretraži..." v-model="searchTextOrders" v-on:change = "searchOrders">
+           	<br/><br/>
+           	<select v-model="restaurantFilter">
+           		<option v-for="r in restaurantNames">{{r}}</option>
+           	</select>
+           	<button v-on:click="filterRestaurants">Filtriraj</button>
+         	<div v-if="searchOKOrders">
+				<div v-for="(o, index) in orders" v-if = "o.customerUsername == username">  
+	         		<div   v-for="(r, index) in restaurants" v-if="o.restaurantID == r.id">
+	         			<div class="restaurants" v-if="rLower(r.name).includes(searchInLowerCaseOrders)" >
+							    <img class="restaurants" :src = r.image > <br>
+								<label class="title">{{r.name}} </label> <br>
+								<label>{{r.type}}</label> <br>
+								<label>Artikli:</label>
+								<div v-for="i in o.items">
+									<label>{{i.name}} </label>
+								</div>
+								<label>Datum: {{o.date}} </label> <br>
+								<label>Cena: {{o.price}} RSD</label> <br>
+								<label>Status: {{o.status}} </label> <br> <br>
+								<button class="cancelButton" v-on:click="cancelOrder(o)" v-if="o.status == 'PROCESSING'"> <img class="cancelButton" src="images/cancel.png"> </button>
+								<button class="cancelButton" v-on:click="showCommentPage(o)"> <img class="cancelButton" src="images/comment.png"> </button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div v-else-if="showFilteredRestaurants">
+				<div v-for="(o, index) in orders" v-if="o.customerUsername == username">
+					<div v-for="(r, index) in restaurants" v-if="o.restaurantID == r.id">
+	         			<div class="restaurants"  v-if="r.name == restaurantFilter">
+							    <img class="restaurants" :src = r.image > <br>
+								<label class="title">{{r.name}} </label> <br>
+								<label>{{r.type}}</label> <br>
+								<label>Artikli:</label>
+								<div v-for="i in o.items">
+									<label>{{i.name}} </label>
+								</div>
+								<label>Datum: {{o.date}} </label> <br>
+								<label>Cena: {{o.price}} RSD</label> <br>
+								<label>Status: {{o.status}} </label> <br> <br>
+								<button class="cancelButton" v-on:click="cancelOrder(o)" v-if="o.status == 'PROCESSING'"> <img class="cancelButton" src="images/cancel.png"> </button>
+								<button class="cancelButton" v-on:click="showCommentPage(o)"> <img class="cancelButton" src="images/comment.png"> </button>
+						</div>
+					</div>
+				</div> 
+			</div>
+			<div v-else="">
+				<div v-for="(o, index) in orders" v-if = "o.customerUsername == username">  
+         		<div  class="restaurants" v-for="(r, index) in restaurants" v-if="o.restaurantID == r.id">
 					    <img class="restaurants" :src = r.image > <br>
 						<label class="title">{{r.name}} </label> <br>
 						<label>{{r.type}}</label> <br>
@@ -161,7 +213,8 @@ Vue.component("customer", {
 						<button class="cancelButton" v-on:click="cancelOrder(o)" v-if="o.status == 'PROCESSING'"> <img class="cancelButton" src="images/cancel.png"> </button>
 						<button class="cancelButton" v-on:click="showCommentPage(o)"> <img class="cancelButton" src="images/comment.png"> </button>
 				</div>
-			</div> 
+			</div>
+			</div>
 			<div class="addRestaurantItem" v-if="showComment">
 	        	<div class="addRestaurantItemComponents">
 		        	<span class="addRestaurantItemClose" v-on:click="closeComment">&times;</span>
@@ -199,6 +252,9 @@ Vue.component("customer", {
          axios
           .get('rest/comments/')
           .then(response => (this.comments = response.data));
+         axios
+          .get('rest/restaurantNames/')
+          .then(response => (this.restaurantNames = response.data));
     },
      destroyed() {
      			if(!this.newPage){
@@ -211,6 +267,9 @@ Vue.component("customer", {
     	
   		searchInLowerCase() {
     		return this.searchText.toLowerCase().trim();
+  		},
+  		searchInLowerCaseOrders() {
+    		return this.searchTextOrders.toLowerCase().trim();
   		},
   		sortedRestaurants: function() {
 		    return this.restaurants.sort((a,b) => {
@@ -307,6 +366,15 @@ Vue.component("customer", {
    			}   		
     	},
     	
+    	searchOrders : function() {
+    		if(this.searchTextOrders === ""){
+    			this.searchOKOrders = false
+    		}
+   			else{
+   				this.searchOKOrders = true
+   			}  
+    	},
+    	
     	sendComment:function(){
     		event.preventDefault();
     		axios.post('rest/addComment/', this.comment)
@@ -340,5 +408,8 @@ Vue.component("customer", {
     			this.showComment = true
     		}
     	},
+    	filterRestaurants : function() {
+    		this.showFilteredRestaurants = true;
+    	}
     },
 });

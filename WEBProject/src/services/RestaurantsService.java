@@ -399,6 +399,14 @@ public class RestaurantsService {
 		saveChange(restaurants);
 	}
 	
+	public List<String> getRestaurantNames() throws Exception{
+		List<String> names = new ArrayList<String>();
+		for (Restaurant r : getRestaurants()) {
+			names.add(r.getName());
+		}
+		return names;
+	}
+	
 	
 	
 }
