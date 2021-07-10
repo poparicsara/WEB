@@ -9,7 +9,7 @@ Vue.component("profile", {
 	    }
 	},
 	    template: `
-	   	<div class="profileModal">
+	    <div>
 	        <div class="profileModalComponents">
 	        		<h1 class="profileModalHeader">Profil</h1>
 	        		<label class="profileModalLabel">Korisničko ime:</label><br/>
@@ -26,11 +26,12 @@ Vue.component("profile", {
 	        			<option value="MALE">muski</option>		
 	        		</select><br/><br/>
 	        		<label class="profileModalLabel">Datum rodjenja:</label><br/>
-	        		<input class="profileModalInput" v-model="user.date" type="date"><br/><br/>
-	        		<button class="profileModalButton" v-on:click="saveProfileEdit">Sačuvaj</button>
-			        <button class="profileModalButton" v-on:click="cancelProfileEdit">Odustani</button>
+	        		<input class="profileModalInput" v-model="user.date" type="date"><br/><br/><br/><br/>
+	        		<button class="editRestaurantItemButton" v-on:click="saveProfileEdit">Sačuvaj</button>
+			        <button class="editRestaurantItemButton" v-on:click="cancelProfileEdit">Odustani</button>
+			        
 	        </div>
-	    </div>
+	     </div>
     	`
     	,
 		mounted () {

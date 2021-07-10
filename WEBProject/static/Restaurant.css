@@ -359,10 +359,13 @@ div.restaurantHeaderProfil{
 .profileModalComponents{
 	width: 30%;
 	height: 100%;
-	background-color: white; 
-	margin-left: 550px;
-	border-color: black;
-	border-radius: 10px;
+	margin-left: 500px;
+	border-style: solid;
+    border-width: 3px;
+    border-color: lightblue;
+    padding: 5px;
+    border-radius: 5px;
+	margin-top: 100px;
 }
 
 .profileModalClose{
@@ -377,7 +380,7 @@ div.restaurantHeaderProfil{
 .profileModalHeader{
 	position: relative;
 	font-size: 30px;
-	margin-left: 100px;
+	margin-left: 170px;
 	top: -5px;
 }
 
