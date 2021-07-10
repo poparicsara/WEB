@@ -5,7 +5,7 @@ Vue.component("restaurant", {
 			addItem: false,
 			item : {name: '', price: '', type: 'FOOD', amount: '', description: '', image: ''},
 			selectedItem: false,
-			edit : {oldName: '', name: '', price: '', type: '', amount: '', description: '', image: ''},
+			edit : {oldName: '', name: '', price: '', type: '', amount: '', description: ''},
 			restaurantName : '',
 			username: null,
 			id: null,
@@ -345,35 +345,35 @@ Vue.component("restaurant", {
 	    		this.selectedItem = false;
 	    	}, 
 	    	saveEditing : function() {
-	    		this.nameExist = false;
-	    		for(n of this.names){
-	    			if(n === this.edit.name){
-	    				this.nameExist = true;
-	    			}
-	    		}
-	    		this.addItem = true;
-	    		if(this.edit.name == ''){
+				if(this.edit.name == ''){
 	    			alert("Polje za unos imena je obavezno popuniti!");
 	    		} else if(this.edit.price == ''){
 	    			alert("Polje za unos cene je obavezno popuniti!");
-	    		} else if(this.edit.image == ''){
-	    			event.preventDefault()
-	    			alert("Obavezno je odabrati sliku!");
-	    		} else if((this.edit.price.includes('-'))) {
+	    		} else if(this.edit.price <= 0) {
 	    			event.preventDefault()
 	    			alert("Cena mora biti pozitivna vrednost");
-	    		} else if((this.edit.amount.includes('-'))) {
+	    		} else if(this.edit.amount <= 0) {
 	    			event.preventDefault()
 	    			alert("Kolicina mora biti pozitivna vrednost");
-	    		} else{
-	    			this.selectedItem = false;
-	    			event.preventDefault()
-	    			axios.post(`/rest/editRestaurantItem/`, this.edit)
-    				.then(response => (this.$router.go()))
-	    		}
-	    		
-	    		
-	    		
+	    		} else {
+	    			this.nameExist = false;
+	    			for(n of this.names){
+	    				if(n === this.edit.oldName){
+	    					continue;
+	    				} else if(n === this.edit.name){
+	    					this.nameExist = true;
+	    				}
+	    			} 
+	    			if(this.nameExist){
+	    				alert('Uneto ime artikla vec postoji!')
+	    			} else {
+	    				this.selectedItem = false;
+		    			event.preventDefault();
+		    			axios.post(`/rest/editRestaurantItem/`, this.edit)
+	    				.then(response => (this.$router.go()))
+	    			}
+	    		}	    	
+
 	    	},
 	    	logOut: function() {
 	    		if(confirm('Da li ste sigurni?')){
