@@ -48,6 +48,28 @@ public class CustomerService {
 		saveCustomersChange(customers);
 	}
 	
+	public String getCustomerType(String username) throws Exception {
+		Customer c = getCustomerByUsername(username);
+		if(c.getTotalPoints() <= 500) {
+			return "GVOZDENI";
+		} else if(c.getTotalPoints() > 500 && c.getTotalPoints() <= 1000) {
+			return "BRONZANI";
+		} else if(c.getTotalPoints() > 1000 && c.getTotalPoints() <= 1500) {
+			return "SREBRNI";
+		} else {
+			return "ZLATNI";
+		}
+	}
+	
+	private Customer getCustomerByUsername(String username) throws Exception {
+		for (Customer c : getCustomers()) {
+			if(c.getUsername().equals(username)) {
+				return c;
+			}
+		}
+		return null;
+	}
+	
 	public List<CustomerType> getCustomerTypes() throws Exception{
 		Type listType = new TypeToken<ArrayList<CustomerType>>() {}.getType();
 	    String json = readFileAsString(customerTypePath);

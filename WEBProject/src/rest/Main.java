@@ -383,6 +383,11 @@ public class Main {
 			System.out.println(is);
 			return g.toJson(managerService.isManagerRestaurantDeleted(username));
 		});
+		
+		get("rest/customerType/", (req, res) ->{
+			res.type("application/json");
+			return g.toJson(customerService.getCustomerType(loggedInUser));
+		});
 	}
 
 }
