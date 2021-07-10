@@ -16,6 +16,7 @@ import com.google.gson.reflect.TypeToken;
 import beans.Customer;
 import beans.CustomerType;
 import beans.Order;
+import beans.User;
 import enums.CustomerTypeName;
 
 public class CustomerService {
@@ -31,6 +32,17 @@ public class CustomerService {
 	    String json = readFileAsString(customerPath);
 		customers = gson.fromJson(json, listType);
 		return customers;
+	}
+	
+	public void addCustomer(User user) throws Exception {
+		customers = getCustomers();
+		Customer customer = new Customer();
+		customer.setUsername(user.getUsername());
+		customer.setOrders(null);
+		customer.setTotalPoints(0.0);
+		customer.setType("GVOZDENI");
+		customers.add(customer);
+		saveCustomersChange(customers);
 	}
 	
 	public List<CustomerType> getCustomerTypes() throws Exception{

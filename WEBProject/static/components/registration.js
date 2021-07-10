@@ -2,7 +2,7 @@ Vue.component("registration", {
 	data: function () {
 	    return {
 	      users : null,
-	      user: {username: null, password: null, name: null, lastname: null, gender: '', date: ''},
+	      user: {username: '', password: '', name: null, lastname: null, gender: 'MALE', date: ''},
 	    }
 	},
 	    template: ` 
@@ -38,20 +38,34 @@ Vue.component("registration", {
      	},
     	methods: {
     	addCustomer : function() {
-    		var exists = false
-    		for(oldUser of this.users){
-    			if(this.user.username == oldUser.username){
-    				exists = true
-    				break
-    			}
-    		}
-    		if(exists){
-    			alert('Korisničko ime je zauzeto!')
-    		}
-    		else{
+    		if(this.user.username === ''){
     			event.preventDefault();
-    			axios.post('/rest/restaurants/addCustomer', this.user).
-    			then(response => (router.push(`/`)));
+    			alert('Korisničko je ime je obavezno uneti!');
+    		} else if(this.user.password === ''){
+    			event.preventDefault();
+    			alert('Lozinku je obavezno uneti!');
+    		} else if(this.user.date === ''){
+    			event.preventDefault();
+    			alert('Obavezno je uneti datum rodjenja');
+    		}
+    	
+    		else {
+	    		var exists = false;
+	    		for(oldUser of this.users){
+	    			if(this.user.username == oldUser.username){
+	    				exists = true
+	    				break
+	    			}
+	    		}
+	    		
+	    		if(exists){
+	    			event.preventDefault();
+    				alert('Korisničko ime je zauzeto!');
+    			} else {
+		    		event.preventDefault();
+		    		axios.post('/rest/restaurants/addCustomer', this.user).
+		    		then(response => (router.push(`/`)));
+	    		}
     		}
     	}
     },

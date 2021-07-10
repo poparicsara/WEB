@@ -70,7 +70,7 @@ public class Main {
 		post("rest/restaurants/addCustomer", (req, res) -> {
 			res.type("application/json");
 			UserDTO user = g.fromJson(req.body(), UserDTO.class);
-			userService.addUser(user);
+			userService.addCustomer(user);
 			return "SUCCESS";
 		});
 		

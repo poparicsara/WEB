@@ -30,6 +30,7 @@ public class UserService {
 	private String filePath = "./static/users.json";
 	private Gson gson = new Gson();
 	private ManagerService managerService = new ManagerService();
+	private CustomerService customerService = new CustomerService();
 	
 	public List<User> getUsers() throws Exception {
 	    Type listType = new TypeToken<ArrayList<User>>() {}.getType();
@@ -50,14 +51,16 @@ public class UserService {
         return new String(Files.readAllBytes(Paths.get(file)));
     }
 	
-	public void addUser(UserDTO user) throws Exception {
+	public void addCustomer(UserDTO user) throws Exception {
 		users = getUsers();
 		setNewUser(user);
 		newUser.setUserType(UserType.CUSTOMER);
+		if(user.getDate().equals("")) {
+			newUser.setDateOfBirth(new Date());
+		}
+		customerService.addCustomer(newUser);
 		users.add(newUser);
-		Writer writer = new FileWriter(filePath, StandardCharsets.UTF_8);
-		gson.toJson(users, writer);
-		writer.close();
+		saveChange(users);
 	}
 	
 	private void setNewUser(UserDTO user) throws ParseException {
