@@ -6,6 +6,8 @@ Vue.component("customer", {
 	      searchOK: false,
 	      sortName: false,
 	      sortAddress: false,
+	      sortDate: false,
+	      sortPrice: false,
 	      currentSort:'name',
   		  currentSortDir:'asc',
   		  filterType: null,
@@ -23,7 +25,11 @@ Vue.component("customer", {
   		  searchOKOrders: false,
   		  restaurantNames: null,
   		  restaurantFilter: '',
-  		  showFilteredRestaurants: false	
+  		  showFilteredRestaurants: false,
+  		  searchPrice: false,
+  		  searchDate: false,
+  		  priceDomain: [],
+  		  dateDomain: []	
 	    }
 	 
 	},
@@ -157,22 +163,72 @@ Vue.component("customer", {
            		<option v-for="r in restaurantNames">{{r}}</option>
            	</select>
            	<button v-on:click="filterRestaurants">Filtriraj</button>
+           	<br> <br>	
+           	<div>
+	           		<label> Sortiraj: </label>
+	      			<button class="sort" v-on:click = "sort('name')"> Ime </button>
+	      			<button class="sort" v-on:click = "sort('price')"> Cena </button>
+	      			<button class="sort" v-on:click = "sort('date')"> Datum </button>
+      			</div>
+      			
          	<div v-if="searchOKOrders">
-				<div v-for="(o, index) in orders" v-if = "o.customerUsername == username">  
-	         		<div   v-for="(r, index) in restaurants" v-if="o.restaurantID == r.id">
-	         			<div class="restaurants" v-if="rLower(r.name).includes(searchInLowerCaseOrders)" >
-							    <img class="restaurants" :src = r.image > <br>
-								<label class="title">{{r.name}} </label> <br>
-								<label>{{r.type}}</label> <br>
-								<label>Artikli:</label>
-								<div v-for="i in o.items">
-									<label>{{i.name}} </label>
-								</div>
-								<label>Datum: {{o.date}} </label> <br>
-								<label>Cena: {{o.price}} RSD</label> <br>
-								<label>Status: {{o.status}} </label> <br> <br>
-								<button class="cancelButton" v-on:click="cancelOrder(o)" v-if="o.status == 'PROCESSING'"> <img class="cancelButton" src="images/cancel.png"> </button>
-								<button class="cancelButton" v-on:click="showCommentPage(o)"> <img class="cancelButton" src="images/comment.png"> </button>
+         		<div v-if="searchPrice">
+					<div v-for="(o, index) in orders" v-if = "o.customerUsername == username">  
+		         		<div v-for="(r, index) in restaurants" v-if="o.restaurantID == r.id">
+		         			<div class="restaurants" v-if="priceDomain[0] <= o.price && o.price <= priceDomain[1] " >
+								    <img class="restaurants" :src = r.image > <br>
+									<label class="title">{{r.name}} </label> <br>
+									<label>{{r.type}}</label> <br>
+									<label>Artikli:</label>
+									<div v-for="i in o.items">
+										<label>{{i.name}} </label>
+									</div>
+									<label>Datum: {{o.date}} </label> <br>
+									<label>Cena: {{o.price}} RSD</label> <br>
+									<label>Status: {{o.status}} </label> <br> <br>
+									<button class="cancelButton" v-on:click="cancelOrder(o)" v-if="o.status == 'PROCESSING'"> <img class="cancelButton" src="images/cancel.png"> </button>
+									<button class="cancelButton" v-on:click="showCommentPage(o)"  v-if="o.status == 'DELIVERED'"> <img class="cancelButton" src="images/comment.png"> </button>
+							</div>
+						</div>
+					</div>         		
+         		</div>
+         		<div v-else-if="searchDate">
+					<div v-for="(o, index) in orders" v-if = "o.customerUsername == username">  
+		         		<div   v-for="(r, index) in restaurants" v-if="o.restaurantID == r.id">
+		         			<div class="restaurants" v-if="dateDomain[0] <= o.date && o.date <= dateDomain[1]" >
+								    <img class="restaurants" :src = r.image > <br>
+									<label class="title">{{r.name}} </label> <br>
+									<label>{{r.type}}</label> <br>
+									<label>Artikli:</label>
+									<div v-for="i in o.items">
+										<label>{{i.name}} </label>
+									</div>
+									<label>Datum: {{o.date}} </label> <br>
+									<label>Cena: {{o.price}} RSD</label> <br>
+									<label>Status: {{o.status}} </label> <br> <br>
+									<button class="cancelButton" v-on:click="cancelOrder(o)" v-if="o.status == 'PROCESSING'"> <img class="cancelButton" src="images/cancel.png"> </button>
+									<button class="cancelButton" v-on:click="showCommentPage(o)"  v-if="o.status == 'DELIVERED'"> <img class="cancelButton" src="images/comment.png"> </button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div v-else>
+					<div v-for="(o, index) in orders" v-if = "o.customerUsername == username">  
+		         		<div   v-for="(r, index) in restaurants" v-if="o.restaurantID == r.id">
+		         			<div class="restaurants" v-if="rLower(r.name).includes(searchInLowerCaseOrders)" >
+								    <img class="restaurants" :src = r.image > <br>
+									<label class="title">{{r.name}} </label> <br>
+									<label>{{r.type}}</label> <br>
+									<label>Artikli:</label>
+									<div v-for="i in o.items">
+										<label>{{i.name}} </label>
+									</div>
+									<label>Datum: {{o.date}} </label> <br>
+									<label>Cena: {{o.price}} RSD</label> <br>
+									<label>Status: {{o.status}} </label> <br> <br>
+									<button class="cancelButton" v-on:click="cancelOrder(o)" v-if="o.status == 'PROCESSING'"> <img class="cancelButton" src="images/cancel.png"> </button>
+									<button class="cancelButton" v-on:click="showCommentPage(o)"  v-if="o.status == 'DELIVERED'"> <img class="cancelButton" src="images/comment.png"> </button>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -192,12 +248,66 @@ Vue.component("customer", {
 								<label>Cena: {{o.price}} RSD</label> <br>
 								<label>Status: {{o.status}} </label> <br> <br>
 								<button class="cancelButton" v-on:click="cancelOrder(o)" v-if="o.status == 'PROCESSING'"> <img class="cancelButton" src="images/cancel.png"> </button>
-								<button class="cancelButton" v-on:click="showCommentPage(o)"> <img class="cancelButton" src="images/comment.png"> </button>
+								<button class="cancelButton" v-on:click="showCommentPage(o)" v-if="o.status == 'DELIVERED'"> <img class="cancelButton" src="images/comment.png"> </button>
 						</div>
 					</div>
 				</div> 
 			</div>
-			<div v-else="">
+			<div v-else-if="sortName">
+				<div v-for="(r, index) in sortedRestaurants" >  
+         		<div  class="restaurants" v-for="(o, index) in orders" v-if = "o.restaurantID == r.id && o.customerUsername == username">
+					    <img class="restaurants" :src = r.image > <br>
+						<label class="title">{{r.name}} </label> <br>
+						<label>{{r.type}}</label> <br>
+						<label>Artikli:</label>
+						<div v-for="i in o.items">
+							<label>{{i.name}} </label>
+						</div>
+						<label>Datum: {{o.date}} </label> <br>
+						<label>Cena: {{o.price}} RSD</label> <br>
+						<label>Status: {{o.status}} </label> <br> <br>
+						<button class="cancelButton" v-on:click="cancelOrder(o)" v-if="o.status == 'PROCESSING'"> <img class="cancelButton" src="images/cancel.png"> </button>
+						<button class="cancelButton" v-on:click="showCommentPage(o)"  v-if="o.status == 'DELIVERED'"> <img class="cancelButton" src="images/comment.png"> </button>
+				</div>
+				</div>
+			</div>
+			<div v-else-if="sortPrice">
+				<div v-for="(o, index) in sortedPrices">  
+         			<div  class="restaurants" v-for="(r, index) in restaurants" v-if="o.customerUsername == username && o.restaurantID == r.id">
+					    <img class="restaurants" :src = r.image > <br>
+						<label class="title">{{r.name}} </label> <br>
+						<label>{{r.type}}</label> <br>
+						<label>Artikli:</label>
+						<div v-for="i in o.items">
+							<label>{{i.name}} </label>
+						</div>
+						<label>Datum: {{o.date}} </label> <br>
+						<label>Cena: {{o.price}} RSD</label> <br>
+						<label>Status: {{o.status}} </label> <br> <br>
+						<button class="cancelButton" v-on:click="cancelOrder(o)" v-if="o.status == 'PROCESSING'"> <img class="cancelButton" src="images/cancel.png"> </button>
+						<button class="cancelButton" v-on:click="showCommentPage(o)"  v-if="o.status == 'DELIVERED'"> <img class="cancelButton" src="images/comment.png"> </button>
+					</div>
+				</div>
+			</div>
+			<div v-else-if="sortDate">
+				<div v-for="(o, index) in sortedDates">  
+         			<div  class="restaurants" v-for="(r, index) in restaurants" v-if="o.customerUsername == username && o.restaurantID == r.id">
+					    <img class="restaurants" :src = r.image > <br>
+						<label class="title">{{r.name}} </label> <br>
+						<label>{{r.type}}</label> <br>
+						<label>Artikli:</label>
+						<div v-for="i in o.items">
+							<label>{{i.name}} </label>
+						</div>
+						<label>Datum: {{o.date}} </label> <br>
+						<label>Cena: {{o.price}} RSD</label> <br>
+						<label>Status: {{o.status}} </label> <br> <br>
+						<button class="cancelButton" v-on:click="cancelOrder(o)" v-if="o.status == 'PROCESSING'"> <img class="cancelButton" src="images/cancel.png"> </button>
+						<button class="cancelButton" v-on:click="showCommentPage(o)"  v-if="o.status == 'DELIVERED'"> <img class="cancelButton" src="images/comment.png"> </button>
+					</div>
+				</div>
+			</div>
+			<div v-else>
 				<div v-for="(o, index) in orders" v-if = "o.customerUsername == username">  
          		<div  class="restaurants" v-for="(r, index) in restaurants" v-if="o.restaurantID == r.id">
 					    <img class="restaurants" :src = r.image > <br>
@@ -211,7 +321,7 @@ Vue.component("customer", {
 						<label>Cena: {{o.price}} RSD</label> <br>
 						<label>Status: {{o.status}} </label> <br> <br>
 						<button class="cancelButton" v-on:click="cancelOrder(o)" v-if="o.status == 'PROCESSING'"> <img class="cancelButton" src="images/cancel.png"> </button>
-						<button class="cancelButton" v-on:click="showCommentPage(o)"> <img class="cancelButton" src="images/comment.png"> </button>
+						<button class="cancelButton" v-on:click="showCommentPage(o)"  v-if="o.status == 'DELIVERED'"> <img class="cancelButton" src="images/comment.png"> </button>
 				</div>
 			</div>
 			</div>
@@ -235,9 +345,7 @@ Vue.component("customer", {
 	            </div>
 			</div>
 		  </div>
-         </div>
-         </div>
-        
+         
     	`,
     mounted () {
         axios
@@ -271,6 +379,7 @@ Vue.component("customer", {
   		searchInLowerCaseOrders() {
     		return this.searchTextOrders.toLowerCase().trim();
   		},
+  		
   		sortedRestaurants: function() {
 		    return this.restaurants.sort((a,b) => {
 		      let modifier = 1;
@@ -295,7 +404,39 @@ Vue.component("customer", {
 		      }
 		      return 0;
     		});
-  		}
+  		},
+  		sortedPrices: function() {
+		    return this.orders.sort((a,b) => {
+		      let modifier = 1;
+		      if(this.currentSortDir === 'desc') modifier = -1;
+		      if(a.price < b.price){
+		      	return -1 * modifier;
+		      } 
+		      else if(a.price > b.price){
+		      	return 1 * modifier;
+		      }
+		      else {
+		      	return 0;
+		      }
+		      
+    		});
+  		},
+  		sortedDates: function() {
+		    return this.orders.sort((a,b) => {
+		      let modifier = 1;
+		      if(this.currentSortDir === 'desc') modifier = -1;
+		      if(a.date < b.date){
+		      	return -1 * modifier;
+		      } 
+		      else if(a.date > b.date){
+		      	return 1 * modifier;
+		      }
+		      else {
+		      	return 0;
+		      }
+		      
+    		});
+  		},
 	},
     methods: {
     	logOut: function() {
@@ -332,11 +473,26 @@ Vue.component("customer", {
 		    if(s == 'street'){
 		    	 this.sortAddress = true;
 		    	 this.sortName = false;
-		    	 
+		    	 this.sortDate = false;
+		    	 this.sortPrice = false;
 		    }
-		    else{
+		    else if(s == 'name'){
 		    	 this.sortName = true;
 		    	 this.sortAddress = false;
+		    	 this.sortDate = false;
+		    	 this.sortPrice = false;
+		    }
+		    else if(s == 'date'){
+		    	this.sortName = false;
+		    	 this.sortAddress = false;
+		    	 this.sortDate = true;
+		    	 this.sortPrice = false;
+		    }
+		    else if(s == 'price'){
+		    	this.sortName = false;
+		    	 this.sortAddress = false;
+		    	 this.sortDate = false;
+		    	 this.sortPrice = true;
 		    }
 		   
 		},
@@ -372,6 +528,19 @@ Vue.component("customer", {
     		}
    			else{
    				this.searchOKOrders = true
+   				let regexPrice = new RegExp('[0-9]+-[0-9]+');
+   				let regexDate = new RegExp('[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{4}-[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{4}');
+   				if(regexPrice.test(this.searchTextOrders)){   				
+   					this.priceDomain = this.searchTextOrders.split("-")
+   					this.searchPrice = true
+   					this.searchDate = false
+   				}
+   				else{
+   				
+   					this.searchDate = false
+   					this.searchPrice = false
+   				}
+   				
    			}  
     	},
     	

@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -91,6 +92,18 @@ public class CustomerService {
 				double points = customer.getTotalPoints();
 				points += order.getPrice()/1000*133;
 				customer.setTotalPoints(points);
+				int index = -1;
+				for (CustomerType customerType : customerTypes) {
+					if(customerType.getNeededPoints() < points) {
+						index++;
+					}
+				}
+				if(index == -1) {
+					customer.setType("GVOZDENI");
+				}
+				else {
+					customer.setType(customerTypes.get(index).getTypeName().toString());
+				}
 			}
 		}
 		saveCustomersChange(customers);
@@ -105,7 +118,20 @@ public class CustomerService {
 					points -= order.getPrice()/1000*133*4;
 					customer.setTotalPoints(points);
 				}
+				int index = -1;
+				for (CustomerType customerType : customerTypes) {
+					if(customerType.getNeededPoints() < customer.getTotalPoints()) {
+						index++;
+					}
+				}
+				if(index == -1) {
+					customer.setType("GVOZDENI");
+				}
+				else {
+					customer.setType(customerTypes.get(index).getTypeName().toString());
+				}
 			}
+			
 		}
 		saveCustomersChange(customers);
 	}

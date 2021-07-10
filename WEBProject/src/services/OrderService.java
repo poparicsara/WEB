@@ -198,7 +198,8 @@ public class OrderService {
 		Date date = new Date();
 		order.setDate(date);
 		double discount = customerService.getDiscountByUsername(order.getCustomerUsername());
-		double newPrice = order.getPrice()*(1 - discount);
+		System.out.println("Popust:" + discount + "Cena:" + order.getPrice());
+		double newPrice = order.getPrice()*(1 - discount/100);
 		order.setPrice(newPrice);
 		orders.add(order);
 		saveOrderChange(orders);

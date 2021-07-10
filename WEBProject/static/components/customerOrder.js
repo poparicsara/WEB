@@ -21,7 +21,7 @@ Vue.component("customerOrder", {
 			itemNumber: [],
 			itemsSet: false,
 			showBasket: false,
-			customers
+			customers: null
 	    }
 	},
 	    template: ` 
