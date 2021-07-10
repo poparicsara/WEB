@@ -356,6 +356,11 @@ public class Main {
 			return g.toJson(customerService.getCustomers());
 		});
 		
+		get("rest/restaurantCustomers/",(req, res) ->{
+			res.type("application/json");
+			return g.toJson(restaurantsService.getRestaurantCustomers(ID));
+		});
+		
 		
 	}
 

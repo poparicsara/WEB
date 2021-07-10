@@ -25,6 +25,7 @@ import beans.Restaurant;
 import dto.EditItemDTO;
 import dto.ItemDTO;
 import dto.OrderDTO;
+import dto.RestaurantCustomer;
 import enums.ItemType;
 import enums.OrderStatus;
 import dto.UserDTO;
@@ -418,6 +419,36 @@ public class RestaurantsService {
 		return names;
 	}
 	
-	
+	public List<RestaurantCustomer> getRestaurantCustomers(int restaurant) throws Exception{
+		List<RestaurantCustomer> customers = new ArrayList<RestaurantCustomer>();
+		OrderService orderService = new OrderService();		
+		List<Order> orders = orderService.getOrders();
+		for (Order order : orders) {
+			if(order.getRestaurant() == restaurant) {
+				OrderDTO o = orderService.setOrderToDTO(order);
+				RestaurantCustomer c = new RestaurantCustomer();
+				c.setUsername(o.getCustomerUsername());
+				c.setFullName(o.getCustomerFullName());
+				int count = 0;
+				for (Order order2 : orders) {
+					if(order2.getCustomerUsername().equals(c.getUsername()) && order2.getRestaurant() == restaurant) {
+						count++;
+					}
+				}
+				c.setCount(count);
+				boolean exist = false;
+				for (RestaurantCustomer rc : customers) {
+					if(rc.getUsername().equals(c.getUsername())) {
+						exist = true;
+						break;
+					}
+				}
+				if(!exist) {
+					customers.add(c);
+				}
+			}
+		}
+		return customers;
+	}
 	
 }

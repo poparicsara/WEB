@@ -1,7 +1,7 @@
 Vue.component("restaurantCustomers", { 
 	data: function () {
 	    return {
-
+			customers: null
 	    }
 	},
 	    template: `
@@ -15,14 +15,20 @@ Vue.component("restaurantCustomers", {
                    <th>Ime i prezime</th>
                    <th>Broj porudžbina</th>
                </tr>
-               <tr>
-                   <td>sara</td>
-                   <td>Sara Poparic</td>
-                   <td>5</td>
+               <tr v-for="c in customers">
+                   <td>{{c.username}}</td>
+                   <td>{{c.fullName}}</td>
+                   <td>{{c.count}}</td>
                </tr>
            	</table>
 		</div>
     	`
     	,
-
+		mounted () {
+		
+			axios
+			.get(`/rest/restaurantCustomers/`)
+			.then(response => (this.customers = response.data))
+		
+		},
 });

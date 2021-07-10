@@ -91,7 +91,7 @@ public class OrderService {
 		saveRequestChange(requests);
 	}
 	
-	private OrderDTO setOrderToDTO(Order o) throws Exception {
+	public OrderDTO setOrderToDTO(Order o) throws Exception {
 		OrderDTO order = new OrderDTO();
 		order.setDate(o.getDate());
 		order.setId(String.valueOf(o.getId()));
