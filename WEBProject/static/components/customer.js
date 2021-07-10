@@ -221,6 +221,7 @@ Vue.component("customer", {
            	
            	<input id="input" type="text" placeholder="Pretraži..." v-model="searchTextOrders" v-on:change = "searchOrders">
            	<br/><br/>
+           		<div class="sortComponents">
            		<select class="filter" name="type" v-model = "filterType">
       					<option value="all"> Svi </option>
 	                    <option value="BURGERI">Burgeri</option>
@@ -248,16 +249,19 @@ Vue.component("customer", {
 	                    <option value="CANCELED">OTKAZANA</option>
 	            </select>
 
-           	<button v-on:click="filterOrders">Filtriraj</button>
+           	<button v-on:click="filterOrders">
+           		<img class="cancelButton" src="images/filter.png"/>
+           	</button>
+           	</div>
            	<br> <br>	
-           	<div>
+           	<div class="sortComponents">
 	           		<label> Sortiraj: </label>
 	      			<button class="sort" v-on:click = "sort('name')"> Ime </button>
 	      			<button class="sort" v-on:click = "sort('price')"> Cena </button>
 	      			<button class="sort" v-on:click = "sort('date')"> Datum </button>
       			</div>	<br/><br/>
-      		<button v-on:click="notDelivered">Nedostavljene porudžbine</button>
-      		<button v-on:click="allCustomerOrders">Sve porudžbine</button>
+      		<button class="restaurantButtons" v-on:click="notDelivered">Nedostavljene porudžbine</button>
+      		<button class="restaurantButtons" v-on:click="allCustomerOrders">Sve porudžbine</button>
          	<div v-if="searchOKOrders">
          		<div v-if="searchPrice">
 					<div v-for="(o, index) in orders" v-if = "o.customerUsername == username">  

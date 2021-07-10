@@ -3,7 +3,8 @@
     }
     
    .b:hover {
-    background-color: deepskyblue;
+    	background-color: deepskyblue;
+    	cursor: pointer;
     }
     
    .sort:hover {
@@ -128,6 +129,10 @@
         width: 100px;
         font-size: 16px;
         border-radius: 5px;
+    }
+    
+    .sort:hover{
+    	cursor: pointer;
     }
     
     button.buttonsCustomer{

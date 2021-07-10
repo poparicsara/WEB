@@ -154,6 +154,11 @@
 		button.cancelButton{
 			height:50px;
 			width:50px;
+			background-color: white;
+		}
+		
+		button.cancelButton:hover{
+			cursor: pointer;
 		}
 		
 		img.cancelButton{

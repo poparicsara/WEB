@@ -58,7 +58,7 @@ Vue.component("restaurants", {
 	                	<option value = 'radi'> Radi </option>
 	                	<option value = 'neRadi'> Ne radi </option>
 	                </select>
-	                <button v-on:click = "filter"> <img id="filter" src="images/filter.png"> </button>
+	                <button class="filterButton" v-on:click = "filter"> <img id="filter" src="images/filter.png"> </button>
       			</div>
            </h3>
            		<div v-if="searchOK">
