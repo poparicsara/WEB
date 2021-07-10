@@ -388,6 +388,11 @@ public class Main {
 			res.type("application/json");
 			return g.toJson(customerService.getCustomerType(loggedInUser));
 		});
+		
+		get("rest/managersDeleted/", (req, res) ->{
+			res.type("application/json");
+			return g.toJson(managerService.getManagersOfDeletedRestaurants());
+		});
 	}
 
 }

@@ -5,7 +5,7 @@ Vue.component("logIn", {
 	      username: null,
 	      password: null,
 	      restaurant: '',
-	      manager: null
+	      managers: null
 	    }
 	},
 	    template: ` 
@@ -31,6 +31,9 @@ Vue.component("logIn", {
          axios
          	.get('rest/managerRestaurant/', this.username)
          	.then(response => (this.restaurant = response.data));
+         axios
+         	.get('rest/managersDeleted/')
+         	.then(response => (this.managers = response.data));
          			
      },
     
@@ -59,10 +62,23 @@ Vue.component("logIn", {
 					axios.post('/rest/logingIn', this.username)
 					.then(response => (router.push(`/admin`)));
 				}
-				else if(user.userType.toString() == 'MANAGER'){										
-					event.preventDefault();
-					axios.post('/rest/logingIn', this.username)
-					.then(response => (router.push(`/restaurant`)));				
+				else if(user.userType.toString() == 'MANAGER'){	
+					var exist = false;
+					for(m of this.managers){
+						if(m == this.username){
+							exist = true;
+						}
+					}
+					
+					if(exist){
+						event.preventDefault();
+    					alert('Žao nam je, vaš profil je obrisan, nemate pristup njemu!');
+					} else {
+						event.preventDefault();
+						axios.post('/rest/logingIn', this.username)
+						.then(response => (router.push(`/restaurant`)));	
+					}	
+		
 				}
 				else if(user.userType.toString() == 'DELIVERER'){
 					event.preventDefault();
@@ -70,23 +86,15 @@ Vue.component("logIn", {
 					.then(response => (router.push(`/deliverer`)));
 				}
 				else if(user.userType.toString() == 'CUSTOMER'){
-					event.preventDefault();
-					axios.post('/rest/logingIn', this.username)
-					.then(response => (router.push(`/customer`)));
+						event.preventDefault();
+						axios.post('/rest/logingIn', this.username)
+						.then(response => (router.push(`/customer`)));
 				}
     		}
     		else{
     			event.preventDefault();
     			alert('Uneseni su pogrešni kredencijali!')
     		}
-    	},
-    	isDeleted : function(){
-    		var is;
-    		event.preventDefault();
-    		axios
-			.post('/rest/manager/', this.username)
-			.then(response => (is = response.data));
-			return is;
     	},
     	registration : function() {
     		event.preventDefault();

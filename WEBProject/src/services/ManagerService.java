@@ -72,6 +72,16 @@ public class ManagerService {
 		return false;
 	}
 	
+	public List<String> getManagersOfDeletedRestaurants() throws Exception{
+		List<String> ret = new ArrayList<String>();
+		for (Manager m : getManagers()) {
+			if(m.getRestaurant().isDeleted()) {
+				ret.add(m.getUsername());
+			}
+		}
+		return ret;
+	}
+	
 	public void deleteManagerRestaurant(int restaurant) throws Exception {
 		managers = getManagers();
 		for (Manager manager : managers) {
