@@ -62,8 +62,11 @@ Vue.component("customerOrder", {
                 	<input class="restaurantItemInput" type="text" name="name" v-model = "restaurant.name"><br/><br/>
                 	<label class="restaurantItemLabels" >Tip restorana:</label><br/>
                 	<input class="restaurantItemInput" type="text" name="name" v-model = "restaurant.type"><br/><br/>
+                	<label class="restaurantItemLabels">Radno vreme:</label><br/>
+                	<label class="restaurantItemLabels">{{restaurant.startTime}} : {{restaurant.endTime}}</label><br/><br/>
 					<label class="restaurantItemLabels" >Adresa:</label><br/>
 					<label class="restaurantItemInput" >{{restaurant.location.address.street}}  {{restaurant.location.address.number}}, {{restaurant.location.address.city}}</label>
+					
 					<br/><br/>
 					<button class="restaurantItemInput" v-on:click="showLocation">Mapa:</button><br/>
 					<div v-if="showMap" id="mapid">
@@ -125,7 +128,9 @@ Vue.component("customerOrder", {
                 	<input class="restaurantItemInput" type="text" name="name" v-model = "restaurant.type"><br/><br/>
                 	<div v-if="restaurant.averageGrade > 0 ">
                 	<label class="restaurantItemLabels">Prosečna ocena</label><br/>
-                	<input class="restaurantItemInput" type="text" v-model="restaurant.averageGrade"><br/><br/>					
+                	<input class="restaurantItemInput" type="text" v-model="restaurant.averageGrade"><br/><br/>
+                	<label class="restaurantItemLabels">Radno vreme:</label><br/>
+                	<label class="restaurantItemLabels">{{restaurant.startTime}} : {{restaurant.endTime}}</label><br/><br/>					
 					</div>  
 					<label class="restaurantItemLabels" >Adresa:</label><br/>
 					<label class="restaurantItemInput" >{{restaurant.location.address.street}}  {{restaurant.location.address.number}}, {{restaurant.location.address.city}}</label>
