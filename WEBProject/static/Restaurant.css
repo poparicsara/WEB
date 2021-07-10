@@ -52,7 +52,7 @@ img{
 	margin-left: 50px;
 }
 
-.restaurantButtons{
+.restaurantButtons:hover{
 	cursor: pointer;
 }
 

@@ -5,9 +5,11 @@ Vue.component("restaurantCustomers", {
 	    }
 	},
 	    template: `
-	   	<div> 
-           <h1>Naši kupci</h1>
-           <table border="1">
+	   	<div class="ordersGroup"> 
+	   		<div>
+           		<h1>Naši kupci</h1>
+           	</div>
+           	<table border="1" class="restaurantOrders">
                <tr>
                    <th>Korisničko ime</th>
                    <th>Ime i prezime</th>
@@ -18,7 +20,7 @@ Vue.component("restaurantCustomers", {
                    <td>Sara Poparic</td>
                    <td>5</td>
                </tr>
-           </table>
+           	</table>
 		</div>
     	`
     	,

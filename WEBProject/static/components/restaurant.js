@@ -38,9 +38,7 @@ Vue.component("restaurant", {
         	<h2>   
                <button class="detailsButton" v-on:click="showDetails"> Detaljniji prikaz restorana </button>                     
            	</h2>
-	        <input class="restaurantSearchBox" type="text" name="search" placeholder="Pretraži...">
-	        <img class="restaurantItemsSearchIMG" src="images/search.png"/>
-	        <br/><br/>
+
 	        <div class="restaurantButtonsGroup">
 	        <button class="restaurantButtons" v-on:click = "orders">
 	        	<img class="restaurantOrdersIMG" src="images/restaurantOrders.png"/>
@@ -165,7 +163,7 @@ Vue.component("restaurant", {
 					<label class="restaurantItemLabels" >Adresa:</label><br/>
 					<label class="restaurantItemInput" >{{restaurant.location.address.street}}  {{restaurant.location.address.number}}, {{restaurant.location.address.city}}</label>
 					<br/><br/>
-					<button class="restaurantItemInput" v-on:click="showLocation">Mapa:</button><br/>
+					<button class="editRestaurantItemButton" v-on:click="showLocation">Mapa:</button><br/>
 					<div v-if="showMap" id="mapid">
 					</div>
 					

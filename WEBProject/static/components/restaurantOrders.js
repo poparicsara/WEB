@@ -11,9 +11,6 @@ Vue.component("restaurantOrders", {
 	    template: `
 	   	<div> 
 	        
-	        <div>
-	        	<h1 class="orderHeader">KFC</h1>
-	        </div>
 	        <div class="ordersGroup">
 	            <h1>Naše porudžbine</h1><br/>
 	            <table border="1" class="restaurantOrders">
