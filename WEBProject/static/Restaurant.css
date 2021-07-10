@@ -510,3 +510,30 @@ div.restaurantHeaderProfil{
 .requestLabels{
 	margin-top:50px;
 }
+
+.managerComments{
+	margin-left: 50px;
+    margin-top: 100px;
+    float: left;
+    border-style: solid;
+    border-width: 3px;
+    border-color: lightblue;
+    padding: 5px;
+    border-radius: 5px;
+    width: 80%;
+}
+
+.commentButton{
+	height: 30px;
+	width: 30px;
+	background: white;
+	border-color: white;
+	height: 30px;
+	width: 30px;
+	background: white;
+	border-color: white;
+}
+
+.commentButton:hover{
+	cursor: pointer;
+}

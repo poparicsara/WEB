@@ -10,10 +10,11 @@ Vue.component("restaurantComments", {
 	},
 	template: `
 		<div>
-			<div v-if="user.userType=='MANAGER'">
+			<div  v-if="user.userType=='MANAGER'">
 				<br/><br/><br/><br/>
-	            <h1>Nasi komentari</h1>
-	            <table border="1">
+	            <h1>Naši komentari</h1>
+	            
+	            <table border="1" class="restaurantOrders">
 		                <tr>
 		                	<th>Status</th>
 		                	<th>Kupac</th>
@@ -28,51 +29,55 @@ Vue.component("restaurantComments", {
 			                <td>{{c.text}}</td>
 			                <td>{{c.grade}}</td>
 			                <td>
-			                	<button v-if="c.status == 'NONE'" v-on:click="accept(c)">Prihvati</button>
+			                	<button class="commentButton" v-if="c.status == 'NONE'" v-on:click="accept(c)">
+			                		<img class="orderImage" src="images/accept.png"/>
+			                	</button>
 			                </td>
 			                <td>
-			                	<button v-if="c.status == 'NONE'" v-on:click="reject(c)">Odbij</button>
+			                	<button class="commentButton" v-if="c.status == 'NONE'" v-on:click="reject(c)">
+			                		<img class="orderImage" src="images/reject.png"/>
+			                	</button>
 			                </td>
 			            </tr>
 		            </table>  
-	    		</div>
-	    	<div v-if="user.userType=='ADMIN'">
-				<br/><br/><br/><br/>
-	            <h1>Komentari</h1>
-	            <table border="1">
-		                <tr>
-		                	<th>Status</th>
-		                	<th>Kupac</th>
-		                	<th>Restoran</th>
-		                    <th>Text</th>
-		                    <th>Ocena</th>
-		                </tr>
-			            <tr v-for="(c, index) in allComments">
-			            	<td>{{c.status}}</td>
-			            	<td>{{c.customer}}</td>
-			            	<td>{{c.restaurant}}</td>
-			                <td>{{c.text}}</td>
-			                <td>{{c.grade}}</td>
-			            </tr>
-		            </table>  
+	    	</div>
+	    		<div v-if="user.userType=='ADMIN'">
+					<br/><br/><br/><br/>
+		            <h1>Komentari</h1>
+		            <table border="1">
+			                <tr>
+			                	<th>Status</th>
+			                	<th>Kupac</th>
+			                	<th>Restoran</th>
+			                    <th>Text</th>
+			                    <th>Ocena</th>
+			                </tr>
+				            <tr v-for="(c, index) in allComments">
+				            	<td>{{c.status}}</td>
+				            	<td>{{c.customer}}</td>
+				            	<td>{{c.restaurant}}</td>
+				                <td>{{c.text}}</td>
+				                <td>{{c.grade}}</td>
+				            </tr>
+			            </table>  
 	    		</div>
 	    		<div v-if="user.userType=='CUSTOMER'">
-				<br/><br/><br/><br/>
-	            <h1>Komentari</h1>
-	            <table border="1">
-		                <tr>
-		                	<th>Kupac</th>
-		                	<th>Restoran</th>
-		                    <th>Text</th>
-		                    <th>Ocena</th>
-		                </tr>
-			            <tr v-for="(c, index) in acceptedComments">
-			            	<td>{{c.customer}}</td>
-			            	<td>{{c.restaurant}}</td>
-			                <td>{{c.text}}</td>
-			                <td>{{c.grade}}</td>
-			            </tr>
-		            </table>  
+					<br/><br/><br/><br/>
+		            <h1>Komentari</h1>
+		            <table border="1">
+			                <tr>
+			                	<th>Kupac</th>
+			                	<th>Restoran</th>
+			                    <th>Text</th>
+			                    <th>Ocena</th>
+			                </tr>
+				            <tr v-for="(c, index) in acceptedComments">
+				            	<td>{{c.customer}}</td>
+				            	<td>{{c.restaurant}}</td>
+				                <td>{{c.text}}</td>
+				                <td>{{c.grade}}</td>
+				            </tr>
+			            </table>  
 	    		</div>
 	    	<div v-if="username==''">
 	    		<br/><br/><br/><br/>
