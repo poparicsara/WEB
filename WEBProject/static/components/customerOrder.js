@@ -25,7 +25,7 @@ Vue.component("customerOrder", {
 	    }
 	},
 	    template: ` 
-         <div>
+         <div v-if = "restaurant.status">
         	<div id="restaurantHeader">
                 <img id="logo" src="images/logo.jpg"> 
                 <label class="r"> <b> {{restaurant.name}} </b></label>
@@ -94,6 +94,48 @@ Vue.component("customerOrder", {
        	   		</div>
        	   </div>
        	
+        </div>
+        <div v-else>
+        	<div id="restaurantHeader">
+                <img id="logo" src="images/logo.jpg"> 
+                <label class="r"> <b> {{restaurant.name}} </b></label>                                
+            	<hr>
+            </div>
+            <h2>   
+               <a href="#" v-on:click="showDetails"> Detaljniji prikaz restorana </a>                     
+           	</h2>
+           	<button v-on:click="comments">Komentari</button>
+        	<div class="restaurantItemGroup" v-for="(i, index) in items">
+                <div class="restaurantItem">
+                	<img :src = i.image><br/><br/>
+                	<hr class="restaurantItemHR">
+                    <label class="foodName"><b>{{i.name}}</b></label><br/><br/>
+                    <label class="price">Cena: {{i.price}} RSD</label><br/>
+                    <label v-if="i.type=='FOOD'">Kolicina: {{i.amount}} g</label>
+                    <label v-if="i.type=='DRINK'">Kolicina: {{i.amount}} ml</label>
+                </div>
+	        </div>
+	        <div v-if="details" class="addRestaurantItem">
+	        	<div class="addRestaurantItemComponents">
+	        		<span class="addRestaurantItemClose" v-on:click="closeDetails">&times;</span>
+	        		<h1 class="addRestaurantHeader">Informacije o restoranu</h1>
+	        		<label class="restaurantItemLabels" >Naziv restorana:</label><br/>
+                	<input class="restaurantItemInput" type="text" name="name" v-model = "restaurant.name"><br/><br/>
+                	<label class="restaurantItemLabels" >Tip restorana:</label><br/>
+                	<input class="restaurantItemInput" type="text" name="name" v-model = "restaurant.type"><br/><br/>
+                	<div v-if="restaurant.averageGrade > 0 ">
+                	<label class="restaurantItemLabels">Prosečna ocena</label><br/>
+                	<input class="restaurantItemInput" type="text" v-model="restaurant.averageGrade"><br/><br/>					
+					</div>  
+					<label class="restaurantItemLabels" >Adresa:</label><br/>
+					<label class="restaurantItemInput" >{{restaurant.location.address.street}}  {{restaurant.location.address.number}}, {{restaurant.location.address.city}}</label>
+					<br/><br/>
+					<button class="restaurantItemInput" v-on:click="showLocation">Mapa:</button><br/>
+					<div v-if="showMap" id="mapid">
+					</div>
+					
+				</div>
+       	   </div>
         </div>
     	`
     	,
