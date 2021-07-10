@@ -30,7 +30,7 @@ public class UserService {
 	private String filePath = "./static/users.json";
 	private Gson gson = new Gson();
 	private ManagerService managerService = new ManagerService();
-	private CustomerService customerService = new CustomerService();
+	public static CustomerService customerService = new CustomerService();
 	public static OrderService orderService = new OrderService();
 	
 	public List<User> getUsers() throws Exception {
@@ -126,6 +126,8 @@ public class UserService {
 				managerService.editManagerUsername(dto.getOldUsername(), dto.getUsername());
 			} else if(user.getUserType() == UserType.DELIVERER) {
 				orderService.editDelivererUsername(dto.getOldUsername(), dto.getUsername());
+			} else if(user.getUserType() == UserType.CUSTOMER) {
+				customerService.editCustomer(dto.getOldUsername(), dto.getUsername());
 			}
 		}
 		saveChange(users);

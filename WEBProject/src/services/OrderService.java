@@ -31,7 +31,7 @@ public class OrderService {
 	private String requestsPath = "./static/requests.json";
 	public static UserService userService = new UserService();
 	private RestaurantsService restaurantService = new RestaurantsService();
-	private CustomerService customerService = new CustomerService();
+	public static CustomerService customerService = new CustomerService();
 	
 	public List<OrderDTO> getOrdersForDeliverers() throws Exception{
 		List<OrderDTO> dtos = new ArrayList<OrderDTO>();
@@ -225,6 +225,16 @@ public class OrderService {
 			}
 		}
 		saveRequestChange(requests);
+	}
+	
+	public void editCustomer(String oldUsername, String newUsername) throws Exception {
+		orders = getOrders();
+		for (Order order : orders) {
+			if(order.getCustomerUsername().equals(oldUsername)) {
+				order.setCustomerUsername(newUsername);
+			}
+		}
+		saveOrderChange(orders);
 	}
 	
 	private String getAlphaNumericString()

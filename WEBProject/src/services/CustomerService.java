@@ -26,7 +26,10 @@ public class CustomerService {
 	private String customerPath = "./static/customers.json";
 	private String customerTypePath = "./static/customerType.json";
 	private Gson gson = new Gson();
-
+	public static CancelingService cancelingService = new CancelingService();
+	public static OrderService orderService = new OrderService();
+	private CommentService commentService = new CommentService();
+	
 	public List<Customer> getCustomers() throws Exception {
 		Type listType = new TypeToken<ArrayList<Customer>>() {}.getType();
 	    String json = readFileAsString(customerPath);
@@ -145,6 +148,19 @@ public class CustomerService {
 			}
 			
 		}
+		saveCustomersChange(customers);
+	}
+	
+	public void editCustomer(String oldUsername, String newUsername) throws Exception {
+		customers = getCustomers();
+		for (Customer c : customers) {
+			if(c.getUsername().equals(oldUsername)) {
+				c.setUsername(newUsername);
+			}
+		}
+		cancelingService.editCustomer(oldUsername, newUsername);
+		orderService.editCustomer(oldUsername, newUsername);
+		commentService.editCustomer(oldUsername, newUsername);
 		saveCustomersChange(customers);
 	}
 	

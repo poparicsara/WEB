@@ -70,6 +70,16 @@ public class CancelingService {
 		return users;
 	}
 	
+	public void editCustomer(String oldUsername, String newUsername) throws Exception {
+		cancelings = getCancelings();
+		for (Canceling canceling : cancelings) {
+			if(canceling.getCustomer().equals(oldUsername)) {
+				canceling.setCustomer(newUsername);
+			}
+		}
+		saveChange(cancelings);
+	}
+	
 	private List<Canceling> getUserCancelings(String user) throws Exception{
 		List<Canceling> cancs = new ArrayList<Canceling>();
 		for (Canceling canceling : getCancelings()) {

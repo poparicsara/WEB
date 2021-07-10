@@ -79,6 +79,16 @@ public class CommentService {
 		return comments;
 	}
 	
+	public void editCustomer(String oldUsername, String newUsername) throws Exception {
+		comments = getComments();
+		for (Comment comment : comments) {
+			if(comment.getCustomer().equals(oldUsername)) {
+				comment.setCustomer(newUsername);
+			}
+		}
+		saveChange(comments);
+	}
+	
 	private CommentDTO setCommentToDTO(Comment c) {
 		CommentDTO com = new CommentDTO();
 		com.setId(String.valueOf(c.getId()));
