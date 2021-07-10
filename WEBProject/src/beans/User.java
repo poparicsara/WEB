@@ -15,13 +15,14 @@ public class User {
 	private Date dateOfBirth;
 	private UserType userType;
 	private boolean blocked = false;
+	private boolean deleted = false;
 	
 	public User() {
 		super();
 	}
 
 	public User(String username, String password, String name, String lastname, Gender gender, Date dateOfBirth,
-			UserType userType, boolean blocked) {
+			UserType userType, boolean blocked, boolean deleted) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -31,6 +32,15 @@ public class User {
 		this.dateOfBirth = dateOfBirth;
 		this.userType = userType;
 		this.blocked = blocked;
+		this.deleted = deleted;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public boolean isBlocked() {

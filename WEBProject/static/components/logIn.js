@@ -4,7 +4,8 @@ Vue.component("logIn", {
 	      users: null,
 	      username: null,
 	      password: null,
-	      restaurant: ''
+	      restaurant: '',
+	      manager: null
 	    }
 	},
 	    template: ` 
@@ -29,7 +30,8 @@ Vue.component("logIn", {
          ,
          axios
          	.get('rest/managerRestaurant/', this.username)
-         	.then(response => (this.restaurant = response.data))
+         	.then(response => (this.restaurant = response.data));
+         			
      },
     
      methods: {
@@ -42,19 +44,25 @@ Vue.component("logIn", {
     			}
     		}    		
     		if(exists){
+    			
+				
     			if(user.blocked === true){
     				event.preventDefault();
-    				alert('Blokirani ste, nemate pristup svoj profilu!');
+    				alert('Blokirani ste, nemate pristup svom profilu!');
+    			}
+    			else if(user.deleted === true){
+    				event.preventDefault();
+    				alert('Žao nam je, vaš profil je obrisan, nemate pristup njemu!');
     			}
 				else if(user.userType.toString() == 'ADMIN'){
 					event.preventDefault();
 					axios.post('/rest/logingIn', this.username)
 					.then(response => (router.push(`/admin`)));
 				}
-				else if(user.userType.toString() == 'MANAGER'){
+				else if(user.userType.toString() == 'MANAGER'){										
 					event.preventDefault();
 					axios.post('/rest/logingIn', this.username)
-					.then(response => (router.push(`/restaurant`)));
+					.then(response => (router.push(`/restaurant`)));				
 				}
 				else if(user.userType.toString() == 'DELIVERER'){
 					event.preventDefault();
@@ -68,8 +76,17 @@ Vue.component("logIn", {
 				}
     		}
     		else{
+    			event.preventDefault();
     			alert('Uneseni su pogrešni kredencijali!')
     		}
+    	},
+    	isDeleted : function(){
+    		var is;
+    		event.preventDefault();
+    		axios
+			.post('/rest/manager/', this.username)
+			.then(response => (is = response.data));
+			return is;
     	},
     	registration : function() {
     		event.preventDefault();

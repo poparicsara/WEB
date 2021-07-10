@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 
 import beans.Canceling;
 import beans.Comment;
+import beans.Manager;
 import beans.Order;
 import beans.OrderRequest;
 import dto.CommentDTO;
@@ -361,7 +362,27 @@ public class Main {
 			return g.toJson(restaurantsService.getRestaurantCustomers(ID));
 		});
 		
+		post("rest/deleteUser/",(req, res) ->{
+			res.type("application/json");
+			UserDTO user = g.fromJson(req.body(), UserDTO.class);
+			userService.deleteUser(user);
+			return "SUCCESS";
+		});
 		
+		post("rest/deleteRestaurant/",(req, res) ->{
+			res.type("application/json");
+			int restaurant = g.fromJson(req.body(), int.class);
+			restaurantsService.deleteRestaurant(restaurant);
+			return "SUCCESS";
+		});
+		
+		post("/rest/manager/", (req, res) -> {
+			res.type("application/json");
+			String username = g.fromJson(req.body(), String.class);
+			boolean is = managerService.isManagerRestaurantDeleted(username);
+			System.out.println(is);
+			return g.toJson(managerService.isManagerRestaurantDeleted(username));
+		});
 	}
 
 }

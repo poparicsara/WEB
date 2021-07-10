@@ -225,19 +225,7 @@ img{
 	cursor: pointer;
 }
 
-.deleteButton{
-	height: 35px;
-	width: 35px;
-	background: white;
-	border-radius: 5px;
-	margin-left: 250px;
-	border-color: lightblue;
-}
 
-.deleteButton:hover{
-	cursor: pointer;
-	background: lightblue;
-}
 
 .restaurantHeaderInOrders{
 	margin-top: 150px;
@@ -539,4 +527,32 @@ div.restaurantHeaderProfil{
 
 .commentButton:hover{
 	cursor: pointer;
+}
+
+.deleteRestaurantButton{
+	height: 35px;
+	width: 35px;
+	background: white;
+	border-radius: 5px;
+	margin-left: 50px;
+	border-color: lightblue;
+}
+
+.deleteRestaurantButton:hover{
+	cursor: pointer;
+	background: lightblue;
+}
+
+.deleteButton{
+	height: 35px;
+	width: 35px;
+	background: white;
+	border-radius: 5px;
+	margin-left: 250px;
+	border-color: lightblue;
+}
+
+.deleteButton:hover{
+	cursor: pointer;
+	background: lightblue;
 }

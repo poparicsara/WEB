@@ -128,7 +128,7 @@ Vue.component("customer", {
 					     </div>
            			  </div>
            			  <div v-else>
-	           			  <div v-for="(r, index) in restaurants"  v-on:click = "openRestaurant(r)">
+	           			  <div v-for="(r, index) in restaurants" v-if="!r.deleted"  v-on:click = "openRestaurant(r)">
 		           		    <div class="restaurants" v-if="rLower(r.name).includes(searchInLowerCase) || rLower(r.type).includes(searchInLowerCase)">		           		    
 		           		    	<img class="restaurants" :src = r.image > <br>
 					      		<label class="title">{{r.name}} </label> <br>

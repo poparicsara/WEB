@@ -52,6 +52,36 @@ public class ManagerService {
 		return managers;
 	}
 	
+	public Manager getManagerByUsername(String username) throws Exception {
+		for (Manager manager : getManagers()) {
+			if(manager.getUsername().equals(username)) {
+				return manager;
+			}
+		}
+		return null;
+	}
+	
+	public boolean isManagerRestaurantDeleted(String username) {
+		for (Manager manager : managers) {
+			if(manager.getUsername().equals(username)) {
+				if(manager.getRestaurant().isDeleted()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public void deleteManagerRestaurant(int restaurant) throws Exception {
+		managers = getManagers();
+		for (Manager manager : managers) {
+			if(manager.getRestaurant().getId() == restaurant) {
+				manager.getRestaurant().setDeleted(true);
+			}
+		}
+		saveChange(managers);
+	}
+	
 	private static String readFileAsString(String file)throws Exception{
         return new String(Files.readAllBytes(Paths.get(file)));
     }

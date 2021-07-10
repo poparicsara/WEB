@@ -178,7 +178,7 @@ Vue.component("restaurants", {
 				      	 </div>
            			</div>
            			<div v-else>
-	           			<div class="restaurants" v-for="(r, index) in restaurants"  v-on:click = "openRestaurant(r)">           				
+	           			<div class="restaurants" v-for="(r, index) in restaurants" v-if="!r.deleted"  v-on:click = "openRestaurant(r)">           				
 			       		    <img class="restaurants" :src = r.image > <br>
 						    <label class="title">{{r.name}} </label> <br>
 						    <label>{{r.type}}</label> <br>

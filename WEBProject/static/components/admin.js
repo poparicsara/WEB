@@ -64,11 +64,14 @@ Vue.component("admin", {
             <button class="buttons" v-on:click="comments"> Komentari </button>
         </h2>
         <div v-if="this.showRestaurants"> 
-	         <div class="restaurants" v-for="(r, index) in restaurants">
+	         <div class="restaurants" v-for="(r, index) in restaurants" v-if="!r.deleted">
 	            <img class="restaurants" :src = r.image > <br>
 	           	<label class="title">{{r.name}} </label> <br>
 	           	<label>{{r.type}}</label> <br>
 	           	<label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label> 
+	         	<button class="deleteRestaurantButton" v-on:click="deleteRestaurant(r)">
+                    <img class="deleteImg" src="images/delete.png"/>
+                </button>
 	         </div>
          </div> 
          <div v-if="showSuspicious">
@@ -163,7 +166,7 @@ Vue.component("admin", {
 		         </div> 
 	          </div>
 	          <div v-else-if="filterOK">
-		         <div v-for="(u, index) in users">   
+		         <div v-for="(u, index) in users" v-if="!u.deleted">   
 		         	<div v-if = "u.userType == filterType">    	
 			            <img class="restaurants" v-if="u.userType == 'MANAGER' " src = "images/manager.png" >
 			            <img class="restaurants" v-else-if="u.userType == 'DELIVERER' " src = "images/deliverer.png" >
@@ -176,7 +179,8 @@ Vue.component("admin", {
 		         </div> 
 	         </div>
 	          <div v-else>
-		         <div class="restaurants" v-for="(u, index) in users">       	
+	          
+		         <div class="restaurants" v-for="(u, index) in users" v-if="!u.deleted">       	
 			            <img class="restaurants" v-if="u.userType == 'MANAGER' " src = "images/manager.png" >
 			            <img class="restaurants" v-else-if="u.userType == 'DELIVERER' " src = "images/deliverer.png" >
 			            <img class="restaurants" v-else-if="u.userType == 'ADMIN' " src = "images/admin.png" >
@@ -185,7 +189,11 @@ Vue.component("admin", {
 			           	<label class="title">{{u.name}} {{u.lastname}} </label> <br>
 			           	<label>Username: {{u.username}}</label> 
 			           	<button v-if="u.blocked===false && u.userType != 'ADMIN'" v-on:click="blockUser(u)">Blokiraj</button>
+		         		<button class="deleteButton" v-on:click="deleteUser(u)">
+                    		<img class="deleteImg" src="images/delete.png"/>
+                    	</button>
 		         </div> 
+		         
 	         </div>
          </div>   
               
@@ -689,6 +697,16 @@ Vue.component("admin", {
   		comments : function() {
   			this.newPage = true		
 	    	router.push(`/restaurantComments`);
+  		},
+  		deleteUser : function(user) {
+  			axios
+  			.post('rest/deleteUser/', user)
+  			.then(response => (this.$router.go()))
+  		},
+  		deleteRestaurant : function(restaurant){
+  			axios
+  			.post('rest/deleteRestaurant/', restaurant.id)
+  			.then(response => (this.$router.go()))
   		}
     },
  

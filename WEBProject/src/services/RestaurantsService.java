@@ -41,6 +41,7 @@ public class RestaurantsService {
 	private List<Comment> comments = new ArrayList<Comment>();
 	private UserService userService = new UserService();
 	private CommentService commentService = new CommentService();
+	public static ManagerService managerService = new ManagerService();
 	private String ordersPath = "./static/orders.json";
 	private String restaurantsPath = "./static/restaurants.json";
 	
@@ -165,6 +166,17 @@ public class RestaurantsService {
 			}
 		}
 		return null;
+	}
+	
+	public void deleteRestaurant(int restaurant) throws Exception {
+		restaurants = getRestaurants();
+		for (Restaurant r : restaurants) {
+			if(r.getId() == restaurant) {
+				r.setDeleted(true);
+			}
+		}
+		managerService.deleteManagerRestaurant(restaurant);
+		saveChange(restaurants);
 	}
 	
 	private int getOrderIndex(String id) throws Exception {

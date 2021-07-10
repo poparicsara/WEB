@@ -360,7 +360,8 @@ Vue.component("restaurant", {
 	    			for(n of this.names){
 	    				if(n === this.edit.oldName){
 	    					continue;
-	    				} else if(n === this.edit.name){
+	    				}
+	    				if(n === this.edit.name){
 	    					this.nameExist = true;
 	    				}
 	    			} 

@@ -21,6 +21,7 @@ public class Restaurant implements Serializable{
 	private int startTime;
 	private int endTime;
 	private double averageGrade;
+	private boolean deleted;
 	
 	
 	public Restaurant() {
@@ -28,7 +29,7 @@ public class Restaurant implements Serializable{
 	}
 
 	public Restaurant(int id, String name, RestaurantType type, ArrayList<Item> items, boolean status, Location location, 
-			String image, int startTime, int endTime, double averageGrade) {
+			String image, int startTime, int endTime, double averageGrade, boolean deleted) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -40,6 +41,15 @@ public class Restaurant implements Serializable{
 		this.averageGrade = averageGrade;
 		this.startTime = startTime;
 		this.endTime = endTime;
+		this.deleted = deleted;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public int getStartTime() {

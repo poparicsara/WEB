@@ -143,6 +143,16 @@ public class UserService {
 		saveChange(users);
 	}
 	
+	public void deleteUser(UserDTO user) throws Exception {
+		users = getUsers();
+		for (User u : users) {
+			if(u.getUsername().equals(user.getUsername())) {
+				u.setDeleted(true);
+			}
+		}
+		saveChange(users);
+	}
+	
 	private int getUserIndex(String username) throws Exception {
 		int index = 0;
 		for (User u : getUsers()) {
