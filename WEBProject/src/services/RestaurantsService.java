@@ -47,7 +47,18 @@ public class RestaurantsService {
 	    Type listType = new TypeToken<ArrayList<Restaurant>>() {}.getType();
 	    String json = readFileAsString("./static/restaurants.json");
 		restaurants = gson.fromJson(json, listType);
-		return restaurants;
+		List<Restaurant> filteredRestaurants = new ArrayList<Restaurant>();
+		for (Restaurant restaurant : restaurants) {
+			if(restaurant.isStatus()) {
+				filteredRestaurants.add(restaurant);
+			}
+		}
+		for (Restaurant restaurant : restaurants) {
+			if(!restaurant.isStatus()) {
+				filteredRestaurants.add(restaurant);
+			}
+		}
+		return filteredRestaurants;
 	}
 	
 	public List<OrderDTO> getRestaurantOrders(int restaurantID) throws Exception {

@@ -10,8 +10,10 @@ Vue.component("restaurants", {
 	      currentSort:'name',
   		  currentSortDir:'asc',
   		  filterType: null,
-  		  status: true,
-  		  filterOK: false
+  		  status: 'radi',
+  		  filterOK: false,
+  		  filterRestaurantType: null,
+  		  filterStatus: null
 	    }
 	 
 	},
@@ -53,8 +55,8 @@ Vue.component("restaurants", {
 	                    <option value="FASTFOOD">Brza hrana</option>
 	                </select>
 	                <select class="filter" name="active" v-model = "status">
-	                	<option value = "true"> Radi </option>
-	                	<option value = "false"> Ne radi </option>
+	                	<option value = 'radi'> Radi </option>
+	                	<option value = 'neRadi'> Ne radi </option>
 	                </select>
 	                <button v-on:click = "filter"> <img id="filter" src="images/filter.png"> </button>
       			</div>
@@ -67,7 +69,9 @@ Vue.component("restaurants", {
 					      		<label class="title">{{r.name}} </label> <br>
 					      		<label>{{r.type}}</label> <br>
 					      		<label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label> <br>
-				    			<label>Prosečna ocena: {{r.averageGrade}}</label>
+				    			<label>Prosečna ocena: {{r.averageGrade}}</label> <br>
+				    			<label v-if="r.status">Radi</label>
+					  	 		<label v-if="!r.status">Ne radi</label>
 				    		</div> 	   
            				</div>
            			  </div>
@@ -78,7 +82,9 @@ Vue.component("restaurants", {
 					      		<label class="title">{{r.name}} </label> <br>
 					      		<label>{{r.type}}</label> <br>
 					      		<label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label> <br>
-				    			<label>Prosečna ocena: {{r.averageGrade}}</label>
+				    			<label>Prosečna ocena: {{r.averageGrade}}</label> <br>
+				    			<label v-if="r.status">Radi</label>
+					  	 		<label v-if="!r.status">Ne radi</label>
 				    		</div> 	   
            				</div>
            			  </div>
@@ -89,7 +95,9 @@ Vue.component("restaurants", {
 							    <label class="title">{{r.name}} </label> <br>
 							    <label>{{r.type}}</label> <br>
 							    <label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label><br>
-						    	<label>Prosečna ocena: {{r.averageGrade}}</label>
+						    	<label>Prosečna ocena: {{r.averageGrade}}</label> <br>
+						    	<label v-if="r.status">Radi</label>
+					  	 		<label v-if="!r.status">Ne radi</label>
 						    </div>  
 					   </div>
            			</div>
@@ -100,7 +108,9 @@ Vue.component("restaurants", {
 					      		<label class="title">{{r.name}} </label> <br>
 					      		<label>{{r.type}}</label> <br>
 					      		<label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label> <br>
-					      		<label>Prosečna ocena: {{r.averageGrade}}</label>
+					      		<label>Prosečna ocena: {{r.averageGrade}}</label> <br>
+					      		<label v-if="r.status">Radi</label>
+					  	 		<label v-if="!r.status">Ne radi</label>
 					      	</div> 	
 				      	 </div>
 			       	</div>
@@ -112,7 +122,9 @@ Vue.component("restaurants", {
 						    <label class="title">{{r.name}} </label> <br>
 						    <label>{{r.type}}</label> <br>
 						    <label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label><br>
-					    	<label>Prosečna ocena: {{r.averageGrade}}</label>
+					    	<label>Prosečna ocena: {{r.averageGrade}}</label> <br>
+					    	<label v-if="r.status">Radi</label>
+					  	 	<label v-if="!r.status">Ne radi</label>
 					    </div>  
            			</div>
            			<div v-else-if="sortAddress">
@@ -121,7 +133,9 @@ Vue.component("restaurants", {
 						    <label class="title">{{r.name}} </label> <br>
 						    <label>{{r.type}}</label> <br>
 						    <label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label><br>
-					    	<label>Prosečna ocena: {{r.averageGrade}}</label>
+					    	<label>Prosečna ocena: {{r.averageGrade}}</label><br>
+					    	<label v-if="r.status">Radi</label>
+					  	 	<label v-if="!r.status">Ne radi</label>
 					    </div>  
            			</div>
            			<div v-else-if="sortGrades">
@@ -130,19 +144,38 @@ Vue.component("restaurants", {
 						    <label class="title">{{r.name}} </label> <br>
 						    <label>{{r.type}}</label> <br>
 						    <label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label><br>
-					    	<label>Prosečna ocena: {{r.averageGrade}}</label>
+					    	<label>Prosečna ocena: {{r.averageGrade}}</label> <br>
+					    	<label v-if="r.status">Radi</label>
+					  	 	<label v-if="!r.status">Ne radi</label>
 					    </div>  
            			</div>
            			<div v-else-if="filterOK">
-           				 <div v-for="(r, index) in restaurants"  v-on:click = "openRestaurant(r)">
-	           		     <div class="restaurants" v-if="r.type == filterType">
-	           		    	<img class="restaurants" :src = r.image > <br>
-				      		<label class="title">{{r.name}} </label> <br>
-				      		<label>{{r.type}}</label> <br>
-				      		<label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label> <br>
-				      	 	<label>Prosečna ocena: {{r.averageGrade}}</label>
-				      	 </div> 	
-			      		</div>
+           				 <div v-if="filterRestaurantType == 'all'">
+	           				 <div v-for="(r, index) in restaurants"  v-on:click = "openRestaurant(r)">
+			           		     <div class="restaurants" v-if="r.status === filterStatus">
+			           		    	<img class="restaurants" :src = r.image > <br>
+						      		<label class="title">{{r.name}} </label> <br>
+						      		<label>{{r.type}}</label> <br>
+						      		<label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label> <br>
+						      	 	<label>Prosečna ocena: {{r.averageGrade}}</label> <br>
+						      	 	<label v-if="r.status">Radi</label>
+					  	 			<label v-if="!r.status">Ne radi</label>
+						      	 </div> 	
+					      	 </div>
+					     </div>
+				      	 <div v-else>
+				      	 	<div v-for="(r, index) in restaurants"  v-on:click = "openRestaurant(r)">
+					      	 	<div class="restaurants" v-if="r.type == filterRestaurantType && r.status === filterStatus">
+			           		    	<img class="restaurants" :src = r.image > <br>
+						      		<label class="title">{{r.name}} </label> <br>
+						      		<label>{{r.type}}</label> <br>
+						      		<label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label> <br>
+						      	 	<label>Prosečna ocena: {{r.averageGrade}}</label> <br>
+						      	 	<label v-if="r.status">Radi</label>
+						      	 	<label v-if="!r.status">Ne radi</label>
+						      	 </div> 
+						     </div>
+				      	 </div>
            			</div>
            			<div v-else>
 	           			<div class="restaurants" v-for="(r, index) in restaurants"  v-on:click = "openRestaurant(r)">           				
@@ -150,20 +183,20 @@ Vue.component("restaurants", {
 						    <label class="title">{{r.name}} </label> <br>
 						    <label>{{r.type}}</label> <br>
 						    <label>Adresa: {{r.location.address.street}} {{r.location.address.number}}, {{r.location.address.city}} </label> <br>
-				    		<label>Prosečna ocena: {{r.averageGrade}}</label>					    	
+				    		<label>Prosečna ocena: {{r.averageGrade}}</label> <br>
+						    <label v-if="r.status">Radi</label>
+					  	 	<label v-if="!r.status">Ne radi</label>
 					    </div>  
            			</div>
 			    </div>		
            </div>           
          </div>
     	`,
-    mounted () {
+    mounted () {   	
         axios
           .get('rest/restaurants/')
           .then(response => (this.restaurants = response.data))   
-        axios
-        .post('rest/setRestaurantsStatus/')
-        .then(response => (''))
+        
     },
     computed: {
   		searchInLowerCase() {
@@ -247,13 +280,16 @@ Vue.component("restaurants", {
 		filter : function() {
 			this.sortAddress = false;
 			this.sortName = false;
-			if(this.filterType == "all"){
-				this.filterOK = false
+			this.sortGrades = false;
+			this.filterOK = true
+			this.filterRestaurantType = this.filterType
+			if(this.status == 'radi'){
+				this.filterStatus = true
 			}
 			else{
-				this.filterOK = true
+				this.filterStatus = false	
 			}
-			
+				
 		},
     	logIn : function() {
     		router.push(`/logIn`);
@@ -262,6 +298,7 @@ Vue.component("restaurants", {
     		router.push(`/registration`)
     	},
     	searchRestaurants : function(){
+			this.filterOK = false
     		if(this.searchText === ""){
     			this.searchOK = false
     		}
