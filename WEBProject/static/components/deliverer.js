@@ -23,9 +23,9 @@ Vue.component("deliverer", {
 	       </div>
         </h1>
         <hr class="admin">
-	        <h1>Porudžbine na čekaju</h1>
-	        	<button v-on:click="myOrders">Moje porudzbine</button>
-	            <table border="1">
+	        <h1>Porudžbine na čekaju</h1><br/>
+	        	<button class="restaurantButtons" v-on:click="myOrders">Moje porudžbine</button>
+	            <table border="1" class="restaurantOrders">
 	                <tr>
 	                	<th>Status</th>
 	                    <th>Broj porudžbine</th>
@@ -42,7 +42,9 @@ Vue.component("deliverer", {
 		                <td>{{o.customerFullName}}</td>
 		                <td>{{o.restaurantName}}</td>
 		                <td>{{o.price}}</td>
-		                <td><button id="index" v-on:click="sendRequest(o, index)">Pošalji zahtev</button></td>
+		                <td><button class="orderTableButton" id="index" v-on:click="sendRequest(o, index)">
+		                	<img class="orderTableImage" src="/images/sendRequest.png"/>
+		                </button></td>
 		            </tr>
 	            </table>   
 	  	</div>

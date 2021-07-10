@@ -10,11 +10,12 @@ Vue.component("delivererOrders", {
 	},
 	template: `
 		<div>
-	    	<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+	    	<br/><br/><br/>
 	    	<div v-if="allOrders">
-	    		<button v-on:click="notDelivered">Nedostavljene porudzbine</button>
-	        	<h1>Moje porudzbine</h1>
-	        	<table border="1">
+	    		<h1>Moje porudžbine</h1><br/>
+	    		<button class="restaurantButtons" v-on:click="notDelivered">Nedostavljene porudzbine</button>
+	        	
+	        	<table border="1" class="restaurantOrders">
 	                <tr>
 	                	<th>Status</th>
 	                    <th>Broj porudžbine</th>
@@ -34,9 +35,10 @@ Vue.component("delivererOrders", {
 	            </table>
 	        </div>
 	        <div v-if="notDeliveredOrders">
-	        	<button v-on:click="orders">Sve porudzbine</button>
-	        	<h1>Nedostavljene porudzbine</h1>
-	        	<table border="1">
+	        	<h1>Nedostavljene porudžbine</h1>
+	        	<button class="restaurantButtons" v-on:click="orders">Sve porudzbine</button>
+	        	
+	        	<table border="1" class="restaurantOrders">
 	                <tr>
 	                	<th>Status</th>
 	                    <th>Broj porudžbine</th>
