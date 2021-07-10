@@ -20,6 +20,7 @@ import beans.OrderRequest;
 import dto.OrderDTO;
 import enums.OrderStatus;
 import enums.RequestStatus;
+import javaxt.http.Request;
 
 public class OrderService {
 	
@@ -28,7 +29,7 @@ public class OrderService {
 	private List<OrderRequest> requests = new ArrayList<OrderRequest>();
 	private String ordersPath = "./static/orders.json";
 	private String requestsPath = "./static/requests.json";
-	private UserService userService = new UserService();
+	public static UserService userService = new UserService();
 	private RestaurantsService restaurantService = new RestaurantsService();
 	private CustomerService customerService = new CustomerService();
 	
@@ -203,6 +204,27 @@ public class OrderService {
 		order.setPrice(newPrice);
 		orders.add(order);
 		saveOrderChange(orders);
+	}
+	
+	public void editDelivererUsername(String oldUsername, String newUsername) throws Exception {
+		orders = getOrders();
+		for (Order order : orders) {
+			if(order.getDelivererUsername().equals(oldUsername)) {
+				order.setDelivererUsername(newUsername);
+			}
+		}
+		editDelivererInRequests(oldUsername, newUsername);
+		saveOrderChange(orders);
+	}
+	
+	private void editDelivererInRequests(String oldUsername, String newUsername) throws Exception {
+		requests = getRequests();
+		for (OrderRequest r : requests) {
+			if(r.getDelivererUsername().equals(oldUsername)) {
+				r.setDelivererUsername(newUsername);
+			}
+		}
+		saveRequestChange(requests);
 	}
 	
 	private String getAlphaNumericString()

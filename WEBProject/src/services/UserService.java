@@ -31,6 +31,7 @@ public class UserService {
 	private Gson gson = new Gson();
 	private ManagerService managerService = new ManagerService();
 	private CustomerService customerService = new CustomerService();
+	public static OrderService orderService = new OrderService();
 	
 	public List<User> getUsers() throws Exception {
 	    Type listType = new TypeToken<ArrayList<User>>() {}.getType();
@@ -120,8 +121,12 @@ public class UserService {
 		users = getUsers();
 		users.remove(index);
 		users.add(index, user);
-		if(user.getUserType() == UserType.MANAGER) {
-			managerService.editManagerUsername(dto.getOldUsername(), dto.getUsername());
+		if(!dto.getOldUsername().equals(dto.getUsername())) {
+			if(user.getUserType() == UserType.MANAGER) {
+				managerService.editManagerUsername(dto.getOldUsername(), dto.getUsername());
+			} else if(user.getUserType() == UserType.DELIVERER) {
+				orderService.editDelivererUsername(dto.getOldUsername(), dto.getUsername());
+			}
 		}
 		saveChange(users);
 	}
