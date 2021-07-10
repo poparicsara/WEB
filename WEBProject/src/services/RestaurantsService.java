@@ -50,17 +50,7 @@ public class RestaurantsService {
 	    String json = readFileAsString("./static/restaurants.json");
 		restaurants = gson.fromJson(json, listType);
 		List<Restaurant> filteredRestaurants = new ArrayList<Restaurant>();
-		for (Restaurant restaurant : restaurants) {
-			if(restaurant.isStatus()) {
-				filteredRestaurants.add(restaurant);
-			}
-		}
-		for (Restaurant restaurant : restaurants) {
-			if(!restaurant.isStatus()) {
-				filteredRestaurants.add(restaurant);
-			}
-		}
-		return filteredRestaurants;
+		return restaurants;
 	}
 	
 	public List<OrderDTO> getRestaurantOrders(int restaurantID) throws Exception {
@@ -106,7 +96,7 @@ public class RestaurantsService {
 			}
 		}
 		
-		saveChange(restaurants);
+		saveChange(restaurants); 
 		
 	}
 	
@@ -300,7 +290,7 @@ public class RestaurantsService {
 	}
 	
 	private void saveChange(List<Restaurant> restaurants) throws IOException {
-		Writer writer = new FileWriter(restaurantsPath);
+		Writer writer = new FileWriter(restaurantsPath, StandardCharsets.UTF_8);
 		gson.toJson(restaurants, writer);
 		writer.close();
 	}
@@ -387,11 +377,29 @@ public class RestaurantsService {
 	
 	public void addRestaurant(Restaurant restaurant) throws Exception {
 		restaurants = getRestaurants();
+		String city = convertCyrilic(restaurant.getLocation().getAddress().getCity());
+		restaurant.getLocation().getAddress().setCity(city);
+		String street = convertCyrilic(restaurant.getLocation().getAddress().getStreet());
+		restaurant.getLocation().getAddress().setStreet(street);
 		restaurants.add(restaurant);
 		
 		Writer writer = new FileWriter("./static/restaurants.json",StandardCharsets.UTF_8);
 		gson.toJson(restaurants, writer);
 		writer.close();
+	}
+	
+	public static String convertCyrilic(String message){
+	    char[] abcCyr =   {' ','а','б','в','г','д','ђ','е', 'ж','з','ѕ','и','ј','к','л','љ','м','н','њ','о','п','р','с','т', 'ћ','у', 'ф','х','ц','ч','џ','ш', 'А','Б','В','Г','Д','Ђ','Е', 'Ж','З','Ѕ','И','Ј','К','Л','Љ','М','Н','Њ','О','П','Р','С','Т', 'Ћ', 'У','Ф', 'Х','Ц','Ч','Џ','Ш','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','1','2','3','4','5','6','7','8','9','/','-'};
+	    String[] abcLat = {" ","a","b","v","g","d","dj","e","ž","z","y","i","j","k","l","lj","m","n","nj","o","p","r","s","t","ć","u","f","h", "c","č", "dž","š","A","B","V","G","D","Dj","E","Ž","Z","Y","I","J","K","L","LJ","M","N","NJ","O","P","R","S","T","Ć","U","F","H", "C","Č", "DŽ","Š", "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","1","2","3","4","5","6","7","8","9","/","-"};
+	    StringBuilder builder = new StringBuilder();
+	    for (int i = 0; i < message.length(); i++) {
+	        for (int x = 0; x < abcCyr.length; x++ ) {
+	            if (message.charAt(i) == abcCyr[x]) {
+	                builder.append(abcLat[x]);
+	            }
+	        }
+	    }
+	    return builder.toString();
 	}
 	
 	@SuppressWarnings("deprecation")
