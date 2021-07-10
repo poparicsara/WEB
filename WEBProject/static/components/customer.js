@@ -449,6 +449,7 @@ Vue.component("customer", {
 						</div>
 					</div>
 				</div>
+			</div>
 			<div v-else>
 				<div v-for="(o, index) in orders" v-if = "o.customerUsername == username">  
          			<div  class="restaurants" v-for="(r, index) in restaurants" v-if="o.restaurantID == r.id">
