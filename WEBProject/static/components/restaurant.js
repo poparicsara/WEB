@@ -28,14 +28,15 @@ Vue.component("restaurant", {
 	            	<div class="dropdown">
 	                <button> <img id="adminImage" src="images/manager.png"> </button>
 		                <div class="dropdown-content">
-		                  <button v-on:click="managerProfile">Profil</button>
-		                  <button v-on:click = "logOut"> Odjava</button>
+		                  <button class="dropdown-button" v-on:click="managerProfile">Profil</button>
+		                  <button class="dropdown-button" v-on:click = "logOut"> Odjava</button>
 		                </div>
 	            	</div>
             	</div>
         	</h1>
+        	<div class="restaurantContent">
         	<h2>   
-               <a href="#" v-on:click="showDetails"> Detaljniji prikaz restorana </a>                     
+               <button class="detailsButton" v-on:click="showDetails"> Detaljniji prikaz restorana </button>                     
            	</h2>
 	        <input class="restaurantSearchBox" type="text" name="search" placeholder="Pretraži...">
 	        <img class="restaurantItemsSearchIMG" src="images/search.png"/>
@@ -52,16 +53,16 @@ Vue.component("restaurant", {
 	        <button class="restaurantButtons" v-on:click = "comments">
 	        	
 	        	Komentari
-	        </button>
-	        <button class="restaurantButtons" v-on:click = "addRestaurantItem">
+	        </button><br/>
+	        <button class="addButton" v-on:click = "addRestaurantItem">
 	        	<img class="restaurantAddItemIMG" src="images/addItem.png"/>
-	        	Novi artikal
+	        	
 	        </button>
 	        </div>
 	        <br/><br/>
 	        <div class="restaurantItemGroup" v-for="(i, index) in items">
                 <div class="restaurantItem" v-if="i.deleted===false">
-                	<a v-on:click="itemClicked(i)">
+                	<a class="restaurantItemImage" v-on:click="itemClicked(i)">
                 		<img :src = i.image><br/><br/>
                 	</a>
                 	<hr class="restaurantItemHR">
@@ -69,9 +70,12 @@ Vue.component("restaurant", {
                     <label class="price">Cena: {{i.price}} RSD</label><br/>
                     <label v-if="i.type=='FOOD'">Kolicina: {{i.amount}} g</label>
                     <label v-if="i.type=='DRINK'">Kolicina: {{i.amount}} ml</label>
-                    <button v-on:click="deleteItem(i)">Obrisi</button>
+                    <button class="deleteButton" v-on:click="deleteItem(i)">
+                    	<img class="deleteImg" src="images/delete.png"/>
+                    </button>
                 </div>
             	
+	        </div>
 	        </div>
 	        <div class="addRestaurantItem" v-if="addItem">
 	        	<div class="addRestaurantItemComponents">

@@ -10,9 +10,13 @@ Vue.component("restaurantOrders", {
 	},
 	    template: `
 	   	<div> 
+	        
 	        <div>
-	            <h1>Naše porudžbine</h1>
-	            <table border="1">
+	        	<h1 class="orderHeader">KFC</h1>
+	        </div>
+	        <div class="ordersGroup">
+	            <h1>Naše porudžbine</h1><br/>
+	            <table border="1" class="restaurantOrders">
 	                <tr>
 	                	<th>Status</th>
 	                    <th>Broj porudžbine</th>
@@ -28,41 +32,60 @@ Vue.component("restaurantOrders", {
 		                <td>{{o.date}}</td>
 		                <td>{{o.customerFullName}}</td>
 		                <td>{{o.price}}</td>
-		                <td><button v-on:click="openModal(o)">Detalji</button></td>
-		                <td><button v-on:click="orderRequests(o)" v-if="o.status=='ČEKA DOSTAVLJAČA'">Zahtevi</button></td>
+		                <td><button class="orderTableButton" v-on:click="openModal(o)">
+		                	<img src="images/details.png" class="orderTableImage"/>
+		                </button></td>
+		                <td><button class="orderTableButton" v-on:click="orderRequests(o)" v-if="o.status=='ČEKA DOSTAVLJAČA'">
+		                	<img src="images/delivery.png" class="orderTableImage"/>
+		                </button></td>
 		            </tr>
 	            </table>
 	        </div>
-	
-			<div class="restaurantOrderModal" v-if="display">
 			
-				<br/><br/>
-				<span class="restaurantOrderClose" v-on:click="closeModal">&times;</span>  <!--Close button-->
-	
-				<label>Broj porudžbine</label>
-				{{order.id}}<br/>
-				<label>Status porudžbine</label>
-				{{order.status}}
-				<button v-on:click="changeOrderStatus" v-if="order.status=='U PRIPREMI'">Spremno za dostavu</button>
-				<button v-on:click="processToPreparation" v-if="order.status=='OBRADA'">Prihvati porudzbinu</button>
-				<br/>
-				<label>Kupac</label>
-				{{order.customerFullName}}<br/>
-				<label>Datum</label>
-				{{order.date}}<br/>
-				<label>Ukupan iznos</label>
-				{{order.price}}<br/>
-				
+			<div class="addRestaurantItem" v-if="display">
+				<div  class="addRestaurantItemComponents">
+					<span class="addRestaurantItemClose" v-on:click="closeModal">&times;</span>  <!--Close button-->
+					<h1 class="orderHeaderModal">Detalji porudžbine</h1><br/><br/>
+					<label class="orderLabel">Broj porudžbine:</label><br/>
+					<label class="orderDetail">{{order.id}}</label><br/><br/><br/>
+					<label class="orderLabel">Status porudžbine:</label><br/>
+					<label class="orderDetail">{{order.status}}</label>
+					<button class="orderButton" v-on:click="changeOrderStatus" v-if="order.status=='U PRIPREMI'">
+						<img class="orderImage" src="images/delivery.png"/>
+					</button>
+					<button class="orderButton" v-on:click="processToPreparation" v-if="order.status=='OBRADA'">
+						<img class="orderImage" src="images/cook.png"/>
+					</button>
+					<br/><br/><br/>
+					<label class="orderLabel">Kupac:</label><br/>
+					<label class="orderDetail">{{order.customerFullName}}</label><br/><br/><br/>
+					<label class="orderLabel">Datum:</label><br/>
+					<label class="orderDetail">{{order.date}}</label><br/><br/><br/>
+					<label class="orderLabel">Ukupan iznos:</label><br/>
+					<label class="orderDetail">{{order.price}}</label><br/><br/><br/>
+				</div>
 	
 			</div>
 			
-			<div v-if="requestsModal">
-				<div  v-for="(r, index) in requests">
-		                <div v-if="r.status!='REJECTED'">
-		                    <label>Redni broj porudžbine:{{r.orderID}}</label><br/>
-		                    <label>Username dostavljaca: {{r.delivererUsername}}</label><br/><br/>
-		                	<button v-on:click="acceptRequest(r)">Prihvati zahtev</button>
-		                	<button v-on:click="rejectRequest(r)">Odbij zahtev</button><br/><br>
+			<div class="addRestaurantItem" v-if="requestsModal">
+				<div class="addRestaurantItemComponents"  >		                
+		                	<span class="addRestaurantItemClose" v-on:click="closeRequestModal">&times;</span>
+		                	<h1 class="orderHeaderModal">Zahtevi dostavljača</h1>
+		                	<div class="requestLabels" v-for="(r, index) in requests"  v-if="r.status!='REJECTED'">
+			                    <label class="orderLabel">Redni broj porudžbine:</label><br/>
+			                    <label class="orderDetail">{{r.orderID}}</label><br/><br/>
+			                    <label class="orderLabel">Username dostavljaca:</label><br/>
+			                    <label class="orderDetail">{{r.delivererUsername}}</label><br/><br/>
+			                    <div class="requestButtonGroup">
+				                	<button class="requestButton" v-on:click="acceptRequest(r)">
+				                		<img class="requestImage" src="images/accept.png"/>
+				                	</button>
+				                	<button class="requestButton" v-on:click="rejectRequest(r)">
+				                		<img class="requestImage" src="images/reject.png"/>
+				                	</button>
+			                	</div>
+			                	<br/>
+			                	<hr>
 		                </div>
 	        	</div>
 			</div>
@@ -117,6 +140,9 @@ Vue.component("restaurantOrders", {
 				axios
 				.post(`/rest/rejectOrderRequest/`, request)
 				.then(response => (this.$router.go()))
+			},
+			closeRequestModal : function() {
+				this.requestsModal = false;
 			}
 		}
 });

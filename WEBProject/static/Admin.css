@@ -34,30 +34,36 @@
             left: 720px;
             top: -7px;
             display: inline-block;
+            border-radius: 5px;
+            background: white;
         }
 
         .dropdown-content {
             display: none;
             position: absolute;
-            background-color: lightblue;
+            background-color: white;
             min-width: 100px;
             font-size: 22px;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
             z-index: 1;
-            color:white;
+            color:lightblue;
         }
 
         .dropdown-content button {
-          background-color: lightblue;
-            color: white;
+          background-color: white;
+            color: lightblue;
             text-decoration: none;
             display: block;
             width: 100px;
-            font-size: 22px;
+            font-size: 18px;
             
         }
 
-.dropdown-content button:hover {background-color: #ddd;}
+.dropdown-content button:hover {
+	background-color: lightblue;
+	color:white;
+	cursor: pointer;
+	}
 
 .dropdown:hover .dropdown-content {display: block;}
 
