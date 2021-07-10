@@ -32,7 +32,8 @@ Vue.component("customer", {
   		  status: 'radi',
   		  filterOK: false,
   		  filterRestaurantType: null,
-  		  filterStatus: null	
+  		  filterStatus: null,
+  		  notDeliveredOrders: false	
 	    }
 	 
 	},
@@ -217,6 +218,7 @@ Vue.component("customer", {
 			    </div>		
            </div>           
            <div v-else="showOrders">
+           	
            	<input id="input" type="text" placeholder="Pretraži..." v-model="searchTextOrders" v-on:change = "searchOrders">
            	<br/><br/>
            	<select v-model="restaurantFilter">
@@ -229,8 +231,9 @@ Vue.component("customer", {
 	      			<button class="sort" v-on:click = "sort('name')"> Ime </button>
 	      			<button class="sort" v-on:click = "sort('price')"> Cena </button>
 	      			<button class="sort" v-on:click = "sort('date')"> Datum </button>
-      			</div>
-      			
+      			</div>	<br/><br/>
+      		<button v-on:click="notDelivered">Nedostavljene porudžbine</button>
+      		<button v-on:click="allCustomerOrders">Sve porudžbine</button>
          	<div v-if="searchOKOrders">
          		<div v-if="searchPrice">
 					<div v-for="(o, index) in orders" v-if = "o.customerUsername == username">  
@@ -366,6 +369,24 @@ Vue.component("customer", {
 						<button class="cancelButton" v-on:click="showCommentPage(o)"  v-if="o.status == 'DELIVERED'"> <img class="cancelButton" src="images/comment.png"> </button>
 					</div>
 				</div>
+			</div>
+			<div v-else-if="notDeliveredOrders">
+				<div v-for="(o, index) in orders" v-if = "o.customerUsername == username">  
+         		<div  class="restaurants" v-for="(r, index) in restaurants" v-if="o.restaurantID == r.id && o.status!='DELIVERED'">
+					    <img class="restaurants" :src = r.image > <br>
+						<label class="title">{{r.name}} </label> <br>
+						<label>{{r.type}}</label> <br>
+						<label>Artikli:</label>
+						<div v-for="i in o.items">
+							<label>{{i.name}} </label>
+						</div>
+						<label>Datum: {{o.date}} </label> <br>
+						<label>Cena: {{o.price}} RSD</label> <br>
+						<label>Status: {{o.status}} </label> <br> <br>
+						<button class="cancelButton" v-on:click="cancelOrder(o)" v-if="o.status == 'PROCESSING'"> <img class="cancelButton" src="images/cancel.png"> </button>
+						<button class="cancelButton" v-on:click="showCommentPage(o)"  v-if="o.status == 'DELIVERED'"> <img class="cancelButton" src="images/comment.png"> </button>
+				</div>
+			</div>
 			</div>
 			<div v-else>
 				<div v-for="(o, index) in orders" v-if = "o.customerUsername == username">  
@@ -674,6 +695,12 @@ Vue.component("customer", {
     	},
     	filterRestaurants : function() {
     		this.showFilteredRestaurants = true;
+    	},
+    	notDelivered : function(){
+    		this.notDeliveredOrders = true;
+    	},
+    	allCustomerOrders : function() {
+    		this.notDeliveredOrders = false;
     	}
     },
 });
