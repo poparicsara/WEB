@@ -12,6 +12,8 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -49,7 +51,19 @@ public class RestaurantsService {
 	    Type listType = new TypeToken<ArrayList<Restaurant>>() {}.getType();
 	    String json = readFileAsString("./static/restaurants.json");
 		restaurants = gson.fromJson(json, listType);
-		List<Restaurant> filteredRestaurants = new ArrayList<Restaurant>();
+		Collections.sort(restaurants, new Comparator<Restaurant>(){
+	        @Override
+	        public int compare(Restaurant abc1, Restaurant abc2) {
+
+	            if (abc1.isStatus() == abc2.isStatus()){
+	                return -1;
+	            }
+	            if (!abc1.isStatus() == abc2.isStatus()){
+	                return 1;
+	            }
+	            return 0;
+	        }
+	    });
 		return restaurants;
 	}
 	
