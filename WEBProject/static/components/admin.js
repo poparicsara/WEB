@@ -13,9 +13,9 @@ Vue.component("admin", {
 	      users : null,
 	      managers : null,
 	      managerID: '',
-	      managerDTO: {username: null, restaurant: null},
+	      managerDTO: {username: '', restaurant: null},
 	      user: {username: '', password: '', name: '', lastname: '', gender: null, date: null},
-	      restaurant: {id:null, name: null, type: null, status:true, location: { address: {street : '', number : '', city: '', postNumber: 0} , longitude: 0, latitude: 0}, items:null, image: ''},	      
+	      restaurant: {id:null, name: '', type: '', status:true, location: { address: {street : '', number : '', city: '', postNumber: 0} , longitude: 0, latitude: 0}, items:null, image: ''},	      
 	      searchText: '',
 	      searchOK: false,
 	      currentSort: 'name',
@@ -121,7 +121,7 @@ Vue.component("admin", {
          	  </h3>
          	  <div v-if="searchOK">
 		          <div  v-for="(u, index) in users">
-		          	<div class="restaurants" v-if="rLower(u.name).includes(searchInLowerCase) || rLower(u.lastname).includes(searchInLowerCase) || rLower(u.username).includes(searchInLowerCase)">
+		          	<div class="restaurants" v-if="!u.deleted && (rLower(u.name).includes(searchInLowerCase) || rLower(u.lastname).includes(searchInLowerCase) || rLower(u.username).includes(searchInLowerCase))">
 			            <img class="restaurants" v-if="u.userType == 'MANAGER' " src = "images/manager.png" >
 			            <img class="restaurants" v-else-if="u.userType == 'DELIVERER' " src = "images/deliverer.png" >
 			            <img class="restaurants" v-else-if="u.userType == 'ADMIN' " src = "images/admin.png" >
@@ -129,11 +129,15 @@ Vue.component("admin", {
 			            <br>
 			           	<label class="title">{{u.name}} {{u.lastname}} </label> <br>
 			           	<label>Username: {{u.username}}</label> 
+			           	<button v-if="u.blocked===false && u.userType != 'ADMIN'" v-on:click="blockUser(u)">Blokiraj</button>
+		         		<button class="deleteButton" v-on:click="deleteUser(u)">
+                    		<img class="deleteImg" src="images/delete.png"/>
+                    	</button>
 		           	</div>
 		         </div> 
 	         </div>
 	          <div v-else-if="sortName">
-	          	 <div class="restaurants" v-for="u in sortedNames">       	
+	          	 <div class="restaurants" v-for="u in sortedNames" v-if="!u.deleted">       	
 			            <img class="restaurants" v-if="u.userType == 'MANAGER' " src = "images/manager.png" >
 			            <img class="restaurants" v-else-if="u.userType == 'DELIVERER' " src = "images/deliverer.png" >
 			            <img class="restaurants" v-else-if="u.userType == 'ADMIN' " src = "images/admin.png" >
@@ -141,10 +145,14 @@ Vue.component("admin", {
 			            <br>
 			           	<label class="title">{{u.name}} {{u.lastname}} </label> <br>
 			           	<label>Username: {{u.username}}</label> 
+			           	<button v-if="u.blocked===false && u.userType != 'ADMIN'" v-on:click="blockUser(u)">Blokiraj</button>
+		         		<button class="deleteButton" v-on:click="deleteUser(u)">
+                    		<img class="deleteImg" src="images/delete.png"/>
+                    	</button>
 		         </div> 
 	          </div>
 	          <div v-else-if="sortLastName">
-	          	 <div class="restaurants" v-for="u in sortedLastNames">       	
+	          	 <div class="restaurants" v-for="u in sortedLastNames" v-if="!u.deleted">       	
 			            <img class="restaurants" v-if="u.userType == 'MANAGER' " src = "images/manager.png" >
 			            <img class="restaurants" v-else-if="u.userType == 'DELIVERER' " src = "images/deliverer.png" >
 			            <img class="restaurants" v-else-if="u.userType == 'ADMIN' " src = "images/admin.png" >
@@ -152,10 +160,14 @@ Vue.component("admin", {
 			            <br>
 			           	<label class="title">{{u.name}} {{u.lastname}} </label> <br>
 			           	<label>Username: {{u.username}}</label> 
+			           	<button v-if="u.blocked===false && u.userType != 'ADMIN'" v-on:click="blockUser(u)">Blokiraj</button>
+		         		<button class="deleteButton" v-on:click="deleteUser(u)">
+                    		<img class="deleteImg" src="images/delete.png"/>
+                    	</button>
 		         </div> 
 	          </div>
 	          <div v-else-if="sortUsername">
-	          	 <div class="restaurants" v-for="u in sortedUsernames">       	
+	          	 <div class="restaurants" v-for="u in sortedUsernames" v-if="!u.deleted">       	
 			            <img class="restaurants" v-if="u.userType == 'MANAGER' " src = "images/manager.png" >
 			            <img class="restaurants" v-else-if="u.userType == 'DELIVERER' " src = "images/deliverer.png" >
 			            <img class="restaurants" v-else-if="u.userType == 'ADMIN' " src = "images/admin.png" >
@@ -163,6 +175,10 @@ Vue.component("admin", {
 			            <br>
 			           	<label class="title">{{u.name}} {{u.lastname}} </label> <br>
 			           	<label>Username: {{u.username}}</label> 
+			           	<button v-if="u.blocked===false && u.userType != 'ADMIN'" v-on:click="blockUser(u)">Blokiraj</button>
+		         		<button class="deleteButton" v-on:click="deleteUser(u)">
+                    		<img class="deleteImg" src="images/delete.png"/>
+                    	</button>
 		         </div> 
 	          </div>
 	          <div v-else-if="filterOK">
@@ -175,6 +191,10 @@ Vue.component("admin", {
 			            <br>
 			           	<label class="title">{{u.name}} {{u.lastname}} </label> <br>
 			           	<label>Username: {{u.username}}</label>
+			           	<button v-if="u.blocked===false && u.userType != 'ADMIN'" v-on:click="blockUser(u)">Blokiraj</button>
+		         		<button class="deleteButton" v-on:click="deleteUser(u)">
+                    		<img class="deleteImg" src="images/delete.png"/>
+                    	</button>
 			        </div> 
 		         </div> 
 	         </div>
@@ -572,10 +592,32 @@ Vue.component("admin", {
     			this.showRestaurant = false
     		}
     		else{
-    			event.preventDefault()
-    			axios.post('/rest/restaurants/addRestaurant', this.managerDTO).
-    			then(response => alert('Restoran uspešno kreiran!'));
-    			this.showRestaurant = false
+    			if(this.restaurant.name == ''){
+    				event.preventDefault()
+    				alert('Unesite ime!')
+    			}
+    			else if(this.restaurant.type == ''){
+    				event.preventDefault()
+    				alert('Dodelite tip!')
+    			}
+    			else if(this.restaurant.location.longitude == 0){
+    				event.preventDefault()
+    				alert('Dodelite lokaciju!')
+    			}
+    			else if(this.managerDTO.username == ''){
+    				event.preventDefault()
+    				alert('Dodelite menadžera!')
+    			}
+    			else if(this.restaurant.image == ''){
+    				event.preventDefault()
+    				alert('Dodelite sliku!')
+    			}
+    			else{
+	    			event.preventDefault()
+	    			axios.post('/rest/restaurants/addRestaurant', this.managerDTO).
+	    			then(response => (this.showRestaurant = false));
+	    			
+    			}
     		}
     	},
     	sort: function(s) {
