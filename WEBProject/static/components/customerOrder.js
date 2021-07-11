@@ -34,7 +34,7 @@ Vue.component("customerOrder", {
             </div>
             <h2>   
                <a href="#" v-on:click="showDetails"> Detaljniji prikaz restorana </a>  <br/>
-               <button v-on:click="comments">Komentari</button>
+               <button class="restaurantButtons" v-on:click="comments">Komentari</button>
                 <div class="basket">   
                 <label id = "new"> {{this.itemsOrderedNumber}} </label>                   
                 <button class ="basket" v-on:click ="openBasket" > <img class="basket" src = "images/basket.jpg"> </button>  
@@ -107,7 +107,7 @@ Vue.component("customerOrder", {
             <h2>   
                <a href="#" v-on:click="showDetails"> Detaljniji prikaz restorana </a>                     
            	</h2>
-           	<button v-on:click="comments">Komentari</button>
+           	<button class="restaurantButtons" v-on:click="comments">Komentari</button>
         	<div class="restaurantItemGroup" v-for="(i, index) in items">
                 <div class="restaurantItem">
                 	<img :src = i.image><br/><br/>

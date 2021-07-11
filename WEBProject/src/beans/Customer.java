@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Customer extends User {
 
-	private ArrayList<String> orders;
+	private ArrayList<String> orders = new ArrayList<String>();
 	private Cart cart;
 	private double totalPoints;
 	private String type;

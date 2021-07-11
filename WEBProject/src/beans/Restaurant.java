@@ -18,8 +18,8 @@ public class Restaurant implements Serializable{
 	private boolean status;
 	private Location location;
 	private String image;
-	private int startTime;
-	private int endTime;
+	private int startTime = 8;
+	private int endTime = 22;
 	private double averageGrade;
 	private boolean deleted;
 	

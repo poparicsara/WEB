@@ -40,7 +40,7 @@ public class RestaurantsService {
 	private List<OrderDTO> restaurantOrders = new ArrayList<OrderDTO>();
 	private List<Comment> comments = new ArrayList<Comment>();
 	private UserService userService = new UserService();
-	private CommentService commentService = new CommentService();
+	public static CommentService commentService = new CommentService();
 	public static ManagerService managerService = new ManagerService();
 	private String ordersPath = "./static/orders.json";
 	private String restaurantsPath = "./static/restaurants.json";

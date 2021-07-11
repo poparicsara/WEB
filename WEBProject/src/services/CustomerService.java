@@ -41,7 +41,7 @@ public class CustomerService {
 		customers = getCustomers();
 		Customer customer = new Customer();
 		customer.setUsername(user.getUsername());
-		customer.setOrders(null);
+		customer.setOrders(new ArrayList<String>());
 		customer.setTotalPoints(0.0);
 		customer.setType("GVOZDENI");
 		customers.add(customer);

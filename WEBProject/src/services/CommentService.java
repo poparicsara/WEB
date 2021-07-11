@@ -23,6 +23,7 @@ public class CommentService {
 	private Gson gson = new Gson();
 	private List<Comment> comments = new ArrayList<Comment>();
 	private String commentsPath = "./static/comments.json";
+	public static RestaurantsService restaurantsService = new RestaurantsService();
 	
 	public List<CommentDTO> getRestaurantComments(int restaurant) throws Exception{
 		List<CommentDTO> comms = new ArrayList<CommentDTO>();
@@ -77,6 +78,20 @@ public class CommentService {
 	    String json = readFileAsString(commentsPath);
 		comments = gson.fromJson(json, listType);
 		return comments;
+	}
+	
+	public List<CommentDTO> getDTOComments() throws Exception{
+		List<CommentDTO> ret = new ArrayList<CommentDTO>();
+		for (Comment c : getComments()) {
+			CommentDTO comment = new CommentDTO();
+			comment.setStatus(String.valueOf(c.getStatus()));
+			comment.setCustomer(c.getCustomer());
+			comment.setRestaurant(restaurantsService.getRestaurantNameById(c.getRestaurant()));
+			comment.setText(c.getText());
+			comment.setGrade(String.valueOf(c.getGrade()));
+			ret.add(comment);
+		}
+		return ret;
 	}
 	
 	public void editCustomer(String oldUsername, String newUsername) throws Exception {

@@ -336,7 +336,7 @@ public class Main {
 		
 		get("rest/comments/",(req, res) ->{
 			res.type("application/json");
-			return g.toJson(commentService.getComments());
+			return g.toJson(commentService.getDTOComments());
 		});
 		
 		post("rest/addComment/",(req, res) ->{

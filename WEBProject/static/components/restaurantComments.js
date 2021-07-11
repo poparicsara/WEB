@@ -5,7 +5,8 @@ Vue.component("restaurantComments", {
 			user: null,
 			acceptedComments: null,
 			allComments : null,
-			username: ''
+			username: '',
+			restaurants: null
 	    }
 	},
 	template: `
@@ -44,7 +45,7 @@ Vue.component("restaurantComments", {
 	    		<div v-if="user.userType=='ADMIN'">
 					<br/><br/><br/><br/>
 		            <h1>Komentari</h1>
-		            <table border="1">
+		            <table border="1" class="restaurantOrders">
 			                <tr>
 			                	<th>Status</th>
 			                	<th>Kupac</th>
@@ -64,16 +65,14 @@ Vue.component("restaurantComments", {
 	    		<div v-if="user.userType=='CUSTOMER'">
 					<br/><br/><br/><br/>
 		            <h1>Komentari</h1>
-		            <table border="1">
+		            <table border="1" class="restaurantOrders">
 			                <tr>
 			                	<th>Kupac</th>
-			                	<th>Restoran</th>
 			                    <th>Text</th>
 			                    <th>Ocena</th>
 			                </tr>
 				            <tr v-for="(c, index) in acceptedComments">
 				            	<td>{{c.customer}}</td>
-				            	<td>{{c.restaurant}}</td>
 				                <td>{{c.text}}</td>
 				                <td>{{c.grade}}</td>
 				            </tr>
@@ -82,7 +81,7 @@ Vue.component("restaurantComments", {
 	    	<div v-if="username==''">
 	    		<br/><br/><br/><br/>
 	            <h1>Komentari</h1>
-	            <table border="1">
+	            <table border="1" class="restaurantOrders">
 		                <tr>
 		                	<th>Kupac</th>
 		                    <th>Text</th>
@@ -114,6 +113,9 @@ Vue.component("restaurantComments", {
         axios
         .get('rest/loggedInUser/')
         .then(response => (this.username = response.data));
+        axios
+        .get('rest/restaurants/')
+        .then(response => (this.restaurants = response.data))   
     },
     
     methods: {
@@ -128,6 +130,14 @@ Vue.component("restaurantComments", {
     		axios
         	.post('rest/rejectComment/', comment)
         	.then(response => (this.$router.go()));
+    	},
+    	restaurantName : function(id) {
+    		for(r of this.restaurants){
+    			if(r.id === id){
+    				return r.name
+    			}
+    		}
+    		return '';
     	}
     
     }
