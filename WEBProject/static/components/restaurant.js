@@ -184,7 +184,7 @@ Vue.component("restaurant", {
                <a href="#" v-on:click="showDetails"> Detaljniji prikaz restorana </a>                     
            	</h2>
            	<button class="restaurantButtons" v-on:click="comments">Komentari</button>
-        	<div class="restaurantItemGroup" v-for="(i, index) in items">
+        	<div class="restaurantItemGroup" v-for="(i, index) in items" v-if="i.deleted===false">
                 <div class="restaurantItem">
                 	<img :src = i.image><br/><br/>
                 	<hr class="restaurantItemHR">
