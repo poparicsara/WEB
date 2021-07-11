@@ -286,7 +286,7 @@ Vue.component("customer", {
          		<div v-else-if="searchDate">
 					<div v-for="(o, index) in orders" v-if = "o.customerUsername == username">  
 		         		<div   v-for="(r, index) in restaurants" v-if="o.restaurantID == r.id">
-		         			<div class="restaurants" v-if="dateDomain[0] <= o.date && o.date <= dateDomain[1]" >
+		         			<div class="restaurants" v-if="compareDates(o)" >
 								    <img class="restaurants" :src = r.image > <br>
 									<label class="title">{{r.name}} </label> <br>
 									<label>{{r.type}}</label> <br>
@@ -607,6 +607,17 @@ Vue.component("customer", {
     			router.push(`/`);
     		}	
     	},
+    	compareDates: function(o){
+  			var date1 = new Date(o.date)
+  			var bottomDate = new Date(this.dateDomain[0])
+  			var topDate = new Date(this.dateDomain[1])
+  			if((date1.getTime() >= bottomDate.getTime()) && (date1.getTime() <= topDate.getTime())){
+  				return true;
+  			}
+  			else{
+  				return false;
+  			}
+  		},
     	cancelOrder : function(order){
     		if(confirm('Da li ste sigurni da otkazujete porudžbinu?')){
     			axios
@@ -626,6 +637,7 @@ Vue.component("customer", {
   			return item.toLowerCase()
   		},
   		sort: function(s) {
+  		 this.notDeliveredOrders = false;
   		 this.filterOK = false
 		    if(s === this.currentSort) {
 		      this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
@@ -679,6 +691,7 @@ Vue.component("customer", {
 			.then(response => (router.push(`/customerOrder`)));
 		},
 		filter : function() {
+			
 			this.sortAddress = false;
 			this.sortName = false;
 			this.sortGrades = false;
@@ -693,6 +706,7 @@ Vue.component("customer", {
 			
 		},
 		filterOrders : function() {
+			this.notDeliveredOrders = false
 			this.sortName = false;
 			this.sortGrades = false;
 			this.filterRestaurantType = this.filterType
@@ -717,22 +731,26 @@ Vue.component("customer", {
     	},
   
     	searchOrders : function() {
+    		this.notDeliveredOrders = false
     		this.filterOrderOK = false
     		if(this.searchTextOrders === ""){
     			this.searchOKOrders = false
     		}
    			else{
    				this.searchOKOrders = true
+   				this.searchDate = false
+   				this.searchPrice = false
    				let regexPrice = new RegExp('[0-9]+-[0-9]+');
-   				let regexDate = new RegExp('[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{4}-[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{4}');
+   				let regexDate = new RegExp('[0-9]{4}-[0-9]{2}-[0-9]{2},[0-9]{4}-[0-9]{2}-[0-9]{2}');
+   				var dateTrue = regexDate.test(this.searchTextOrders)
+   				this.dateDomain = this.searchTextOrders.split(',')
    				if(regexPrice.test(this.searchTextOrders)){   				
    					this.priceDomain = this.searchTextOrders.split("-")
    					this.searchPrice = true
    					this.searchDate = false
    				}
-   				else{
-   				
-   					this.searchDate = false
+   				if(dateTrue){
+   					this.searchDate = true
    					this.searchPrice = false
    				}
    				
@@ -779,7 +797,6 @@ Vue.component("customer", {
     			this.comment.id = order.id
     			this.comment.restaurant = order.restaurantID
     			this.comment.customer = this.username
-    			alert(this.comment.customer)
     			this.showComment = true
     		}
     	},

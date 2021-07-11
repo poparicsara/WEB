@@ -9,7 +9,9 @@ Vue.component("delivererOrders", {
 			searchTextOrders: '',
 			searchOKOrders: false,
 			searchPrice: false,
+			searchDate: false,
 			priceDomain: [],
+			dateDomain: [],
 			currentSort:'name',
   		  	currentSortDir:'asc',
   		  	sortName : false,
@@ -78,6 +80,26 @@ Vue.component("delivererOrders", {
 		                    <th>Ukupan iznos</th>
 		                </tr>
 			            <tr v-for="(o, index) in myOrders" v-if="priceDomain[0] <= o.price && o.price <= priceDomain[1] ">
+			            	<td>{{o.status}}</td>
+			                <td>{{o.id}}</td>
+			                <td>{{o.date}}</td>
+			                <td>{{o.customerFullName}}</td>
+			                <td>{{o.restaurantName}}</td>
+			                <td>{{o.price}}</td>
+			            </tr>
+		           	 	</table>
+	            	</div>
+	            	<div v-else-if="searchDate">
+	            		<table border="1" class="restaurantOrders">
+		                <tr>
+		                	<th>Status</th>
+		                    <th>Broj porudžbine</th>
+		                    <th>Datum</th>
+		                    <th>Kupac</th>
+		                    <th>Restoran</th>
+		                    <th>Ukupan iznos</th>
+		                </tr>
+			            <tr v-for="(o, index) in myOrders" v-if="compareDates(o) ">
 			            	<td>{{o.status}}</td>
 			                <td>{{o.id}}</td>
 			                <td>{{o.date}}</td>
@@ -353,6 +375,17 @@ Vue.component("delivererOrders", {
     	rLower : function(item) {
   			return item.toLowerCase()
   		},
+  		compareDates: function(o){
+  			var date1 = new Date(o.date)
+  			var bottomDate = new Date(this.dateDomain[0])
+  			var topDate = new Date(this.dateDomain[1])
+  			if((date1.getTime() >= bottomDate.getTime()) && (date1.getTime() <= topDate.getTime())){
+  				return true;
+  			}
+  			else{
+  				return false;
+  			}
+  		},
   		checkRestaurantType: function(order){
   			var exists = false
   			for(r of this.restaurants){
@@ -397,15 +430,22 @@ Vue.component("delivererOrders", {
     		}
    			else{
    				this.searchOKOrders = true
+   				this.searchDate = false
+   				this.searchPrice = false
    				let regexPrice = new RegExp('[0-9]+-[0-9]+');
+   				let regexDate = new RegExp('[0-9]{4}-[0-9]{2}-[0-9]{2},[0-9]{4}-[0-9]{2}-[0-9]{2}');
+   				var dateTrue = regexDate.test(this.searchTextOrders)
+   				this.dateDomain = this.searchTextOrders.split(',')
    				if(regexPrice.test(this.searchTextOrders)){   				
-   					this.priceDomain = this.searchTextOrders.split("-")
-   					
+   					this.priceDomain = this.searchTextOrders.split('-')
    					this.searchPrice = true
+   					this.searchDate = false
    				}
-   				else{
+   			    if(dateTrue){
+   				   	this.searchDate = true
    					this.searchPrice = false
    				}
+   				
    				
    			}  
     	},

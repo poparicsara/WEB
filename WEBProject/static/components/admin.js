@@ -23,6 +23,7 @@ Vue.component("admin", {
 	      sortName: false,
 	      sortLastName: false,
 	      sortUsername: false,
+	      sortPoints: false,
 	      filterType: null,
 	      filterOK: false,
 	      map: false,
@@ -35,7 +36,8 @@ Vue.component("admin", {
   	      lng : null,
   	      showSuspicious : false,
   	      suspiciousUsers : null,
-  	      newPage : false
+  	      newPage : false,
+  	      customers : null
 	    }
 	},
 	    template: ` 
@@ -103,7 +105,7 @@ Vue.component("admin", {
 		      			<button class="sort" v-on:click = "sort('name')"> Ime </button>
 		      			<button class="sort" v-on:click = "sort('lastName')"> Prezime </button>
 		      			<button class="sort" v-on:click = "sort('username')"> Username </button>
-		      			<button class="sort"> Poeni </button>
+		      			<button class="sort" v-on:click = "sort('points')"> Poeni </button>
 	      			</div>
 	      			<br> <br>
 	      			<div class = "filterUsers">
@@ -179,6 +181,23 @@ Vue.component("admin", {
 		         		<button class="deleteButton" v-on:click="deleteUser(u)">
                     		<img class="deleteImg" src="images/delete.png"/>
                     	</button>
+		         </div> 
+	          </div>
+	          <div v-else-if="sortPoints">
+	          	 <div  v-for="s in sortedPoints">     
+	          	 	<div class="restaurants" v-for="u in users" v-if="!u.deleted && (u.username == s.username)">
+			            <img class="restaurants" v-if="u.userType == 'MANAGER' " src = "images/manager.png" >
+			            <img class="restaurants" v-else-if="u.userType == 'DELIVERER' " src = "images/deliverer.png" >
+			            <img class="restaurants" v-else-if="u.userType == 'ADMIN' " src = "images/admin.png" >
+			            <img class="restaurants" v-else="u.userType == 'CUSTOMER' " src = "images/customer.jpg" > 
+			            <br>
+			           	<label class="title">{{u.name}} {{u.lastname}} </label> <br>
+			           	<label>Username: {{u.username}}</label> 
+			           	<button v-if="u.blocked===false && u.userType != 'ADMIN'" v-on:click="blockUser(u)">Blokiraj</button>
+		         		<button class="deleteButton" v-on:click="deleteUser(u)">
+                    		<img class="deleteImg" src="images/delete.png"/>
+                    	</button>
+                   	</div>
 		         </div> 
 	          </div>
 	          <div v-else-if="filterOK">
@@ -336,7 +355,10 @@ Vue.component("admin", {
           window.postNumber = 0;     
       axios
           .get('rest/suspiciousUsers/')
-          .then(response => (this.suspiciousUsers = response.data)) 
+          .then(response => (this.suspiciousUsers = response.data)) ;
+      axios
+      	 .get('rest/customers/')
+      	 .then(response => (this.customers = response.data));
     },
     
     destroyed () {
@@ -397,6 +419,20 @@ Vue.component("admin", {
 		      	return -1 * modifier;
 		      } 
 		      else if(a.username > b.username){
+		      	return 1 * modifier;
+		      }
+		      else
+		       return 0;
+    		});
+  		},
+  		sortedPoints: function() {
+		    return this.customers.sort((a,b) => {
+		      let modifier = 1;
+		      if(this.currentSortDir === 'desc') modifier = -1;
+		      if(a.totalPoints < b.totalPoints){
+		      	return -1 * modifier;
+		      } 
+		      else if(a.totalPoints > b.totalPoints){
 		      	return 1 * modifier;
 		      }
 		      else
@@ -629,18 +665,26 @@ Vue.component("admin", {
 		    	 this.sortName = true;
 		    	 this.sortLastName = false;
 		    	 this.sortUsername = false;
-		    	 
+		    	 this.sortPoints = false;
 		    }
 		    else if(s== 'lastName'){
 		    	 this.sortName = false;
 		    	 this.sortLastName = true;
 		    	 this.sortUsername = false;
+		    	 this.sortPoints = false;
+
 		    }
 		    else if(s=='username'){
 		    	this.sortUsername = true;
 		    	this.sortName = false;
 		    	this.sortLastName = false;
-		    	
+		    	this.sortPoints = false;
+		    }
+		    else{
+		    	this.sortUsername = false;
+		    	this.sortName = false;
+		    	this.sortLastName = false;
+		    	this.sortPoints = true;
 		    }
 		   
 		},
@@ -648,6 +692,7 @@ Vue.component("admin", {
 			this.sortName = false;
 		    this.sortLastName = false;
 		    this.sortUsername = false;
+		    this.sortPoints = false;
 			if(this.filterType == "all"){
 				this.filterOK = false
 			}
